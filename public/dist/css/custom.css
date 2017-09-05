@@ -1,0 +1,10 @@
+.table tr td span {
+    float: left;
+    width: 100%;
+}
+.content-header h1{
+    float: left;
+}
+.content-header a{
+    margin-bottom: 10px;
+}

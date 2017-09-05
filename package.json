@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "fortune-store",
+  "version": "1.0.0",
+  "description": "fortune-store",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+   
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uCreateit/pleasereleaseme-web.git"
+  },
+  "keywords": [
+    "Laravel",
+    "bootstrap4",
+    "grunt"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uCreateit/pleasereleaseme-web/issues"
+  },
+  "homepage": "https://github.com/uCreateit/pleasereleaseme-web#readme",
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.2.0",
+    "grunt-contrib-htmlmin": "^2.4.0",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-uglify": "^3.0.1"
+  }
+}
