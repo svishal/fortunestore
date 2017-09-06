@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('content')
 
 <div class="login-box">
@@ -52,8 +52,6 @@
   </div>
   <!-- /.login-box-body -->
 </div>
-<!-- /.login-box -->
-
-@extends('layouts.footermain')        
-@endsection    
-
+<!-- /.login-box -->        
+@endsection  
+@extends('layouts.footermain')
