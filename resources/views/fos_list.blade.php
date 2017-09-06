@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('content')
 <div class="wrapper">
 
     <header class="main-header">
@@ -50,7 +51,7 @@
       </div>
     </nav>
   </header>
-  @extends('layouts.sidebar')
+  @include('layouts.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -249,5 +250,5 @@
       </form>
     </div>
   </div>
-</div>
-@extends('layouts.footer')
+</div> 
+@endsection

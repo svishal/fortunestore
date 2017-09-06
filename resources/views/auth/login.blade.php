@@ -53,6 +53,7 @@
   <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
-               
-@endsection
+
+@extends('layouts.footermain')        
+@endsection    
 

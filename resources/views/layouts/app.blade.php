@@ -32,3 +32,7 @@
 </head>
 <body class="hold-transition login-page">
 @yield('content')
+@include('layouts.footer')
+@include('layouts.footermain')
+</body>
+</html>
