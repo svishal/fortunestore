@@ -89,6 +89,9 @@
                   @php $sr = 1; @endphp
                  @foreach($customer_purchase_list as $customer_purchase_column=>$customer_purchase_value)
                  @php $purchased_items = json_decode($customer_purchase_value['purchased_items'])@endphp
+                 @php $item_array = array() @endphp
+                 @php $quantity_array = array() @endphp
+                 @php $amount_array = array() @endphp
                  @foreach($purchased_items as $purchased_item_value)
                  @php $item_array[] = $purchased_item_value->item; @endphp
                  @php $quantity_array[] = $purchased_item_value->quantity; @endphp
@@ -104,7 +107,7 @@
                   <td><span>{{$item_result_array}}</span></td>
                   <td><span>{{$quantity_result_array}}</span></td>
                   <td><span>{{$amount_result_array}}</span></td>
-                  <td>200.00</td>
+                  <td>{{$customer_purchase_value['total_amount']}}</td>
                   <td>800.00</td>
                 </tr>
                  @php $sr++; @endphp
