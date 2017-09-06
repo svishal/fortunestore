@@ -14,7 +14,8 @@ return [
     */
 
     'paths' => [
-      realpath(base_path((getenv('APP_ENV') == 'local')?'resources/views/dev':'resources/views/dist')),
+      //realpath(base_path((getenv('APP_ENV') == 'local')?'resources/views/dev':'resources/views/dist')),
+      realpath(base_path('resources/views')),
      ],
 
     /*
