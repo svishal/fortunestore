@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-/*
+
 Route::get('/hello', function () {  return view('welcome');  });
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Auth::routes();
@@ -40,4 +37,4 @@ Route::get('/customer_history/{id}','ExpenditureItemsController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', 'Auth\LoginController@logout');
 
-*/
+
