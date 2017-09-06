@@ -11,9 +11,11 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
+/*
+Route::get('/hello', function () {  return view('welcome');  });
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Auth::routes();
 Route::post('login', 'Auth\LoginController@loginAdmin');
@@ -37,3 +39,5 @@ Route::get('/fos_list','FeetOnStreetController@index');
 Route::get('/customer_history/{id}','ExpenditureItemsController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', 'Auth\LoginController@logout');
+
+*/
