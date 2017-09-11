@@ -20,8 +20,7 @@ class ExpenditureItemsController extends Controller
             return redirect('/');
         }
         $expenditure_item_list = ExpenditureItems::expenditureItemsListByCustomerId($id);
-        $mobile_number_of_customer = Customer::getMobileNoOfCustomer($id);
-        $mobile_number_of_customer = $mobile_number_of_customer[0];
+        $mobile_number_of_customer = Customer::find($id);
         return view('customer_purchase_history', ['customer_purchase_list' => $expenditure_item_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);
     }
 

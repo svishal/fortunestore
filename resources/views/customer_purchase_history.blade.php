@@ -57,9 +57,9 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Customer Name
-        <small>List</small>
+        {{$mobile_number_of_customer->name}}
       </h1>
+     <a class="pull-right btn btn-primary" href="javascript:history.back()">Back</a>
     </section>
 
     <!-- Main content -->
@@ -103,7 +103,7 @@
                 <tr class="odd gradeX">
                   <td>{{$sr}}</td>
                   <td>{{$customer_purchase_value['order_date']}}</td>
-                  <td>{{$mobile_number_of_customer}}</td>
+                  <td>{{$mobile_number_of_customer->mobile_no}}</td>
                   <td><span>{{$item_result_array}}</span></td>
                   <td><span>{{$quantity_result_array}}</span></td>
                   <td><span>{{$amount_result_array}}</span></td>

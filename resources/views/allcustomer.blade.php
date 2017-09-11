@@ -58,9 +58,7 @@
     <section class="content-header">
       <h1>
         All Customer
-        <small>List</small>
       </h1>
-      <a class="pull-right btn btn-primary" href="#">Back</a>
     </section>
    @if (Session::has('not_exist_message'))
    <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
@@ -99,7 +97,7 @@
                  @foreach($customer_list as $customer_column=>$customer_list_value)
                 <tr class="odd gradeX">
                   <td>{{$sr}}</td>
-                  <td>{{$customer_list_value['doj']}}</td>
+                  <td>{{date('d-m-Y', strtotime($customer_list_value['doj']))}}</td>
                   <td>{{$customer_list_value['name']}}</td>
                   <td>{{$customer_list_value['address']}}</td>
                   <td>{{$customer_list_value['mobile_no']}}</td>
@@ -196,7 +194,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit Customer</h4>
+        <h4 class="modal-title customer-name" id="myModalLabel">Edit Customer</h4>
       </div>
       <form class="form-horizontal" method="post" action="/edit_customer" id="edit_customer_form">
       {{ csrf_field() }}

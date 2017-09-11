@@ -75,6 +75,7 @@ $(function () {
       async: false,
       url: '/get_customer_info?customer_id=' + customer_id,
       success: function (response) {
+        $(".customer-name").text(response['name']);
         $("#customer_edit_id").val(customer_id);
         $("#edit_customer_name").val(response['name']);
         $("#edit_mobile_no").val(response['mobile_no']);
