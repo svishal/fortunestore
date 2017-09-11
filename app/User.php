@@ -86,6 +86,9 @@ class User extends Authenticatable
                 $result = $this->traitValidateObject($option);
                 return $result;
             }
+            public static function userInfoByEmail($email) {
+                return static::where('email', $email)->first();
+            }
         
             
 }

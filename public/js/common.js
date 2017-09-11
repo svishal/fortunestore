@@ -199,5 +199,31 @@ $(function () {
        return false;
       }
     });
+    $(document).on('click','#update_settings',function(){
+      var name = $('#name').val();
+      var password = $('#password').val();
+      var confirm_password =  $('#confirm_password').val();
+      var validate_name=true;
+      var validate_password=true;
+      var validate_all_values = true;
+      if(name.length<1)
+        validate_name = false;
+      if(confirm_password!=password)
+        validate_password = false;
+
+      if(!validate_name){
+      $('.name_error').html('Name is Required');
+        validate_all_values = false;
+      }
+      if(!validate_password){
+      $('.password_error').html('Password and Confirm Password should be same');
+        validate_all_values = false;
+      }
+      if(validate_all_values){
+       $("#update_settings_form").submit();
+      }else{
+       return false;
+      }
+    });
   })
    

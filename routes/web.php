@@ -37,5 +37,7 @@ Route::get('/customer_history/{id}','ExpenditureItemsController@index');
 Route::get('/debit_history/{id}','AddBalanceController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', 'Auth\LoginController@logout');
+Route::get('settings', 'AdminController@index');
+Route::post('/update_settings', 'AdminController@updateSettings');
 
 

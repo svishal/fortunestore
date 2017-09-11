@@ -38,7 +38,7 @@
                   <th>Name</th>
                   <th>Address</th>
                   <th>Mobile No.</th>
-                  <th>parmanent Address</th>
+                  <th>Permanent Address</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>

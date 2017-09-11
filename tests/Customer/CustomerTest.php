@@ -5,6 +5,7 @@ use Tests\ParentTestClass;
 use App\Customer;
 use App\FeetOnStreet;
 use App\ExpenditureItems;
+use App\AddBalance;
 
 class CustomerTest extends ParentTestClass {
 
@@ -147,12 +148,27 @@ class CustomerTest extends ParentTestClass {
         $attributes = [
         'customer_id'=>$customer->id,
         'fos_id'=>$fos['id'],
-        'purchased_items'=>'[{"item":"milk","quantity":4,"amount":80},{"item":"bread","quantity":4,"amount":80}]',
+        'purchased_items'=>'[{"item":"milk","quantity":4,"amount":100},{"item":"bread","quantity":4,"amount":100}]',
         'order_date'=>'2016-11-26',
-        'total_amount'=>'160',
+        'total_amount'=>'180',
         ];
         $add_items = new ExpenditureItems($attributes);
         $save_items = $add_items->save();
+        $updated_balance  = $customer->current_balance-200;
+        $edit_customer_data = ['current_balance'=>$updated_balance];
+        $customer->setData($edit_customer_data);
+        $update_customer = $customer->save();
+        $this->assertTrue($update_customer);
+    }
+    public function testAddMoney(){
+       $customer = Customer::findByMobile('9646672242');
+        $attributes = [
+        'customer_id'=>$customer->id,
+        'date_of_amount_added'=>'2016-11-26',
+        'balance'=>'180',
+        ];
+        $add_balance = new AddBalance($attributes);
+         $save_items = $add_balance->save();
         $this->assertTrue($save_items);
     }
 }
