@@ -35,11 +35,11 @@ $(function () {
     //Date picker
     $('#datepicker').datepicker({
       autoclose: true,
-      format: 'yyyy-mm-dd'
+      format: 'dd-mm-yyyy'
     });
     $('#edit_date_of_joining').datepicker({
       autoclose: true,
-      format: 'yyyy-mm-dd'
+      format: 'dd-mm-yyyy'
     });
     
     $(document).on('click','#add_customer_button',function(){
@@ -168,6 +168,7 @@ $(function () {
       async: false,
       url: '/get_fos_info?fos_id=' + fos_id,
       success: function (response) {
+        $(".fos-name").text(response['name']);
         $("#fos_edit_id").val(fos_id);
         $("#edit_fos_name").val(response['name']);
         $("#edit_mobile_no").val(response['mobile_no']);

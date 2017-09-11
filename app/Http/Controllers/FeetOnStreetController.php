@@ -93,7 +93,7 @@ class FeetOnStreetController extends Controller
     {
         $fos_form_input_data = $request->all();
         $attributes = [
-        'doj' => $fos_form_input_data['date_of_joining'],
+        'doj' => date('Y-m-d', strtotime($fos_form_input_data['date_of_joining'])),
         'name' =>$fos_form_input_data['fos_name'],
         'mobile_no' => $fos_form_input_data['fos_mobile_no'],
         'address' => $fos_form_input_data['fos_address'],
@@ -107,7 +107,8 @@ class FeetOnStreetController extends Controller
     }
     public function editFos(Request $request){
         $edit_fos_form_input_data = $request->all();
-        $edit_fos_data = ['doj'=>$edit_fos_form_input_data['edit_date_of_joining'],
+        $edit_fos_data = [
+          'doj'=>date('Y-m-d', strtotime($edit_fos_form_input_data['edit_date_of_joining'])),
           'name'=>$edit_fos_form_input_data['edit_fos_name'],
           'mobile_no'=>$edit_fos_form_input_data['edit_mobile_no'],
           'permanent_address'=>$edit_fos_form_input_data['edit_permanent_address'],
@@ -152,6 +153,7 @@ class FeetOnStreetController extends Controller
     public function getFosInfo(Request $request){
         $fos_id =$request->all()['fos_id']; 
         $fos_info = FeetOnStreet::find($fos_id);
+        $fos_info->doj = date('d-m-Y', strtotime($fos_info->doj));
         return $fos_info;
     }
 }

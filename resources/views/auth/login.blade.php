@@ -10,7 +10,7 @@
     <p class="login-box-msg">Sign in to start your session</p>
 
     <form method="post" action="{{ route('login') }}">
-    {{ csrf_field() }}
+       {{ csrf_field() }}
        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} has-feedback">
                            
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email" autofocus>

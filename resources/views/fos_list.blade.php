@@ -26,13 +26,13 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="./dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="{{url('/',[],env('APP_SSL'))}}/images/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">Alexander Pierce</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="./dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="{{url('/',[],env('APP_SSL'))}}/images/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
                   Alexander Pierce - Web Developer
@@ -59,7 +59,7 @@
     <section class="content-header">
       <h1>
         FOS
-        <small>List</small>
+        <small>Details</small>
       </h1>
     </section>
     @if (Session::has('not_exist_message'))
@@ -98,7 +98,7 @@
                  @foreach($feet_on_street_list as $fos_column=>$fos_list_value)
                 <tr class="odd gradeX">
                   <td>{{$sr}}</td>
-                  <td>{{$fos_list_value['doj']}}</td>
+                  <td>{{date('d-m-Y', strtotime($fos_list_value['doj']))}}</td>
                   <td>{{$fos_list_value['name']}}</td>
                   <td>{{$fos_list_value['address']}}</td>
                   <td>{{$fos_list_value['mobile_no']}}</td>
@@ -189,7 +189,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit FOS</h4>
+        <h4 class="modal-title fos-name" id="myModalLabel">Edit FOS</h4>
       </div>
       <form class="form-horizontal" method="post" action="/edit_fos" id="edit_fos_form">
       {{ csrf_field() }}

@@ -92,7 +92,7 @@ class CustomerController extends Controller
     {
         $customer_form_input_data = $request->all();
         $attributes = [
-        'doj' => $customer_form_input_data['date_of_joining'],
+        'doj' => date('Y-m-d', strtotime($customer_form_input_data['date_of_joining'])),
         'name' =>$customer_form_input_data['customer_name'],
         'mobile_no' => $customer_form_input_data['mobile_number'],
         'current_balance'=>$customer_form_input_data['balance'],
@@ -108,7 +108,8 @@ class CustomerController extends Controller
     public function editCustomer(Request $request)
     {
         $edit_customer_form_input_data = $request->all();
-        $edit_customer_data = ['doj'=>$edit_customer_form_input_data['edit_date_of_joining'],
+        $edit_customer_data = ['doj'=>
+        date('Y-m-d', strtotime($edit_customer_form_input_data['edit_date_of_joining'])),
           'name'=>$edit_customer_form_input_data['edit_customer_name'],
           'mobile_no'=>$edit_customer_form_input_data['edit_mobile_no'],
           'current_balance'=>$edit_customer_form_input_data['edit_balance'],
@@ -131,6 +132,7 @@ class CustomerController extends Controller
     public function getCustomerInfo(Request $request){
         $customer_id =$request->all()['customer_id']; 
         $customer_info = Customer::find($customer_id);
+        $customer_info->doj = date('d-m-Y', strtotime($customer_info->doj));
         return $customer_info;
     }
     public function changeCustomerStatus(Request $request){
