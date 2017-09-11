@@ -17,6 +17,7 @@ class UserTableSeeder extends Seeder
         	'name'=>getenv('ADMIN_NAME'),
         	'email' => getenv('ADMIN_EMAIL'),
             'password' => bcrypt(getenv('ADMIN_PASSWORD')),
+            'image_url' => getenv('ADMIN_IMAGE'),
             'created_at'=> Carbon::now(),
             'updated_at'=> Carbon::now(),
         	]);     
