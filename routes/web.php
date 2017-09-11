@@ -34,6 +34,7 @@ Route::resource('/shows', 'ShowController');
 Route::get('/dashboard','CustomerController@index');
 Route::get('/fos_list','FeetOnStreetController@index');
 Route::get('/customer_history/{id}','ExpenditureItemsController@index');
+Route::get('/debit_history/{id}','AddBalanceController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', 'Auth\LoginController@logout');
 

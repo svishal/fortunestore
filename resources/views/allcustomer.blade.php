@@ -49,15 +49,15 @@
                 <tr class="odd gradeX">
                   <td>{{$sr}}</td>
                   <td>{{date('d-m-Y', strtotime($customer_list_value['doj']))}}</td>
-                  <td>{{$customer_list_value['name']}}</td>
-                  <td>{{$customer_list_value['address']}}</td>
+                  <td>{{ucwords($customer_list_value['name'])}}</td>
+                  <td>{{ucwords($customer_list_value['address'])}}</td>
                   <td>{{$customer_list_value['mobile_no']}}</td>
                   <td>{{$customer_list_value['current_balance']}}</td>
                   <td class="center"><input value="{{$customer_list_value['status']}}" data-id="{{$customer_list_value['id']}}" @if($customer_list_value['status']==1) checked @endif data-toggle="toggle" id="change_customer_status" data-onstyle="success" type="checkbox"></td>
                   <td class="center">
                   <a href="#" title="edit"  data-toggle="modal" data-target="#editcustomer" id="edit_customer" data-id="{{$customer_list_value['id']}}"> <i class="fa fa-fw fa-pencil"></i> </a> 
                   <a href="/customer_history/{{$customer_list_value['id']}}" title="histoy"> <i class="text-red fa fa-fw fa-clock-o"></i></a>
-                  <a href="#" title="Payment History"> <i class="fa fa-inr  text-green" aria-hidden="true"></i></a>
+                  <a href="/debit_history/{{$customer_list_value['id']}}" title="Debit History"> <i class="fa fa-inr  text-green" aria-hidden="true"></i></a>
                   </td>
                 </tr>
                 @php $sr++; @endphp

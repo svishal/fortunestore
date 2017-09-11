@@ -32,7 +32,6 @@
                   <th>Quantity</th>
                   <th>Total</th>
                   <th>Grand Total</th>
-                  <th>Balance</th>
                 </tr>
                 </thead>
                  <tbody>
@@ -58,7 +57,6 @@
                   <td><span>{{$quantity_result_array}}</span></td>
                   <td><span>{{$amount_result_array}}</span></td>
                   <td>{{$customer_purchase_value['total_amount']}}</td>
-                  <td>800.00</td>
                 </tr>
                  @php $sr++; @endphp
                 @endforeach

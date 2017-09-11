@@ -27,4 +27,8 @@ class AddBalance extends BaseModel
     protected $hidden = [
        'created_at', 'updated_at'
     ];
+
+    public static function debitListByCustomerId($id) {
+        return static::where('customer_id', $id)->get();
+    }
 }

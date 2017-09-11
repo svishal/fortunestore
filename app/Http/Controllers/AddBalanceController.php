@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\AddBalance;
 use Illuminate\Http\Request;
-
+use Auth;
+use App\Customer;
 class AddBalanceController extends Controller
 {
     /**
@@ -12,9 +13,14 @@ class AddBalanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        if (empty(Auth::check())) {
+            return redirect('/');
+        }
+        $debit_list = AddBalance::debitListByCustomerId($id);
+        $mobile_number_of_customer = Customer::find($id);
+        return view('add_balance_history', ['debit_list' => $debit_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);
     }
 
     /**
