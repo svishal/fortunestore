@@ -18,6 +18,10 @@ class AddBalanceController extends Controller
         if (empty(Auth::check())) {
             return redirect('/');
         }
+        if(empty($id))
+        {
+            return redirect('/');
+        }
         $debit_list = AddBalance::debitListByCustomerId($id);
         $mobile_number_of_customer = Customer::find($id);
         return view('add_balance_history', ['debit_list' => $debit_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);

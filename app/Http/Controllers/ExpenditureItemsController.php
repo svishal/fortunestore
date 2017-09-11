@@ -16,9 +16,13 @@ class ExpenditureItemsController extends Controller
      */
     public function index($id)
     {
-         if (empty(Auth::check())) {
+        if (empty(Auth::check())) {
             return redirect('/');
         }
+        if (empty($id)) {
+            abort(404);
+        }
+
         $expenditure_item_list = ExpenditureItems::expenditureItemsListByCustomerId($id);
         $mobile_number_of_customer = Customer::find($id);
         return view('customer_purchase_history', ['customer_purchase_list' => $expenditure_item_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);
