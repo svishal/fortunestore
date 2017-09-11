@@ -3,6 +3,8 @@
 namespace Test\Customer;
 use Tests\ParentTestClass;
 use App\Customer;
+use App\FeetOnStreet;
+use App\ExpenditureItems;
 
 class CustomerTest extends ParentTestClass {
 
@@ -22,6 +24,23 @@ class CustomerTest extends ParentTestClass {
         $save_customer = $customer->save();
         $this->assertTrue($save_customer);
         
+    }
+    public function testCreateFos(){
+        $this->assertTrue(true);
+        $attributes = [
+        'name'=>'gaurav',
+        'mobile_no'=>'9876587651',
+        'address'=>'mohali',
+        'doj'=>'2016-11-26',
+        'permanent_address'=>'chaudhry colony,bassi pathana',
+        'password'=>'admin@123'
+        ];
+        $checkfos = FeetOnStreet::findByMobile('9876587651');
+        if(empty($checkfos)){
+          $fos = new FeetOnStreet($attributes);
+         $save_fos = $fos->save();
+          $this->assertTrue($save_fos);
+        }
     }
      public function testCustomerSaveMobileNoEmpty() {
         $data = ['status'=>'1',
@@ -61,6 +80,18 @@ class CustomerTest extends ParentTestClass {
         $saved = $customer->save();
         $this->assertFalse($saved);
         $this->assertArrayHasKey('current_balance', $customer->getErrors());
+   }
+   public function testCustomerSaveBalanceValid() {
+        $data = ['status'=>'1',
+        'name'=>'gaurav',
+        'mobile_no'=>'5656565656',
+        'address'=>'chaudhry colony,bassi pathana',
+        'doj'=>'2016-11-26',
+        'current_balance'=>'500',
+        ];
+        $customer = new Customer($data);
+        $saved = $customer->save();
+        $this->assertTrue($saved);
    }
       public function testCustomerSaveDojInvalid() {
         $data = ['status'=>'1',
@@ -109,5 +140,19 @@ class CustomerTest extends ParentTestClass {
         $customer->setData($data);
         $update_customer =$customer->save();
         $this->assertTrue($update_customer);
+    }
+    public function testAddExpenditureList(){
+        $customer = Customer::findByMobile('9646672242');
+        $fos = FeetOnStreet::first();
+        $attributes = [
+        'customer_id'=>$customer->id,
+        'fos_id'=>$fos['id'],
+        'purchased_items'=>'[{"item":"milk","quantity":4,"amount":80},{"item":"bread","quantity":4,"amount":80}]',
+        'order_date'=>'2016-11-26',
+        'total_amount'=>'160',
+        ];
+        $add_items = new ExpenditureItems($attributes);
+        $save_items = $add_items->save();
+        $this->assertTrue($save_items);
     }
 }

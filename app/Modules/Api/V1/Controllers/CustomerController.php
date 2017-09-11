@@ -72,7 +72,7 @@ class CustomerController extends BaseApiController{
             'total_amount'=>$input['total_amount']];
             $add_items = new ExpenditureItems($attributes);
             if($add_items->save()){
-              $updated_balance  = $customer->$customer-$input['total_amount'];
+              $updated_balance  = $customer->current_balance-$input['total_amount'];
               if($updated_balance<0){
                 $updated_balance=0;
               }
