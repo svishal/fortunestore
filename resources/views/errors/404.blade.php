@@ -22,7 +22,7 @@
     <div class="col-lg-12 company-logo">Fortune store</div>
   <div class="clearfix"></div>
   <h1>404</h1>
-  <h3>Page doesn’t exist or some other error has occurred.<br> Please go to our <a href="http://latetrip.com">home page</a> or  <a href="#">click here</a> to return to the previous page.</h3>
+  <h3>Page doesn’t exist or some other error has occurred.<br> Please go to our <a href="/dashboard">home page</a>.</h3>
   
 </div>
 </div>
