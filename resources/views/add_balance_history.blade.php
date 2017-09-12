@@ -9,7 +9,7 @@
       <h1>
         {{$mobile_number_of_customer->name}}
       </h1>
-     <a class="pull-right btn btn-primary" href="javascript:history.back()">Back</a>
+     <a class="pull-right btn btn-primary" href="/dashboard">Back</a>
     </section>
    @if (Session::has('not_exist_message'))
    <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>

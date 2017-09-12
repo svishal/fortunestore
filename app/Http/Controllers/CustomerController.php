@@ -176,9 +176,13 @@ class CustomerController extends Controller
             'date_of_amount_added' => date('Y-m-d'),
             ];
             $add_balance = new AddBalance($attributes);
-            $add_balance->save();
+            if($add_balance->save()){
             Session::flash('save_message', "Record saved successfully");
             return Redirect::back();
+            }else{
+            Session::flash('not_exist_message', "Something went wrong");
+            return Redirect::back();
+            }
             }else{
             Session::flash('not_exist_message', "Something went wrong");
             return Redirect::back();
