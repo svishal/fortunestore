@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>Fortune</b>store</span>
+      <span class="logo-mini"><b>Fortune</b>Store</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Fortune store</b></span>
+      <span class="logo-lg"><b>Fortune Store</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -54,8 +54,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li><a href="/dashboard"><span>All Customer List</span></a></li>
-         <li><a href="/fos_list"><span>FOS (Feet on Street)</span></a></li>
+        <li class="{{ Request::path() == 'dashboard' ? 'active' : '' }}"><a href="/dashboard"><span>All Customer List</span></a></li>
+         <li class="{{ Request::path() == 'fos_list' ? 'active' : '' }}"><a href="/fos_list"><span>FOS (Feet on Street)</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

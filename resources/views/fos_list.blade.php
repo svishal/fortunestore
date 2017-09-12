@@ -12,7 +12,10 @@
         <small>Details</small>
       </h1>
     </section>
-    @if (Session::has('not_exist_message'))
+     <section class="error-content">
+    <div class="row">
+      <div class="col-lg-12">
+        @if (Session::has('not_exist_message'))
    <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
    @endif
    @if (Session::has('save_message'))
@@ -23,6 +26,9 @@
             <li>{{ $error }}</li>
     </ul>
    @endforeach
+     </div>
+   </div>
+   </section>
     <!-- Main content -->
     <section class="content">
       <div class="row">

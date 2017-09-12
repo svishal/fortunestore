@@ -20,7 +20,7 @@ class CustomerController extends Controller
         if (empty(Auth::check())) {
             return redirect('/');
         }
-        $customer_list = Customer::get();
+        $customer_list = Customer::customerList();
         return view('allcustomer', ['customer_list' => $customer_list]);
     }
 
