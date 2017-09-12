@@ -33,7 +33,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" id="update_settings" class="btn btn-primary btn-block btn-flat">Register</button>
+          <button type="submit" id="update_settings" class="btn btn-primary btn-block btn-flat">Save</button>
         </div>
         <!-- /.col -->
       </div>
