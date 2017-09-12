@@ -73,13 +73,14 @@
        {{ csrf_field() }}
       <div class="modal-body">
               <div class="box-body">
-                 @if (Session::has('save_message'))
-                <div class="alert alert-info">{{ Session::get('save_message') }}</div>
+                 @if (Session::has('save_admin_message'))
+                <div class="alert alert-info">{{ Session::get('save_admin_message') }}</div>
                 @endif
                 <div class="form-group">
                   <label for="date_of_joining" class="col-sm-3 control-label">User Name</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="name" id="name" value="{{Auth::user()->name}}">
+                    <span class="error-msg text-left error-block name_error"></span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -98,6 +99,7 @@
                   <label for="date_of_joining" class="col-sm-3 control-label">Confirm Password</label>
                   <div class="col-sm-9">
                     <input type="password" class="form-control" id="confirm_password" placeholder="Confirm password">
+                    <span class="error-msg text-left error-block password_error"></span>
                   </div>
                 </div>
               </div>

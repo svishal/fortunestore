@@ -1,4 +1,4 @@
-$(function () {
+$(function () {  
   $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
@@ -50,18 +50,26 @@ $(function () {
       var balance = $('#balance').val();
       var validate_mobile_number=true;
       var validate_balance=true;
+      var validate_balance_type=true;
       var validate_all_values = true;
       if(mobile_number.length<1)
         validate_mobile_number = false;
       if(balance.length<1)
         validate_balance = false;
-
+      
+      if(isNaN(balance))
+        validate_balance_type= false;
+      
       if(!validate_mobile_number){
       $('.mobile_number_error').html('Mobile Number is Required');
         validate_all_values = false;
       }
       if(!validate_balance){
       $('.balance_error').html('Balance is Required');
+        validate_all_values = false;
+      }
+      if(!validate_balance_type){
+      $('.balance_error').html('Balance should be numeric');
         validate_all_values = false;
       }
       if(validate_all_values){
@@ -218,5 +226,35 @@ $(function () {
        return false;
       }
     });
+
+    $(document).on('click','#add_money_button',function(){
+      var balance = $('#balance').val();
+      var validate_balance=true;
+      var validate_balance_type=true;
+      var validate_all_values = true;
+      if(balance.length<1)
+        validate_balance = false;
+
+      if(isNaN(balance))
+        validate_balance_type= false;
+
+      if(!validate_balance){
+      $('.balance_error').html('Balance is Required');
+        validate_all_values = false;
+      }
+      if(!validate_balance_type){
+      $('.balance_error').html('Money should be numeric');
+        validate_all_values = false;
+      }
+      if(validate_all_values){
+       $("#add_money_form").submit();
+      }else{
+       return false;
+      }
+    });
+
+    setTimeout(function() {
+    $('.alert').fadeOut('fast');
+    }, 2000);
   })
    
