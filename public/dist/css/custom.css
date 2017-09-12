@@ -45,8 +45,17 @@
     width: 100%;
 }
 
+.fortoggle .toggle.btn {
+    min-height: 30px !important;
+    min-width: 59px;
+    height: 30px !important;
+}
+
+.fortoggle .toggle-on.btn, .fortoggle .toggle-off.btn {
+    padding-top: 4px;
+}
 body.errorpage {
-    background: #3c8dbc none repeat scroll 0 0;
+    background: #222d32 none repeat scroll 0 0;
     padding: 0;
     height: 100%;
 }
@@ -62,9 +71,6 @@ body.errorpage {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-}
-.errorpage .container {
-    width: 96%;
 }
 .clearfix {
     clear: both;
@@ -82,8 +88,7 @@ body.errorpage {
 }
 
 .errorwrap a{
-	text-decoration: underline;
-	color: #fff;
+	color:#00a65a;
 }
 
 .company-logo{
