@@ -37,6 +37,9 @@ class FeetOnStreet extends BaseModel
     public static function findByMobile($mobile_no) {
         return static::where('mobile_no', $mobile_no)->first();
     }
+    public static function fosList() {
+        return static::orderBy('updated_at','DESC')->get();
+    }
 
     public function setDataInternally(array $attributes = []){
         if(isset($attributes['name'])){

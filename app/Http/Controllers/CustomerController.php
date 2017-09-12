@@ -20,7 +20,7 @@ class CustomerController extends Controller
         if (empty(Auth::check())) {
             return redirect('/');
         }
-        $customer_list = Customer::get();
+        $customer_list = Customer::customerList();
         return view('allcustomer', ['customer_list' => $customer_list]);
     }
 
@@ -176,9 +176,13 @@ class CustomerController extends Controller
             'date_of_amount_added' => date('Y-m-d'),
             ];
             $add_balance = new AddBalance($attributes);
-            $add_balance->save();
+            if($add_balance->save()){
             Session::flash('save_message', "Record saved successfully");
             return Redirect::back();
+            }else{
+            Session::flash('not_exist_message', "Something went wrong");
+            return Redirect::back();
+            }
             }else{
             Session::flash('not_exist_message', "Something went wrong");
             return Redirect::back();

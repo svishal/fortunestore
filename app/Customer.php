@@ -39,6 +39,9 @@ class Customer extends BaseModel
     public static function findByMobile($mobile_no) {
         return static::where('mobile_no', $mobile_no)->first();
     }
+    public static function customerList() {
+        return static::orderBy('updated_at','DESC')->get();
+    }
     public function setDataInternally(array $attributes = []){
         if(isset($attributes['name'])){
             $this->name = trim($attributes['name']);

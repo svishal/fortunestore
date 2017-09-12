@@ -20,7 +20,7 @@ class FeetOnStreetController extends Controller
         if (empty(Auth::check())) {
             return redirect('/');
         }
-        $feet_on_street_list = FeetOnStreet::get();
+        $feet_on_street_list = FeetOnStreet::fosList();
         return view('fos_list', ['feet_on_street_list' => $feet_on_street_list]);
     }
 

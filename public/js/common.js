@@ -59,7 +59,10 @@ $(function () {
       
       if(isNaN(balance))
         validate_balance_type= false;
-      
+
+      if(!balance.match(/^\d+$/))
+         validate_balance_type= false;
+
       if(!validate_mobile_number){
       $('.mobile_number_error').html('Mobile Number is Required');
         validate_all_values = false;
@@ -238,12 +241,15 @@ $(function () {
       if(isNaN(balance))
         validate_balance_type= false;
 
+      if(!balance.match(/^\d+$/))
+         validate_balance_type= false;
+
       if(!validate_balance){
       $('.balance_error').html('Balance is Required');
         validate_all_values = false;
       }
       if(!validate_balance_type){
-      $('.balance_error').html('Money should be numeric');
+      $('.balance_error').html('Money should be integer');
         validate_all_values = false;
       }
       if(validate_all_values){
