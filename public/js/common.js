@@ -6,6 +6,9 @@ $(function () {
     });
     $('#customer_list').DataTable();
     $('#fos_list').DataTable();
+    $('#balance_history').DataTable();
+    $('#purchase_history').DataTable();
+    
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': false,
