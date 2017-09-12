@@ -36,7 +36,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat"  data-toggle="modal" data-target="#add_customer">Edit Profile</a>
+                  <a href="#" class="btn btn-default btn-flat"  data-toggle="modal" data-target="#edit_admin">Edit Profile</a>
                   <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
@@ -62,7 +62,7 @@
   </aside>
 
   <!-- Modal -->
-<div class="modal fade" id="add_customer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="edit_admin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
