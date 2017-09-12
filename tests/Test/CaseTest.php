@@ -8,7 +8,7 @@ use App\ExpenditureItems;
 use App\AddBalance;
 use App\User;
 
-class CustomerTest extends ParentTestClass {
+class CaseTest extends ParentTestClass {
 
     public function getCustomer() {
        $customer = \App\Customer::all()->first();
@@ -190,5 +190,24 @@ class CustomerTest extends ParentTestClass {
         $save_admin = $admin->save();
         $this->assertFalse($save_admin);
         $this->assertArrayHasKey('name', $admin->getErrors());
+    }
+    public function testUpdateUserEmptyPassword(){
+        $admin = User::first();
+        $attributes = [
+        'password'=>''
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertFalse($save_admin);
+        $this->assertArrayHasKey('password', $admin->getErrors());
+    }
+    public function testUpdateUserPassword(){
+        $admin = User::first();
+        $attributes = [
+        'password'=>'admin123'
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertTrue($save_admin);
     }
 }
