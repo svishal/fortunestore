@@ -30,8 +30,8 @@ class FeetOnStreet extends BaseModel
 
     public static $_rules = [
          'mobile_no' => array('unique:feet_on_streets','required', 'regex:/^(([0]{2}|\+)[0-9]{2,3})?\s?([7-9][0-9]{9}|\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})|([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4}))$/'),
-         'name'=>'regex:/^[a-zA-Z "-]+$/',
-         'doj'=>'date',
+         'name'=>'max:50|regex:/^[a-zA-Z "-]+$/',
+         'doj'=>'date'
     ];
 
     public static function findByMobile($mobile_no) {

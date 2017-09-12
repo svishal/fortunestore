@@ -123,7 +123,7 @@
 
                   <div class="col-sm-9">
                     <input class="form-control" id="fos_mobile_no" name="fos_mobile_no" placeholder="Number" type="text">
-                  <span class="error-msg text-left error-block mobile_number_error"></span>
+                   <span class="error-msg text-left error-block mobile_number_error"></span>
                   </div>
                 </div>
                 <div class="form-group">

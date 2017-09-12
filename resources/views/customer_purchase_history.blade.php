@@ -7,7 +7,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        {{$mobile_number_of_customer->name}}
+        {{ucwords($mobile_number_of_customer->name)}}
       </h1>
      <a class="pull-right btn btn-primary" href="javascript:history.back()">Back</a>
     </section>
