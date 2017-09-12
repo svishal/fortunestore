@@ -18,6 +18,11 @@
    @if (Session::has('save_message'))
    <div class="alert alert-info">{{ Session::get('save_message') }}</div>
    @endif
+   @foreach($errors->all() as $error)
+    <ul class="alert alert-danger">
+            <li>{{ $error }}</li>
+    </ul>
+   @endforeach
     <!-- Main content -->
     <section class="content">
       <div class="row">
