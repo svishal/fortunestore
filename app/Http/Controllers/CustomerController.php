@@ -160,5 +160,33 @@ class CustomerController extends Controller
         return $updated_status;
         }
     }
+    public function addMoney($id,Request $request){
+        $input = $request->all();
+        $customer  = Customer::find($id);
+        if($id){
+        if($customer){
+          $update_amount = [
+              'current_balance'=>$customer->current_balance+$input['balance']
+            ];
+              $customer->setData($update_amount);
+              $customer->save();
+            $attributes = [
+            'customer_id' => $id,
+            'balance' =>$input['balance'],
+            'date_of_amount_added' => date('Y-m-d'),
+            ];
+            $add_balance = new AddBalance($attributes);
+            $add_balance->save();
+            Session::flash('save_message', "Record saved successfully");
+            return Redirect::back();
+            }else{
+            Session::flash('not_exist_message', "Something went wrong");
+            return Redirect::back();
+            }
+          }else{
+            Session::flash('not_exist_message', "Something went wrong");
+            return Redirect::back();
+            }
+    }
     
 }

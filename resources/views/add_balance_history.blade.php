@@ -11,7 +11,17 @@
       </h1>
      <a class="pull-right btn btn-primary" href="javascript:history.back()">Back</a>
     </section>
-
+   @if (Session::has('not_exist_message'))
+   <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
+   @endif
+   @if (Session::has('save_message'))
+   <div class="alert alert-info">{{ Session::get('save_message') }}</div>
+   @endif
+   @foreach($errors->all() as $error)
+    <ul class="alert alert-danger">
+            <li>{{ $error }}</li>
+    </ul>
+   @endforeach
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -66,17 +76,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title customer-name" id="myModalLabel">Edit Customer</h4>
+        <h4 class="modal-title customer-name" id="myModalLabel">Add Money</h4>
       </div>
-      <form class="form-horizontal" method="post" action="/edit_customer" id="edit_customer_form">
+      <form class="form-horizontal" method="post" action="/add_money/{{$mobile_number_of_customer->id}}" id="add_money_form">
       {{ csrf_field() }}
       <div class="modal-body">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="edit_date_of_joining" class="col-sm-3 control-label">Add Money</label>
+                  <label for="edit_date_of_joining" class="col-sm-3 control-label">Amount</label>
               
                   <div class="col-sm-9">
-                    <input class="form-control" name="" id="" placeholder="Add Money" type="text">
+                    <input class="form-control" name="balance" id="balance" placeholder="Add Money" type="text">
+                    <span class="error-msg text-left error-block balance_error"></span>
                   </div>
                 </div>
               </div>
@@ -85,7 +96,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" id="edit_customer_button" class="btn btn-primary">Update</button>
+        <button type="button" id="add_money_button" class="btn btn-primary">Add</button>
       </div>
       </form>
     </div>
