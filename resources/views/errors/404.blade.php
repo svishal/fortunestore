@@ -1,4 +1,10 @@
 @extends('layouts.app')
+
+@section('content')
+404
+@endsection
+
+@extends('layouts.app')
 @section('content')
 <div class="wrapper">
   @include('layouts.sidebar')
@@ -33,4 +39,6 @@
   <!-- /.content-wrapper -->
 </div>
 <!-- ./wrapper -->
+
+
 @endsection
