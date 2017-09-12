@@ -23,7 +23,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="balance_history" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                    <th>Sr No.</th>
