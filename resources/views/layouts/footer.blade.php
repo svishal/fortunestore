@@ -1,7 +1,4 @@
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.0
-    </div>
+<footer class="main-footer text-center">
     <strong>Copyright &copy; 2016-2017 <a href="#">Store</a>.</strong> All rights
     reserved.
 </footer>

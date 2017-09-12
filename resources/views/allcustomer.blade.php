@@ -11,13 +11,18 @@
         All Customer
       </h1>
     </section>
-   @if (Session::has('not_exist_message'))
-   <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
-   @endif
-   @if (Session::has('save_message'))
-   <div class="alert alert-info">{{ Session::get('save_message') }}</div>
-   @endif
-   
+    <section class="error-content">
+    <div class="row">
+      <div class="col-lg-12">
+         @if (Session::has('not_exist_message'))
+         <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
+         @endif
+         @if (Session::has('save_message'))
+         <div class="alert alert-info">{{ Session::get('save_message') }}</div>
+         @endif
+     </div>
+   </div>
+   </section>
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -53,7 +58,7 @@
                   <td>{{ucwords($customer_list_value['address'])}}</td>
                   <td>{{$customer_list_value['mobile_no']}}</td>
                   <td>{{$customer_list_value['current_balance']}}</td>
-                  <td class="center"><input value="{{$customer_list_value['status']}}" data-id="{{$customer_list_value['id']}}" @if($customer_list_value['status']==1) checked @endif data-toggle="toggle" id="change_customer_status" data-onstyle="success" type="checkbox"></td>
+                  <td class="center fortoggle"><input value="{{$customer_list_value['status']}}" data-id="{{$customer_list_value['id']}}" @if($customer_list_value['status']==1) checked @endif data-toggle="toggle" id="change_customer_status" data-onstyle="success" type="checkbox"></td>
                   <td class="center">
                   <a href="#" title="edit"  data-toggle="modal" data-target="#editcustomer" id="edit_customer" data-id="{{$customer_list_value['id']}}"> <i class="fa fa-fw fa-pencil"></i> </a> 
                   <a href="/customer_history/{{$customer_list_value['id']}}" title="histoy"> <i class="text-red fa fa-fw fa-clock-o"></i></a>
@@ -109,16 +114,18 @@
 
                   <div class="col-sm-9">
                     <input class="form-control" name="mobile_number" id="mobile_number" placeholder="Number" type="text">
+                     <span class="error-msg text-left error-block mobile_number_error"></span>
                   </div>
-                  <span class="error-msg text-left error-block mobile_number_error"></span>
+                 
                 </div>
                 <div class="form-group">
                   <label for="balance" class="col-sm-3 control-label">Add Balance</label>
 
                   <div class="col-sm-9">
                     <input class="form-control" name="balance" id="balance" placeholder="Balance" type="text">
+                    <span class="error-msg text-left error-block balance_error"></span>
                   </div>
-                  <span class="error-msg text-left error-block balance_error"></span>
+                  
                 </div>
                 <div class="form-group">
                   <label for="address" class="col-sm-3 control-label">Address</label>

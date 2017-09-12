@@ -53,7 +53,7 @@
                   <td>{{ucwords($fos_list_value['address'])}}</td>
                   <td>{{$fos_list_value['mobile_no']}}</td>
                   <td>{{ucwords($fos_list_value['permanent_address'])}}</td>
-                  <td class="center"><input value="{{$fos_list_value['status']}}" data-id="{{$fos_list_value['id']}}" @if($fos_list_value['status']==1) checked @endif data-toggle="toggle" id="change_fos_status" data-onstyle="success" type="checkbox"></td>
+                  <td class="center fortoggle"><input value="{{$fos_list_value['status']}}" data-id="{{$fos_list_value['id']}}" @if($fos_list_value['status']==1) checked @endif data-toggle="toggle" id="change_fos_status" data-onstyle="success" type="checkbox"></td>
                   <td class="center">
                   <a href="#" title="edit"  data-toggle="modal" data-target="#editfos" id="edit_fos" data-id="{{$fos_list_value['id']}}"> <i class="fa fa-fw fa-pencil"></i> </a> </td>
                 </tr>
