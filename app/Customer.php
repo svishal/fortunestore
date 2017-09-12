@@ -47,6 +47,7 @@ class Customer extends BaseModel
         if($this->id == ''){
             $this->status = 1;
         }
+
         return true;
     }
 

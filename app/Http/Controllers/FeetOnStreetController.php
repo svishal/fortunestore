@@ -129,6 +129,7 @@ class FeetOnStreetController extends Controller
             return Redirect::back();
          }
         $errors = $feet_on_street->getErrors();
+        return Redirect::back()->withErrors($errors);
     }
     public function changeFosStatus(Request $request){
         $edit_fos_status_data = $request->all();
@@ -148,7 +149,6 @@ class FeetOnStreetController extends Controller
         if($update_fos === true){
         return $updated_status;
          }
-        $errors = $feet_on_street->getErrors();
         
     }
     public function getFosInfo(Request $request){

@@ -33,11 +33,23 @@ trait CustomValidator {
         $rules = self::getValidationRules();
         if (count($rules)) {
             foreach ($rules as $key => $value) {
-                if ($this->id && is_array($value) === false && strpos($value, 'unique:') !== false) {
+                if ($this->id) {
+                    if(is_array($value) === false && strpos($value, 'unique:') !== false){
                     $tableName = $this->getTable();
                     $newRule = "unique:{$tableName},{$key},{$this->id}";
                     $newValue = str_replace("unique:{$tableName}", $newRule, $value);
                     $rules[$key] = $newValue;
+                    }else if(is_array($value) === true){
+                        foreach($value as $index => $rule){
+                          if(is_array($rule) === false && strpos($rule, 'unique:') !== false){
+                                $tableName = $this->getTable();
+                                $new_rule = "unique:{$tableName},{$key},{$this->id}";
+                                $newValue = str_replace("unique:{$tableName}", $new_rule, $rule);
+                                $value[$index] = $newValue;
+                            }
+                        }
+                        $rules[$key] = $value;
+                    }
                 } 
             }
             

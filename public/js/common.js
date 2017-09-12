@@ -79,7 +79,6 @@ $(function () {
         $("#customer_edit_id").val(customer_id);
         $("#edit_customer_name").val(response['name']);
         $("#edit_mobile_no").val(response['mobile_no']);
-        $("#edit_balance").val(response['current_balance']);
         $("#edit_address").val(response['address']);
         $("#edit_date_of_joining").val(response['doj']);
        },
@@ -89,23 +88,14 @@ $(function () {
     });
      $(document).on('click','#edit_customer_button',function(){ 
       var mobile_number = $('#edit_mobile_no').val();
-      var balance = $('#edit_balance').val();
       var validate_mobile_number=true;
-      var validate_balance=true;
       var validate_all_values = true;
       if(mobile_number.length<1){
         validate_mobile_number = false;
       }
-      if(balance.length<1){
-        validate_balance = false;
-      }
        
       if(!validate_mobile_number){
       $('.mobile_number_error').html('Mobile Number is Required');
-        validate_all_values = false;
-      }
-      if(!validate_balance){
-      $('.balance_error').html('Balance is Required');
         validate_all_values = false;
       }
       if(validate_all_values){
