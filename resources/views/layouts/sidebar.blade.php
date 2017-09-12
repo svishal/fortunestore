@@ -25,18 +25,18 @@
               <span class="hidden-xs">{{ucwords(Auth::user()->name)}}</span>
             </a>
             <ul class="dropdown-menu">
-              <!-- User image -->
+              <!-- User image 
               <li class="user-header">
                 <img src="{{Auth::user()->image_url}}" class="img-circle" alt="User Image">
 
                 <p>
                   {{ucwords(Auth::user()->name)}}
                 </p>
-              </li>
+              </li>-->
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-right">
-                  <a href="/settings" class="btn btn-default btn-flat">Setings</a>
+                  <a href="/settings" class="btn btn-default btn-flat">Edit Profile</a>
                   <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>

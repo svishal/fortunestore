@@ -32,3 +32,15 @@
     left: 15px;
     position: absolute;
 }
+
+.skin-blue .sidebar-menu > li.header {
+    background: #1a2226 none repeat scroll 0 0;
+    color: #fff;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu{width: auto;}
+
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default {
+    margin-bottom: 5px;
+    width: 100%;
+}
