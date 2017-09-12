@@ -36,7 +36,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-right">
-                  <a href="/settings" class="btn btn-default btn-flat">Edit Profile</a>
+                  <a href="#" class="btn btn-default btn-flat"  data-toggle="modal" data-target="#add_customer">Edit Profile</a>
                   <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
@@ -60,3 +60,55 @@
     </section>
     <!-- /.sidebar -->
   </aside>
+
+  <!-- Modal -->
+<div class="modal fade" id="add_customer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Profile</h4>
+      </div>
+      <form id="update_settings_form" action="/update_settings" method="post">
+       {{ csrf_field() }}
+      <div class="modal-body">
+              <div class="box-body">
+                 @if (Session::has('save_message'))
+                <div class="alert alert-info">{{ Session::get('save_message') }}</div>
+                @endif
+                <div class="form-group">
+                  <label for="date_of_joining" class="col-sm-3 control-label">User Name</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="name" id="name" value="{{Auth::user()->name}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="date_of_joining" class="col-sm-3 control-label">Email Id</label>
+                  <div class="col-sm-9">
+                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{Auth::user()->email}}" readonly="readonly">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="date_of_joining" class="col-sm-3 control-label">Password</label>
+                  <div class="col-sm-9">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="date_of_joining" class="col-sm-3 control-label">Confirm Password</label>
+                  <div class="col-sm-9">
+                    <input type="password" class="form-control" id="confirm_password" placeholder="Confirm password">
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-footer -->
+            
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="submit" id="update_settings" class="btn btn-primary">Update</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
