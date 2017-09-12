@@ -28,11 +28,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'created_at', 'updated_at'
+        'remember_token', 'created_at', 'updated_at'
     ];
 
     public static $_rules = [
-        'password' => 'required:min:6',
+        'name'=> 'required',
+        'password' => 'required|min:6',
         'email' => 'unique:users|regex:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/'
     ];
 
@@ -66,7 +67,7 @@ class User extends Authenticatable
              */
             public function setDataInternally($attributes = []) {
 
-                if (isset($attributes['password'])) {
+                if (isset($attributes['password']) && !empty($attributes['password'])) {
                     $this->password = \bcrypt($attributes['password']);
                 }
                 if (isset($attributes['email'])) {

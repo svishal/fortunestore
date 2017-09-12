@@ -6,8 +6,9 @@ use App\Customer;
 use App\FeetOnStreet;
 use App\ExpenditureItems;
 use App\AddBalance;
+use App\User;
 
-class CustomerTest extends ParentTestClass {
+class CaseTest extends ParentTestClass {
 
     public function getCustomer() {
        $customer = \App\Customer::all()->first();
@@ -170,5 +171,43 @@ class CustomerTest extends ParentTestClass {
         $add_balance = new AddBalance($attributes);
          $save_items = $add_balance->save();
         $this->assertTrue($save_items);
+    }
+    public function testUpdateUserValidName(){
+        $admin = User::first();
+        $attributes = [
+        'name'=>'super_admin'
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertTrue($save_admin);
+    }
+    public function testUpdateUserInValidName(){
+        $admin = User::first();
+        $attributes = [
+        'name'=>''
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertFalse($save_admin);
+        $this->assertArrayHasKey('name', $admin->getErrors());
+    }
+    public function testUpdateUserEmptyPassword(){
+        $admin = User::first();
+        $attributes = [
+        'password'=>''
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertFalse($save_admin);
+        $this->assertArrayHasKey('password', $admin->getErrors());
+    }
+    public function testUpdateUserPassword(){
+        $admin = User::first();
+        $attributes = [
+        'password'=>'admin123'
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertTrue($save_admin);
     }
 }

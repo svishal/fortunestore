@@ -104,6 +104,7 @@ class CustomerController extends Controller
         return back();
         }
         $errors = $customer->getErrors();
+        return Redirect::back()->withErrors($errors);
     }
     public function editCustomer(Request $request)
     {

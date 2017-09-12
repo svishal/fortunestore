@@ -14,12 +14,17 @@
     <section class="error-content">
     <div class="row">
       <div class="col-lg-12">
-         @if (Session::has('not_exist_message'))
-         <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
-         @endif
-         @if (Session::has('save_message'))
-         <div class="alert alert-info">{{ Session::get('save_message') }}</div>
-         @endif
+          @if (Session::has('not_exist_message'))
+   <div class="alert alert-info">{{ Session::get('not_exist_message') }}</div>
+   @endif
+   @if (Session::has('save_message'))
+   <div class="alert alert-info">{{ Session::get('save_message') }}</div>
+   @endif
+   @foreach($errors->all() as $error)
+    <ul class="alert alert-danger">
+            <li>{{ $error }}</li>
+             </ul>
+   @endforeach
      </div>
    </div>
    </section>
