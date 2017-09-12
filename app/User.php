@@ -32,6 +32,7 @@ class User extends Authenticatable
     ];
 
     public static $_rules = [
+        'name'=> 'required',
         'password' => 'required:min:6',
         'email' => 'unique:users|regex:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/'
     ];

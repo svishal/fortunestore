@@ -6,6 +6,7 @@ use App\Customer;
 use App\FeetOnStreet;
 use App\ExpenditureItems;
 use App\AddBalance;
+use App\User;
 
 class CustomerTest extends ParentTestClass {
 
@@ -170,5 +171,24 @@ class CustomerTest extends ParentTestClass {
         $add_balance = new AddBalance($attributes);
          $save_items = $add_balance->save();
         $this->assertTrue($save_items);
+    }
+    public function testUpdateUserValidName(){
+        $admin = User::first();
+        $attributes = [
+        'name'=>'super_admin'
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertTrue($save_admin);
+    }
+    public function testUpdateUserInValidName(){
+        $admin = User::first();
+        $attributes = [
+        'name'=>''
+        ];
+        $admin->setData($attributes);
+        $save_admin = $admin->save();
+        $this->assertFalse($save_admin);
+        $this->assertArrayHasKey('name', $admin->getErrors());
     }
 }
