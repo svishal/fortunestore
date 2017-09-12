@@ -153,8 +153,12 @@ class CustomerController extends Controller
           $updated_status = 1; 
         }
         $edit_customer_status = ['status'=>$updated_status];
-        Customer::where('id',$edit_customer_status_data['customer_id'])->update($edit_customer_status);
+        $customer = Customer::find($edit_customer_status_data['customer_id']);
+        if($customer){
+        $customer->setData($edit_customer_status);
+        $update_customer = $customer->save();
         return $updated_status;
+        }
     }
     
 }

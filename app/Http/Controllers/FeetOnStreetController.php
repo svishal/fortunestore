@@ -149,7 +149,6 @@ class FeetOnStreetController extends Controller
         if($update_fos === true){
         return $updated_status;
          }
-        $errors = $feet_on_street->getErrors();
         
     }
     public function getFosInfo(Request $request){
