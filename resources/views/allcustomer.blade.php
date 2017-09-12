@@ -186,13 +186,6 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="edit_balance" class="col-sm-3 control-label">Add Balance</label>
-
-                  <div class="col-sm-9">
-                    <input class="form-control" id="edit_balance" name="edit_balance" placeholder="Balance" type="text">
-                  </div>
-                </div>
-                <div class="form-group">
                   <label for="edit_address" class="col-sm-3 control-label">Address</label>
 
                   <div class="col-sm-9">

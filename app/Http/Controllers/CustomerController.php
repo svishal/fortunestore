@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Session;
 use Redirect;
+use App\AddBalance;
 class CustomerController extends Controller
 {
     /**
@@ -101,7 +102,15 @@ class CustomerController extends Controller
         ];
         $customer = new Customer($attributes);
         if($customer->save()){
-        return back();
+            $customer = Customer::findByMobile($customer_form_input_data['mobile_number']);
+            $attributes = [
+            'customer_id' => $customer->id,
+            'balance' =>$customer_form_input_data['balance'],
+            'date_of_amount_added' => date('Y-m-d'),
+            ];
+            $add_balance = new AddBalance($attributes);
+            $add_balance->save();
+            return back();
         }
         $errors = $customer->getErrors();
         return Redirect::back()->withErrors($errors);
@@ -113,7 +122,6 @@ class CustomerController extends Controller
         date('Y-m-d', strtotime($edit_customer_form_input_data['edit_date_of_joining'])),
           'name'=>$edit_customer_form_input_data['edit_customer_name'],
           'mobile_no'=>$edit_customer_form_input_data['edit_mobile_no'],
-          'current_balance'=>$edit_customer_form_input_data['edit_balance'],
           'address'=>$edit_customer_form_input_data['edit_address']
         ];
         $customer = Customer::find($edit_customer_form_input_data['customer_id']);
@@ -129,6 +137,7 @@ class CustomerController extends Controller
          }
 
         $errors = $customer->getErrors();
+        return Redirect::back()->withErrors($errors);
     }
     public function getCustomerInfo(Request $request){
         $customer_id =$request->all()['customer_id']; 
