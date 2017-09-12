@@ -20,6 +20,7 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">History</h3>
+              <a href="#" class="pull-right btn btn-success" data-toggle="modal" data-target="#addmoney">Add Money</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -59,4 +60,36 @@
   <!-- /.content-wrapper -->
 </div>
 <!-- ./wrapper -->
+<!-- Modal -->
+<div class="modal fade" id="addmoney" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title customer-name" id="myModalLabel">Edit Customer</h4>
+      </div>
+      <form class="form-horizontal" method="post" action="/edit_customer" id="edit_customer_form">
+      {{ csrf_field() }}
+      <div class="modal-body">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="edit_date_of_joining" class="col-sm-3 control-label">Add Money</label>
+              
+                  <div class="col-sm-9">
+                    <input class="form-control" name="" id="" placeholder="Add Money" type="text">
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-footer -->
+            
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="edit_customer_button" class="btn btn-primary">Update</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
+
