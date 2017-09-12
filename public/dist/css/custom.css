@@ -44,3 +44,49 @@
     margin-bottom: 5px;
     width: 100%;
 }
+
+body.errorpage {
+    background: #3c8dbc none repeat scroll 0 0;
+    padding: 0;
+    height: 100%;
+}
+
+.errorpage .wrapper {
+    display: table;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.errorpage .errorwrap {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.errorpage .container {
+    width: 96%;
+}
+.clearfix {
+    clear: both;
+}
+
+.errorpage h1 {
+    color: #fff;
+    font-size: 60px;
+    margin: 50px 0 25px;
+}
+.errorpage h3 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.errorwrap a{
+	text-decoration: underline;
+	color: #fff;
+}
+
+.company-logo{
+	color: #fff;
+	font-size: 18px;
+}

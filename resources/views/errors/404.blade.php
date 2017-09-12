@@ -1,44 +1,37 @@
-@extends('layouts.app')
-
-@section('content')
-404
-@endsection
-
-@extends('layouts.app')
-@section('content')
-<div class="wrapper">
-  @include('layouts.sidebar')
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-       404 Error
-      </h1>
-    </section>
-    <!-- Main content -->
-    <section class="content">
-      <div class="error-page">
-        <h2 class="headline text-yellow"> 404</h2>
-
-        <div class="error-content">
-          <h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>
-
-          <p>
-            We could not find the page you were looking for.
-            Meanwhile, you may <a href="../../index.html">return to dashboard</a> or try using the search form.
-          </p>
-        </div>
-        <!-- /.error-content -->
-      </div>
-      <!-- /.error-page -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{{ config('app.name', 'Fortune Store') }}</title>
+  <!-- Fonts -->
+  <link rel="stylesheet" href="{{url('/',[],env('APP_SSL'))}}/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{url('/',[],env('APP_SSL'))}}/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{url('/',[],env('APP_SSL'))}}/dist/css/custom.css">
+  <style type="text/css">
+    html{height: 100%;}
+  </style>
+</head>
+<body class="errorpage">
+        <div class="wrapper">
+    <div class="errorwrap">
+<div class="container">
+    <div class="col-lg-12 company-logo">Fortune store</div>
+  <div class="clearfix"></div>
+  <h1>404</h1>
+  <h3>Page doesn’t exist or some other error has occurred.<br> Please go to our <a href="http://latetrip.com">home page</a> or  <a href="#">click here</a> to return to the previous page.</h3>
+  
 </div>
-<!-- ./wrapper -->
-
-
-@endsection
+</div>
+           
+        </div>
+    
+<script src="{{url('/',[],env('APP_SSL'))}}/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{url('/',[],env('APP_SSL'))}}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="{{url('/',[],env('APP_SSL'))}}/js/common.js"></script>
+</body>
+</html>
