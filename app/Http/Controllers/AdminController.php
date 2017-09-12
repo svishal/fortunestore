@@ -102,7 +102,7 @@ class AdminController extends Controller
         $user_info->setData($edit_admin_data);
         $update_admin =$user_info->save();
         if($update_admin === true){
-            Session::flash('save_message', "Record saved successfully");
+            Session::flash('save_admin_message', "Record saved successfully");
             return Redirect::back();
          }
     }

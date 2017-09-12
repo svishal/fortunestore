@@ -218,5 +218,9 @@ $(function () {
        return false;
       }
     });
+
+    setTimeout(function() {
+    $('.alert').fadeOut('fast');
+    }, 2000);
   })
    
