@@ -31,6 +31,15 @@ class Handler extends ExceptionHandler {
         if ($this->shouldntReport($e)) {
             return;
         }
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){}
+        else if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException){}
+        else if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){}
+        else if ($e instanceof TokenMismatchException) {}
+        else if ($e instanceof ValidationException) {}
+        else if ($e instanceof AuthenticationException){}
+        else if ($e instanceof \Illuminate\Auth\AuthenticationException){}
+        else if ($e instanceof \Illuminate\Database\QueryException)  {}
+        else {
         if (Auth::Check()) {
             $user = Auth::user();
         } else if(\App\Traits\Rest::getAuthorizedUser()) {
@@ -43,6 +52,7 @@ class Handler extends ExceptionHandler {
         \Log::error($e, [
             'person' => $user_data]);
         return parent::report($e);
+         }
     }
 
     /**
