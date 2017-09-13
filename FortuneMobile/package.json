@@ -8,10 +8,18 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "react": "15.4.2",
-    "react-native": "0.42.0",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.2",
     "react-native-device-info": "^0.11.0",
+<<<<<<< HEAD
     "react-native-print": "^0.3.0"
+=======
+    "react-native-print": "^0.3.0",
+    "react-native-router-flux": "4.0.0-beta.18",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.1",
+    "redux-saga": "^0.15.4"
+>>>>>>> origin/master
   },
   "devDependencies": {
     "babel-jest": "20.0.3",

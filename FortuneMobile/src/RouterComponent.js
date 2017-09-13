@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 const RouterComponent = () => (
-  // <Provider store={store}>
+  <Provider store={store}>
     <Router style={styles.container}>
       <Scene key="root">
         <Scene key="login" component={Login} hideNavBar initial />
@@ -28,7 +28,7 @@ const RouterComponent = () => (
         <Scene key="payment" component={Payment} hideNavBar />
       </Scene>
     </Router>
-  // </Provider>
+  </Provider>
 );
 
 module.exports = RouterComponent;

@@ -7,5 +7,5 @@ import {
     View
 } from 'react-native';
 import RouterComponent from './src/RouterComponent';
-//import Payment from './src/components/Payment/Payment';
+
 AppRegistry.registerComponent('FortuneStore', () => RouterComponent);
