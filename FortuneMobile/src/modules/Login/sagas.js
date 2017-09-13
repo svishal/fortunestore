@@ -1,6 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { loginSuccess, loginFail } from './actions';
+import { LOGIN } from './constant';
 import config from '../../config';
 
 function* login() {
@@ -13,4 +14,8 @@ function* login() {
   }
 }
 
-export default composersSaga;
+function* sagaLogin() {
+  yield takeEvery(LOGIN, login);
+}
+
+export default sagaLogin;
