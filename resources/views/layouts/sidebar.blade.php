@@ -21,8 +21,8 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="{{Auth::user()->image_url}}" class="user-image" alt="User Image">
-              <span class="hidden-xs">{{ucwords(Auth::user()->name)}}</span>
+             <!--  <img src="{{Auth::user()->image_url}}" class="user-image" alt="User Image"> -->
+              <span class="hidden-xs">{{ucwords(Auth::user()->name)}} <i class="fa fa-angle-down" aria-hidden="true"></i></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image 
