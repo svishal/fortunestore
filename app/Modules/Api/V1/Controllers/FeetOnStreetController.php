@@ -18,6 +18,7 @@ class FeetOnStreetController extends BaseApiController{
         $input = $request->all();
         $fos  = FeetOnStreet::findByMobile($input['mobile_number']);
         if($fos){
+            if($fos->status == 1){
             if(empty($fos->password)){
                 $update_fos_data = [
               'password'=>bcrypt($input['password']),
@@ -33,6 +34,9 @@ class FeetOnStreetController extends BaseApiController{
                  }
                  return $this->sendFailureResponse(01);
             }
+          }else{
+        return $this->sendFailureResponse(03);
+        }
         }else{
         return $this->sendFailureResponse(02);
         }

@@ -118,24 +118,22 @@ class CustomerController extends Controller
     public function editCustomer(Request $request)
     {
         $edit_customer_form_input_data = $request->all();
-        $edit_customer_data = ['doj'=>
-        date('Y-m-d', strtotime($edit_customer_form_input_data['edit_date_of_joining'])),
-          'name'=>$edit_customer_form_input_data['edit_customer_name'],
-          'mobile_no'=>$edit_customer_form_input_data['edit_mobile_no'],
-          'address'=>$edit_customer_form_input_data['edit_address']
-        ];
         $customer = Customer::find($edit_customer_form_input_data['customer_id']);
         if(!$customer){
              Session::flash('not_exist_message', "Record not found");
             return Redirect::back();
         }
-        $customer->setData($edit_customer_data);
+        $customer->setData(['doj'=>
+        date('Y-m-d', strtotime($edit_customer_form_input_data['edit_date_of_joining'])),
+          'name'=>$edit_customer_form_input_data['edit_customer_name'],
+          'mobile_no'=>$edit_customer_form_input_data['edit_mobile_no'],
+          'address'=>$edit_customer_form_input_data['edit_address']
+        ]);
         $update_customer = $customer->save();
         if($update_customer === true){
             Session::flash('save_message', "Record saved successfully");
             return Redirect::back();
          }
-
         $errors = $customer->getErrors();
         return Redirect::back()->withErrors($errors);
     }
@@ -152,10 +150,9 @@ class CustomerController extends Controller
         }else{
           $updated_status = 1; 
         }
-        $edit_customer_status = ['status'=>$updated_status];
         $customer = Customer::find($edit_customer_status_data['customer_id']);
         if($customer){
-        $customer->setData($edit_customer_status);
+        $customer->setData(['status'=>$updated_status]);
         $update_customer = $customer->save();
         return $updated_status;
         }
@@ -166,16 +163,9 @@ class CustomerController extends Controller
         if($id){
         if($customer){
             $customer->setData([
-              'current_balance'=>$customer->current_balance+$input['balance']
+              'balance'=>$input['balance']
             ]);
-             $customer->save();
-            $attributes = [
-            'customer_id' => $id,
-            'balance' =>$input['balance'],
-            'date_of_amount_added' => date('Y-m-d'),
-            ];
-            $add_balance = new AddBalance($attributes);
-            if($add_balance->save()){
+            if($customer->save()){
             Session::flash('save_message', "Record saved successfully");
             return Redirect::back();
             }else{

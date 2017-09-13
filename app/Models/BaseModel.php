@@ -12,13 +12,21 @@ class BaseModel extends Model {
     }
 
     public $incrementing = false;
-
+    protected $temp_data = null;
     public function __construct(array $attributes = array()) {
 
         parent::__construct($attributes);
         if (count($attributes)) {
             $this->setDataInternally($attributes);
         }
+    }
+
+    public function getTemp($key){
+        return $this->temp_data[$key];
+    }
+
+    public function setTemp($key,$value){
+        return $this->temp_data[$key] = $value;
     }
 
     public function validateObject($option = array()) {
