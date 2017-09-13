@@ -6,7 +6,8 @@ class Message {
 
     private static $error_messages_mapping = [
         01 => 'Authorization error. Phone number and password combination does not match',
-        02 => 'User does not exist'
+        02 => 'User does not exist',
+        03 => 'Status is inactive, Please contact to admin'
 
     ];
 

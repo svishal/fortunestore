@@ -54,4 +54,26 @@ class Customer extends BaseModel
         return true;
     }
 
+    public function setData($data) {
+     if(isset($data['balance'])){
+        $data['current_balance'] = $this->current_balance + $data['balance'];
+        $this->setTemp('balance',$data['balance']);
+        unset($data['balance']);
+     }
+     parent::setData($data);
+     }
+
+     public function finishSave(array $options = []){
+        if(!$this->wasRecentlyCreated && $this->getTemp('balance')){
+            $attributes = [
+            'customer_id' => $this->id,
+            'balance' =>$this->getTemp('balance'),
+            'date_of_amount_added' => date('Y-m-d'),
+            ];
+            $add_balance = new AddBalance($attributes);
+            $response = $add_balance->save();
+            return $response;
+     }
+ }
+
 }
