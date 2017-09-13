@@ -3,7 +3,7 @@
     width: 100%;
 }
 .login-page, .register-page {
-    background: #444 none repeat scroll 0 0;
+    background: #444 none repeat scroll 0 0 !important;
 }
 .login-logo a, .register-logo a {
     color: #fff;

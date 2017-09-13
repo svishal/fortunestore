@@ -26,6 +26,7 @@
   <!-- Toggle -->
   <link rel="stylesheet" href="{{url('/',[],env('APP_SSL'))}}/bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css">
   <link rel="stylesheet" href="{{url('/',[],env('APP_SSL'))}}/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+   <link rel="stylesheet" href="{{url('/',[],env('APP_SSL'))}}/dist/css/custom.css">
   <!-- Google Font -->
   <link rel="stylesheet"
   href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
