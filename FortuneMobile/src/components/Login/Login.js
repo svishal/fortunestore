@@ -1,75 +1,154 @@
-'use strict';
-
-import React from 'react';
-
-import {
-    StyleSheet, Text, View, TextInput, Button, TouchableOpacity
-} from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry, TextInput, View, StyleSheet, TouchableOpacity, Text, Image , AlertIOS, Platform} from 'react-native'
+import LoginStyle from './LoginStyle.js'
 import { Actions } from 'react-native-router-flux';
-import styles from './style';
+var DeviceInfo = require('react-native-device-info'); // Need to recompile the souce with react-native run-ios
+import {RNPrint} from 'NativeModules';
 
-this.state = {
-    route: 'Login',
-    input: '{"mobile_number":4455667788,"password": "admin@123","device_type":"android", "device_id":"1234567890"}',
-};
-
-const Login = () => (
-    <View style={styles.container}>
-        <View style={{
-            height: 60
-        }}>
-        </View>
-
-        <View style={{ alignItems: 'center' }}>
-            <Text style={{
-                fontSize: 26,
-                color: '#ffffff'
-            }}> Fortune Store</Text>
-        </View>
+class Login extends Component {
 
 
-        <TextInput style={
-            styles.loginTextInput
-        }
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Mobile Number"
-            placeholderTextColor='#A7A7A7'
-            returnKeyType={"next"}
-          
-        />
-        <TextInput style={
-            styles.loginTextInput
-        }
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Password"
-            returnKeyType={"done"}
-            placeholderTextColor='#A7A7A7'
-        />
-        <TouchableOpacity style={styles.item} onPress={() => props.login(this.state.input)}>
-            <Text style={{
-                height: 60, backgroundColor: '#93E254',
-                marginLeft: 20, marginRight: 20, marginTop: 30,
-                fontSize: 25, textAlign: 'center', textAlignVertical: 'center',
-                color: '#ffffff'
-            }}>Login
-            console.log('-----------------------1111111111111111111111')</Text>
+  constructor(props){
+      super(props)
+      this.state = {
+        mobile_number: '',
+        password: '',
+        data:[]
+      }
+    }
+
+  componentDidMount () {
+    // this.getData()
+  console.log(Platform.OS)
+
+}
+  getData(){
+    return fetch("http://thewallscript.com/blogfeed/javascript/10")
+    .then((response) => response.json())
+    .then((responseJSON) => {
+      this.setState({data: responseJSON.feed.entry});
+
+      AlertIOS.alert(
+       JSON.stringify(responseJSON.version)
+      )
+    })
+  }
+
+
+  handlePhoneNumber = (text) => {
+    this.setState({ mobile_number: text })
+  }
+
+  handlePassword = (text) => {
+    this.setState({ password: text })
+  }
+
+
+validateFormDataAndProcess () {
+
+  const { mobile_number }  = this.state ;
+  const { password }  = this.state ;
+
+if(mobile_number == '' )
+{
+  AlertIOS.alert("Please Enter the Phone Number");
+}
+
+else if (password == '') {
+  AlertIOS.alert("Please Enter the Password");
+}
+else {
+
+  fetch('http://fortunestore.herokuapp.com/api/v1/login',
+   {
+     method: "POST",
+     headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+     },
+      body: JSON.stringify({
+      mobile_number : this.state.mobile_number,
+      password : this.state.password,
+      device_type : 'ios',
+      device_id : '11111111111'
+    })
+  })
+  .then((response) => response.json())
+  .then((responseJSON) => {
+
+    const { success }  = JSON.stringify(responseJSON.success)  ;
+
+    if (success == true) {
+
+      AlertIOS.alert(
+        "Success API -> " + JSON.stringify(responseJSON.message)
+        //  Actions.articles
+      )
+    }
+    else {
+      AlertIOS.alert(
+        "Error -> " + JSON.stringify(responseJSON.message)
+      )
+    }
+
+  })
+
+  }
+}
+
+
+  login = (email, pass) => {
+    if (email == '' || pass == '') {
+      alert("Email or Password should not be Empty ");
+    }
+    else if (!this.validateEmail(email)) {
+      alert("Please enter valid email ");
+
+    }
+    else {
+
+      //this.callLoginApi(email, pass)
+    }
+  }
+
+  validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  };
+
+  render() {
+
+    console.log('---------------  Error ----  ' + this.state.data);
+
+    return (
+
+      <View style={LoginStyle.container}>
+        <Text style ={LoginStyle.headerContent}> Fortune Store </Text>
+
+        <TextInput style={LoginStyle.input}
+          underlineColorAndroid="transparent"
+          placeholder="Phone Number"
+          placeholderTextColor="#666564"
+          autoCapitalize="none"
+          onChangeText={this.handlePhoneNumber} />
+
+        <TextInput style={LoginStyle.input}
+          underlineColorAndroid="transparent"
+          placeholder="Password"
+          secureTextEntry={true}
+          placeholderTextColor="#666564"
+          autoCapitalize="none"
+          onChangeText={this.handlePassword} />
+
+        <TouchableOpacity
+          style={LoginStyle.submitButton}
+          onPress={() => this.validateFormDataAndProcess()}>
+          <Text style={LoginStyle.submitButtonText}>SUBMIT</Text>
         </TouchableOpacity>
 
-    </View>
-);
-
-
-function mapStateToProps(state) {
-    return {
-        appData: state.appData
-    }
+      </View>
+    );
+  }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        login: () => dispatch(login(this.state.input))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
-module.exports = Login;
+export default Login;
