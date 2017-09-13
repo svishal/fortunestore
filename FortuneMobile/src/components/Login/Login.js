@@ -22,18 +22,6 @@ class Login extends Component {
   console.log(Platform.OS)
 
 }
-  getData(){
-    return fetch("http://thewallscript.com/blogfeed/javascript/10")
-    .then((response) => response.json())
-    .then((responseJSON) => {
-      this.setState({data: responseJSON.feed.entry});
-
-      AlertIOS.alert(
-       JSON.stringify(responseJSON.version)
-      )
-    })
-  }
-
 
   handlePhoneNumber = (text) => {
     this.setState({ mobile_number: text })
@@ -69,8 +57,8 @@ else {
       body: JSON.stringify({
       mobile_number : this.state.mobile_number,
       password : this.state.password,
-      device_type : 'ios',
-      device_id : '11111111111'
+      device_type : Platform.OS,
+      device_id : DeviceInfo.getUniqueID()
     })
   })
   .then((response) => response.json())
@@ -95,31 +83,7 @@ else {
 
   }
 }
-
-
-  login = (email, pass) => {
-    if (email == '' || pass == '') {
-      alert("Email or Password should not be Empty ");
-    }
-    else if (!this.validateEmail(email)) {
-      alert("Please enter valid email ");
-
-    }
-    else {
-
-      //this.callLoginApi(email, pass)
-    }
-  }
-
-  validateEmail = (email) => {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  };
-
   render() {
-
-    console.log('---------------  Error ----  ' + this.state.data);
-
     return (
 
       <View style={LoginStyle.container}>
@@ -142,7 +106,7 @@ else {
 
         <TouchableOpacity
           style={LoginStyle.submitButton}
-          onPress={() => this.validateFormDataAndProcess()}>
+          onPress={Actions.articles}>
           <Text style={LoginStyle.submitButtonText}>SUBMIT</Text>
         </TouchableOpacity>
 
