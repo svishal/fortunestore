@@ -6,6 +6,6 @@ import {
     Text,
     View
 } from 'react-native';
-import Login from './src/components/Login';
+import RouterComponent from './src/RouterComponent';
 
-AppRegistry.registerComponent('FortuneStore', () => Login);
+AppRegistry.registerComponent('FortuneStore', () => RouterComponent);
