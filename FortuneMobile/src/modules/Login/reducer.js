@@ -1,12 +1,6 @@
 import { Map } from 'immutable';
 import { LOGIN_SUCCESS, LOGIN_FAIL } from './constant';
 
-
-const initialState = Map({
-  loginDetail: [],
-  loading: false,
-});
-
 export default function (state = initialState, action) {
   switch (action.type) {
       case LOGIN:{
