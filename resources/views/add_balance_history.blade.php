@@ -41,6 +41,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+            <div class="table-responsive">
               <table id="balance_history" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -63,6 +64,7 @@
                 @endforeach
               </tbody>
               </table>
+            </div>  
               </div>
             <!-- /.box-body -->
           </div>
