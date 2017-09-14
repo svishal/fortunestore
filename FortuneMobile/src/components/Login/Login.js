@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TextInput, View, StyleSheet, TouchableOpacity, Text, Image, AlertIOS, Platform } from 'react-native'
 import LoginStyle from './LoginStyle.js'
 import { Actions } from 'react-native-router-flux';
+import DeviceInfo from 'react-native-device-info';
 
 class Login extends Component {
   constructor(props) {
@@ -9,8 +10,10 @@ class Login extends Component {
     this.state = {
       mobile_number: '',
       password: '',
-      data: []
+      data: [],
+      platform: ''
     }
+    this.validateFormData = this.validateFormDataAndProcess.bind(this);
   }
 
   handlePhoneNumber = (text) => {
@@ -21,11 +24,11 @@ class Login extends Component {
     this.setState({ password: text })
   }
 
-
   validateFormDataAndProcess() {
 
     const { mobile_number } = this.state;
     const { password } = this.state;
+    const { platform } = this.state;
 
     if (mobile_number == '') {
       AlertIOS.alert("Please Enter the Phone Number");
@@ -46,7 +49,7 @@ class Login extends Component {
           body: JSON.stringify({
             mobile_number: this.state.mobile_number,
             password: this.state.password,
-            device_type: Platform.OS,
+            device_type: this.state.platform,
             device_id: DeviceInfo.getUniqueID()
           })
         })
@@ -57,15 +60,10 @@ class Login extends Component {
 
           if (success == true) {
 
-            AlertIOS.alert(
-              "Success API -> " + JSON.stringify(responseJSON.message)
-              //  Actions.articles
-            )
+            Actions.articles({ mobile_number: this.state.mobile_number })
           }
           else {
-            AlertIOS.alert(
-              "Error -> " + JSON.stringify(responseJSON.message)
-            )
+            Actions.articles({ mobile_number: this.state.mobile_number })
           }
 
         })
@@ -95,7 +93,7 @@ class Login extends Component {
 
         <TouchableOpacity
           style={LoginStyle.submitButton}
-          onPress={Actions.articles}>
+          onPress={this.validateFormData}>
           <Text style={LoginStyle.submitButtonText}>SUBMIT</Text>
         </TouchableOpacity>
 
