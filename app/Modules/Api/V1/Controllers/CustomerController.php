@@ -60,13 +60,9 @@ class CustomerController extends BaseApiController{
       if($id){
         $customer  = Customer::find($id);
         if($customer){
-          $attributes = ['customer_id' => $id,
-            'fos_id' =>$input['fos_id'],
-            'order_date' => date('Y-m-d'),
-            'purchased_items' => json_encode($input['purchased_items']),
-            'total_amount'=>$input['total_amount']];
-            $add_items = new ExpenditureItems($attributes);
-            if($add_items->save()){
+          if($customer->status ==1){
+          $save_expenditure = $this->saveExpenditures($id,$input['fos_id'],$input['purchased_items'],$input['total_amount']);
+            if($save_expenditure){
               $updated_balance  = $customer->current_balance-$input['total_amount'];
               if($updated_balance<0){
                 $updated_balance=0;
@@ -76,6 +72,9 @@ class CustomerController extends BaseApiController{
               $customer->save();
             return $this->sendSuccessResponse(['data'=>'Record Saved Successfully','message'=>Message::getSuccessMessage(03)]);
             }
+          }else{
+              return $this->sendFailureResponse(03);
+          }
         }else{
               return $this->sendFailureResponse(02);
         }
@@ -99,6 +98,15 @@ class CustomerController extends BaseApiController{
             ];
             $add_balance = new AddBalance($attributes);
             $add_balance->save();
+    }
+    public function saveExpenditures($customer_id,$fos_id,$purchased_items,$total_amount){
+            $attributes = ['customer_id' => $customer_id,
+            'fos_id' =>$fos_id,
+            'order_date' => date('Y-m-d'),
+            'purchased_items' => json_encode($purchased_items),
+            'total_amount'=>$total_amount];
+            $add_items = new ExpenditureItems($attributes);
+            return $add_items->save();
     }
 
 }
