@@ -32,7 +32,14 @@ class FeetOnStreetController extends BaseApiController{
             }else{
                 $exist = Hash::check($input['password'], $fos->password);
                 if($exist){
-                return $this->sendSuccessResponse(['data'=>$fos,'message'=>Message::getSuccessMessage(01)]);
+                  $update_fos_data = [
+                    'device_type'=>$input['device_type'],
+                    'device_id'=>$input['device_id']
+                  ];
+                  $feet_on_street = FeetOnStreet::find($fos->id);
+                  $feet_on_street->setData($update_fos_data);
+                  $update_fos =$feet_on_street->save();
+                return $this->sendSuccessResponse(['data'=>$feet_on_street,'message'=>Message::getSuccessMessage(01)]);
                  }
                  return $this->sendFailureResponse(01);
             }
