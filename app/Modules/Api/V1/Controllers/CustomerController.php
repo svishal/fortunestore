@@ -15,9 +15,13 @@ class CustomerController extends BaseApiController{
         $input = $request->all();
         $customer  = Customer::findByMobile($input['mobile_number']);
         if($customer){
+          if($customer->status ==1){
            $data =['current_balance'=>$customer->current_balance];
             return $this->sendSuccessResponse(['data'=>$data,'message'=>Message::getSuccessMessage(02)]);
-            }else{
+          }else{
+            return $this->sendFailureResponse(03);
+          }
+        }else{
                   $customer = new Customer;
                   $customer->mobile_no = $input['mobile_number'];
                   $customer->current_balance = 0;
@@ -27,7 +31,7 @@ class CustomerController extends BaseApiController{
                   $customer_result  = Customer::findByMobile($input['mobile_number']);
                   $data =['id'=>$customer_result->id];
                 return $this->sendSuccessResponse(['data'=>$data,'message'=>Message::getSuccessMessage(03)]);
-            }
+        }
     
     }
 

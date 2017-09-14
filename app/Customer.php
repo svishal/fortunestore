@@ -30,7 +30,7 @@ class Customer extends BaseModel
     ];
 
     public static $_rules = [
-         'mobile_no' => array('unique:customers', 'required', 'regex:/^(([0]{2}|\+)[0-9]{2,3})?\s?([7-9][0-9]{9}|\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})|([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4}))$/'),
+         'mobile_no' => array('unique:customers', 'required', 'regex:/^(([0]{2}|\+)[0-9]{2,3})?\s?([7-9][0-9]{10}|\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})|([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4}))$/'),
          'current_balance'=>'numeric',
          'name'=>'max:50|regex:/^[a-zA-Z "-]+$/',
          'doj'=>'date',
