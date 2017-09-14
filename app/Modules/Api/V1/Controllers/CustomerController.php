@@ -64,9 +64,7 @@ class CustomerController extends BaseApiController{
           $save_expenditure = $this->saveExpenditures($id,$input['fos_id'],$input['purchased_items'],$input['total_amount']);
             if($save_expenditure){
               $updated_balance  = $customer->current_balance-$input['total_amount'];
-              if($updated_balance<0){
-                $updated_balance=0;
-              }
+              if($updated_balance<0) $updated_balance=0;
               $edit_customer_data = ['current_balance'=>$updated_balance];
               $customer->setData($edit_customer_data);
               $customer->save();
