@@ -5,6 +5,11 @@
 .table tr td {
     font-weight: 500;
 }
+
+table tr td .fa {
+    font-size: 18px;
+}
+
 .login-page, .register-page {
     background-image: url("/images/loginbg.jpg");
     background-repeat: no-repeat;
