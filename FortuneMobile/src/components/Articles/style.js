@@ -27,14 +27,28 @@ const styles = StyleSheet.create({
     }, userDetailContainer: {
         height: 40,
         marginTop:20
-    }, save: {
+    },
+
+    addMoney: {
+        paddingLeft:30,
+        marginRight:10,
+        alignItems:'flex-end',
+        paddingRight:30,
+        justifyContent: 'space-around',
+        backgroundColor: '#68a0cf',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#fff'
+
+    },
+     save: {
         flex:1,
         marginLeft: 20,
         paddingLeft:30,
         marginRight:10,
         paddingRight:30,
         justifyContent: 'center',
-        backgroundColor: '#68a0cf',
+        backgroundColor: '#e52e2b',
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#fff'
@@ -45,7 +59,7 @@ const styles = StyleSheet.create({
         paddingLeft:30,
         paddingRight:30,
         justifyContent: 'center',
-        backgroundColor: '#68a0cf',
+        backgroundColor: '#e52e2b',
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#fff'

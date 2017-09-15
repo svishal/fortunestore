@@ -4,6 +4,10 @@ import { TextInput, View, StyleSheet,TouchableOpacity,Text, Image } from 'react-
  const styles = StyleSheet.create({
    container: {
       paddingTop: 150,
+      backgroundColor: '#ffffff',
+      marginTop: 0,
+      flex: 1,
+      marginBottom: 0
    },
 
    headerContent: {
@@ -29,10 +33,11 @@ import { TextInput, View, StyleSheet,TouchableOpacity,Text, Image } from 'react-
    },
 
    submitButton: {
-      backgroundColor: '#0000FF',
+      backgroundColor: '#e52e2b',
       padding: 10,
       margin: 15,
       height: 40,
+      borderRadius: 10,
    },
 
    submitButtonText:{

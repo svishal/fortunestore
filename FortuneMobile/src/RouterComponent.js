@@ -20,11 +20,12 @@ const styles = StyleSheet.create({
 });
 
 const RouterComponent = () => (
+
   // <Provider store={store}>
     <Router style={styles.container}>
       <Scene key="root">
-        <Scene key="login" component={Login} hideNavBar initial />
-        <Scene key="articles" component={Articles} hideNavBar />
+        <Scene key="login" component={Login} hideNavBar  initial/>
+        <Scene key="articles" component={Articles} hideNavBar  />
         <Scene key="payment" component={Payment} hideNavBar />
       </Scene>
     </Router>
