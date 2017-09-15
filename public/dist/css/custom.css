@@ -6,7 +6,10 @@
     font-weight: 500;
 }
 .login-page, .register-page {
-    background: #444 none repeat scroll 0 0 !important;
+    background-image: url("/images/loginbg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
 }
 .login-logo a, .register-logo a {
     color: #fff;
