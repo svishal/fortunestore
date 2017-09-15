@@ -3,6 +3,7 @@ import { TextInput, View, StyleSheet, TouchableOpacity, Text, Image, AlertIOS, P
 import LoginStyle from './LoginStyle.js'
 import { Actions } from 'react-native-router-flux';
 import DeviceInfo from 'react-native-device-info';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class Login extends Component {
   constructor(props) {
@@ -12,10 +13,12 @@ class Login extends Component {
       password: '12345',
       data: [],
       platform: '',
-      accessToken: ''
+      accessToken: '',
+      visible: false
     }
     this.validateFormData = this.validateFormDataAndProcess.bind(this);
   }
+
 
   handlePhoneNumber = (text) => {
     this.setState({ mobile_number: text })
@@ -58,6 +61,7 @@ class Login extends Component {
       .then((response) => response.json())
       .then((responseJSON) => {
 
+          this.setState({ visible: false })
         if (responseJSON.success == true) {
           const {accessToken}  = JSON.stringify(responseJSON.data.access_token);
           this.setState({ access_token: responseJSON.data.access_token })
@@ -74,6 +78,7 @@ class Login extends Component {
     return (
 
       <View style={LoginStyle.container}>
+      <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#e52e2b'}} />
       <Text style={LoginStyle.headerContent}> Fortune Store </Text>
 
       <TextInput style={LoginStyle.input}

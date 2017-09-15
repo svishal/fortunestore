@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { TextInput, View, StyleSheet,TouchableOpacity,Text, Image } from 'react-native'
 
+
  const styles = StyleSheet.create({
    container: {
       paddingTop: 150,
