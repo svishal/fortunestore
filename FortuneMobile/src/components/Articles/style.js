@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#26AE90',
+        backgroundColor: '#ffffff',
         marginTop: 0,
         marginBottom: 0
     },
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         fontSize: 25, textAlign: 'center', textAlignVertical: 'center',
         color: '#ffffff'
     }, userDetailContainer: {
-        height: 40
+        height: 40,
+        marginTop:20
     }, save: {
         flex:1,
         marginLeft: 20,
@@ -53,7 +54,15 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontSize:20,
-    }
+    },
+      input: {
+      margin: 15,
+      height: 40,
+      borderColor: 'grey',
+      borderWidth: 1,
+      borderRadius: 10,
+      textAlign: 'center'
+   }
 });
 
 export default styles;

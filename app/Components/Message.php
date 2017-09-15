@@ -12,7 +12,7 @@ class Message {
     ];
 
     private static $success_messages_mapping = [
-     01 => 'User logged in Successfully.',
+     01 => 'User logged in Successfully',
      02 => 'Data returned Successfully',
      03 => 'Saved data Successfully'
     ];

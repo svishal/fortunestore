@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
-import { LOGIN_SUCCESS, LOGIN_FAIL } from './constant';
+import { LOGIN, LOGIN_SUCCESS, LOGIN_FAIL } from './constant';
 
-export default function (state = initialState, action) {
+export default function (state = {}, action) {
   switch (action.type) {
       case LOGIN:{
           return {

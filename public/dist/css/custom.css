@@ -2,6 +2,9 @@
     float: left;
     width: 100%;
 }
+.table tr td {
+    font-weight: 500;
+}
 .login-page, .register-page {
     background: #444 none repeat scroll 0 0 !important;
 }

@@ -15,20 +15,18 @@ class CustomerController extends BaseApiController{
         $input = $request->all();
         $customer  = Customer::findByMobile($input['mobile_number']);
         if($customer){
+          if($customer->status ==1){
            $data =['current_balance'=>$customer->current_balance];
             return $this->sendSuccessResponse(['data'=>$data,'message'=>Message::getSuccessMessage(02)]);
-            }else{
-                  $customer = new Customer;
-                  $customer->mobile_no = $input['mobile_number'];
-                  $customer->current_balance = 0;
-                  $customer->status = 1;
-                  $customer->doj = date('Y-m-d');
-                  $customer->save();
+          }else{
+            return $this->sendFailureResponse(03);
+          }
+        }else{
+                  $this->saveCustomer($input['mobile_number']);
                   $customer_result  = Customer::findByMobile($input['mobile_number']);
                   $data =['id'=>$customer_result->id];
                 return $this->sendSuccessResponse(['data'=>$data,'message'=>Message::getSuccessMessage(03)]);
-            }
-    
+        }
     }
 
 
@@ -37,26 +35,23 @@ class CustomerController extends BaseApiController{
         $input = $request->all();
         $customer  = Customer::find($id);
         if($id){
-        if($customer){
-          $update_amount = [
-              'current_balance'=>$customer->current_balance+$input['balance']
-            ];
-              $customer->setData($update_amount);
-              $customer->save();
-            $attributes = [
-            'customer_id' => $id,
-            'balance' =>$input['balance'],
-            'date_of_amount_added' => date('Y-m-d'),
-            ];
-            $add_balance = new AddBalance($attributes);
-            $add_balance->save();
-            return $this->sendSuccessResponse(['data'=>$update_amount,'message'=>Message::getSuccessMessage(03)]);
-            }else{
-              return $this->sendFailureResponse(02);
-            }
+          if($customer){
+            if($customer->status ==1){
+                $update_amount = ['current_balance'=>$customer->current_balance+$input['balance']];
+                $customer->setData($update_amount);
+                if($customer->save()){
+                $this->saveBalance($id,$input['balance']);
+                }
+              return $this->sendSuccessResponse(['data'=>$update_amount,'message'=>Message::getSuccessMessage(03)]);
+              }else{
+              return $this->sendFailureResponse(03);
+              }
           }else{
               return $this->sendFailureResponse(02);
-            }
+          }
+        }else{
+              return $this->sendFailureResponse(02);
+        }
     }
 
 
@@ -65,28 +60,51 @@ class CustomerController extends BaseApiController{
       if($id){
         $customer  = Customer::find($id);
         if($customer){
-          $attributes = ['customer_id' => $id,
-            'fos_id' =>$input['fos_id'],
-            'order_date' => date('Y-m-d'),
-            'purchased_items' => json_encode($input['purchased_items']),
-            'total_amount'=>$input['total_amount']];
-            $add_items = new ExpenditureItems($attributes);
-            if($add_items->save()){
+          if($customer->status ==1){
+          $save_expenditure = $this->saveExpenditures($id,$input['fos_id'],$input['purchased_items'],$input['total_amount']);
+            if($save_expenditure){
               $updated_balance  = $customer->current_balance-$input['total_amount'];
-              if($updated_balance<0){
-                $updated_balance=0;
-              }
+              if($updated_balance<0) $updated_balance=0;
               $edit_customer_data = ['current_balance'=>$updated_balance];
               $customer->setData($edit_customer_data);
               $customer->save();
             return $this->sendSuccessResponse(['data'=>'Record Saved Successfully','message'=>Message::getSuccessMessage(03)]);
             }
+          }else{
+              return $this->sendFailureResponse(03);
+          }
         }else{
               return $this->sendFailureResponse(02);
         }
       }else{
               return $this->sendFailureResponse(02);
       }
+    }
+    public function saveCustomer($mobile_number){
+      $customer = new Customer;
+      $customer->mobile_no = $mobile_number;
+      $customer->current_balance = 0;
+      $customer->status = 1;
+      $customer->doj = date('Y-m-d');
+      $customer->save();
+    }
+    public function saveBalance($customer_id,$balance){
+            $attributes = [
+            'customer_id' => $customer_id,
+            'balance' =>$balance,
+            'date_of_amount_added' => date('Y-m-d'),
+            ];
+            $add_balance = new AddBalance($attributes);
+            $add_balance->save();
+    }
+    public function saveExpenditures($customer_id,$fos_id,$purchased_items,$total_amount){
+            $attributes = ['customer_id' => $customer_id,
+            'fos_id' =>$fos_id,
+            'order_date' => date('Y-m-d'),
+            'purchased_items' => json_encode($purchased_items),
+            'total_amount'=>$total_amount];
+            $add_items = new ExpenditureItems($attributes);
+            return $add_items->save();
     }
 
 }

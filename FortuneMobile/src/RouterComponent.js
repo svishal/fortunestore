@@ -5,12 +5,10 @@ import React from 'react';
 import {
   StyleSheet, Text, View, TextInput, Button
 } from 'react-native';
-import { Provider } from 'react-redux';
 import { Router, Scene } from 'react-native-router-flux';
 import Login from './components/Login';
 import Payment from './components/Payment';
 import Articles from './components/Articles';
-import store from './store';
 
 const styles = StyleSheet.create({
   container: {
