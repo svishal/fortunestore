@@ -30,6 +30,7 @@ class Login extends Component {
 
   validateFormDataAndProcess() {
 
+    this.setState({ visible: true })
     const { mobile_number } = this.state;
     const { password } = this.state;
     const { platform } = this.state;

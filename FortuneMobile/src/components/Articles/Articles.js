@@ -7,6 +7,7 @@ import { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import styles from './style';
 import Prompt from 'react-native-prompt';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class Articles extends Component {
     constructor(props) {
@@ -18,14 +19,15 @@ class Articles extends Component {
             name: [],
             mobile: '',
             accessToken: this.props.access_token,
-            currentBalance: '0',
-            customerId: '0',
-            balance: '0',
-            promptVisible: false
-
+            currentBalance: '',
+            customerId: '',
+            balance: '',
+            promptVisible: false,
+            visible: false
         };
         this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
     }
+
     insertData = (tt, t, pr) => {
         //ToastAndroid.show(tt + ' ' + t + ' ' + pr, ToastAndroid.SHORT);
         console.log(tt + ' -- ' + t + ' -- ' + pr);
@@ -35,17 +37,13 @@ class Articles extends Component {
             amount: pr,
             custId: this.state.customerId
         }
-        //console.log('-------Data--------' + data.namee);
         this.setState({
             name: [...this.state.name, data]
         })
-        //console.log('-------State--------' +this.state.name.data.namee);
         var dd = this.state.name;
-        console.log('----DD -----' + dd);
-        // console.log('----DD Name-----'+dd.namee);
         this.clearText();
-        // var rr = JSON.stringify(dd);
-        // console.log(rr);
+        this.showAlertWithTitleAndMessage('Success',
+        'Item saved successfully')
     }
     handleCustomerPhoneNumber = (text) => {
         if (text.length == 10) {
@@ -53,6 +51,7 @@ class Articles extends Component {
         }
     }
     getCustomerCurrentBalance(text) {
+      this.setState({ visible: true })
         fetch('http://fortunestore.herokuapp.com/api/v1/get_customer_balance',
             {
                 method: "POST",
@@ -67,6 +66,7 @@ class Articles extends Component {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
+              this.setState({ visible: false })
                 if (responseJSON.success == true) {
                     console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
                       let customId = responseJSON.data.id
@@ -81,7 +81,7 @@ class Articles extends Component {
             })
     }
     addMoneyToCustomerAccount(balance) {
-
+      this.setState({ visible: true })
       console.log('this.state.currentBalance+++++++++++ ' + this.state.currentBalance);
       console.log('this.state.customerId+++++++++++ ' + this.state.customerId);
         if (this.state.customerId.length > 0) {
@@ -99,6 +99,7 @@ class Articles extends Component {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
+                  this.setState({ visible: false })
                     if (responseJSON.success == true) {
                         console.log('responseJSON.message +++++++++++ ' + responseJSON.message);
 
@@ -106,15 +107,23 @@ class Articles extends Component {
                 })
         }
         else {
-            Alert.alert(
-                'Oops!',
-                'Customer not found, Please contact to admin',
-                [
-                    { text: 'OK', onPress: () => console.log('OK Pressed!') },
-                ]
-            )
+            this.showAlertWithTitleAndMessage('Oops!',
+            'Customer not found, Please contact to admin',)
         }
     }
+
+showAlertWithTitleAndMessage(title, message) {
+
+  Alert.alert(
+      title,
+      message,
+      [
+          { text: 'OK', onPress: () => console.log('OK Pressed!') },
+      ]
+  )
+
+}
+
     handleName = (text) => {
         this.setState({ inputName: text })
     }
@@ -134,14 +143,15 @@ class Articles extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
-
+          <ScrollView style={styles.container}>
+            <View>
+            <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#e52e2b'}} />
             <Prompt
                 title="Amount"
                 placeholder="Please Enter Amount "
                 defaultValue=""
                 keyboardType='phone-pad'
-                visible={ this.state.promptVisible }
+                promptVisible={ this.state.promptVisible }
                 onCancel={ () => this.setState({
                   promptVisible: false,
                   message: "You cancelled"
@@ -266,6 +276,7 @@ class Articles extends Component {
                     </View>
                 </View>
             </View>
+            </ScrollView>
         );
     }
 }
