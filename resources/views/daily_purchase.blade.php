@@ -40,7 +40,7 @@
                 <tr class="odd gradeX">
                   <td>{{$sr}}</td>
                   <td>{{date('d-m-Y', strtotime($value['order_date']))}}</td>
-                  <td>{{$key}}</td>
+                  <td>{{ucfirst($key)}}</td>
                   <td>{{$value['quantity']}}</td>
                   <td>{{$value['amount']}}</td>
                 </tr>

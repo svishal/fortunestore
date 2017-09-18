@@ -43,7 +43,7 @@
                  @php $quantity_array = array() @endphp
                  @php $amount_array = array() @endphp
                  @foreach($purchased_items as $purchased_item_value)
-                 @php $item_array[] = $purchased_item_value['item']; @endphp
+                 @php $item_array[] = ucfirst($purchased_item_value['item']); @endphp
                  @php $quantity_array[] = $purchased_item_value['quantity']; @endphp
                  @php $amount_array[] = $purchased_item_value['amount']; @endphp
                  @php $item_result_array = implode(',',$item_array);@endphp
