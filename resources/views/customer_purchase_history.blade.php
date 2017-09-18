@@ -38,14 +38,14 @@
                  <tbody>
                   @php $sr = 1; @endphp
                  @foreach($customer_purchase_list as $customer_purchase_column=>$customer_purchase_value)
-                 @php $purchased_items = json_decode($customer_purchase_value['purchased_items'])@endphp
+                 @php $purchased_items = $customer_purchase_value['purchased_items']@endphp
                  @php $item_array = array() @endphp
                  @php $quantity_array = array() @endphp
                  @php $amount_array = array() @endphp
                  @foreach($purchased_items as $purchased_item_value)
-                 @php $item_array[] = $purchased_item_value->item; @endphp
-                 @php $quantity_array[] = $purchased_item_value->quantity; @endphp
-                 @php $amount_array[] = $purchased_item_value->amount; @endphp
+                 @php $item_array[] = $purchased_item_value['item']; @endphp
+                 @php $quantity_array[] = $purchased_item_value['quantity']; @endphp
+                 @php $amount_array[] = $purchased_item_value['amount']; @endphp
                  @php $item_result_array = implode(',',$item_array);@endphp
                  @php $quantity_result_array = implode(',',$quantity_array);@endphp
                  @php $amount_result_array = implode(',',$amount_array);@endphp
