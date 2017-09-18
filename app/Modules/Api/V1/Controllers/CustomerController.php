@@ -101,7 +101,7 @@ class CustomerController extends BaseApiController{
             $attributes = ['customer_id' => $customer_id,
             'fos_id' =>$fos_id,
             'order_date' => date('Y-m-d'),
-            'purchased_items' => json_encode($purchased_items),
+            'purchased_items' => $purchased_items,
             'total_amount'=>$total_amount];
             $add_items = new ExpenditureItems($attributes);
             return $add_items->save();
