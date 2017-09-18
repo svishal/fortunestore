@@ -30,7 +30,7 @@ class Login extends Component {
 
   validateFormDataAndProcess() {
 
-    this.setState({ visible: true })
+
     const { mobile_number } = this.state;
     const { password } = this.state;
     const { platform } = this.state;
@@ -44,7 +44,7 @@ class Login extends Component {
       alert("Please Enter the Password");
     }
     else {
-
+      this.setState({ visible: true })
       fetch('http://fortunestore.herokuapp.com/api/v1/login',
       {
         method: "POST",
