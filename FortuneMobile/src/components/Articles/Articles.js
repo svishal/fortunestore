@@ -1,13 +1,15 @@
 'use strict';
 import React from 'react';
 import {
-    StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight, ToastAndroid, Alert, ScrollView,
+    StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight, ToastAndroid, Alert, ScrollView,KeyboardAvoidingView
 } from 'react-native';
 import { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import styles from './style';
 import Prompt from 'react-native-prompt';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 class Articles extends Component {
     constructor(props) {
         super(props);
@@ -150,7 +152,13 @@ class Articles extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
+
+          <KeyboardAwareScrollView
+                           style= {styles.container}
+                           resetScrollToCoords={{ x: 0, y: 0 }}
+                           contentContainerStyle={styles.container}
+                           scrollEnabled={false}>
+            <View>
 
               <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#e52e2b'}} />
                 <Prompt
@@ -279,6 +287,7 @@ class Articles extends Component {
                     </View>
                 </View>
             </View>
+             </KeyboardAwareScrollView>
         );
     }
 }
