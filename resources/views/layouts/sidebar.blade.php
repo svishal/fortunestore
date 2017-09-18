@@ -55,7 +55,8 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="{{ Request::path() == 'dashboard' ? 'active' : '' }}"><a href="/dashboard"><span>All Customer List</span></a></li>
-         <li class="{{ Request::path() == 'fos_list' ? 'active' : '' }}"><a href="/fos_list"><span>FOS (Feet on Street)</span></a></li>
+        <li class="{{ Request::path() == 'fos_list' ? 'active' : '' }}"><a href="/fos_list"><span>FOS (Feet on Street)</span></a></li>
+        <li class="{{ Request::path() == 'daily_purchase' ? 'active' : '' }}"><a href="/daily_purchase"><span>Daily Purchase</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

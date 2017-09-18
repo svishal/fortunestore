@@ -93,4 +93,24 @@ class ExpenditureItemsController extends Controller
     {
         //
     }
+    public function dailyPurchase()
+    {
+        if (empty(Auth::check())) {
+            return redirect('/');
+        }
+
+        $expenditure_item_list = ExpenditureItems::allExpenditureItems();
+        $data_new = Array();
+
+        foreach ($expenditure_item_list as $key => $value) {
+             $order_date  = $value->order_date;
+            foreach ($value['purchased_items'] as $item_count => $item) {
+                @$data_new[$value['order_date']][$item['item']]['quantity'] +=  $item['quantity'];
+                @$data_new[$value['order_date']][$item['item']]['amount'] +=  $item['amount'];
+                @$data_new[$value['order_date']][$item['item']]['order_date'] = $order_date;
+            }
+        }
+        return view('daily_purchase', ['daily_purchase_list' => $data_new]);
+    }
+
 }

@@ -33,6 +33,7 @@ Route::resource('/shows', 'ShowController');
 
 Route::get('/dashboard','CustomerController@index');
 Route::get('/fos_list','FeetOnStreetController@index');
+Route::get('/daily_purchase','ExpenditureItemsController@dailyPurchase');
 Route::get('/customer_history/{id}','ExpenditureItemsController@index');
 Route::post('/add_money/{id}','CustomerController@addMoney');
 Route::get('/debit_history/{id}','AddBalanceController@index');
