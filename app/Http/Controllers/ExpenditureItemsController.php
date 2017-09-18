@@ -98,10 +98,8 @@ class ExpenditureItemsController extends Controller
         if (empty(Auth::check())) {
             return redirect('/');
         }
-
         $expenditure_item_list = ExpenditureItems::allExpenditureItems();
         $data_new = Array();
-
         foreach ($expenditure_item_list as $key => $value) {
              $order_date  = $value->order_date;
             foreach ($value['purchased_items'] as $item_count => $item) {
