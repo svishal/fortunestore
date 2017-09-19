@@ -22,9 +22,14 @@ class ExpenditureItemsController extends Controller
         if (empty($id)) {
             abort(404);
         }
-
+        if (!\App\Components\Helper::isValidUUID($id)) {
+            abort(404);
+        }
+        $mobile_number_of_customer = Customer::findOrFail($id);
+        if(!sizeof($mobile_number_of_customer)) abort(404);
         $expenditure_item_list = ExpenditureItems::expenditureItemsListByCustomerId($id);
-        $mobile_number_of_customer = Customer::find($id);
+        if(!sizeof($expenditure_item_list)) abort(404);
+        
         return view('customer_purchase_history', ['customer_purchase_list' => $expenditure_item_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);
     }
 

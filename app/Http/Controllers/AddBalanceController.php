@@ -22,6 +22,9 @@ class AddBalanceController extends Controller
         {
             return redirect('/');
         }
+        if (!\App\Components\Helper::isValidUUID($id)) {
+            abort(404);
+        }
         $debit_list = AddBalance::debitListByCustomerId($id);
         $mobile_number_of_customer = Customer::find($id);
         return view('add_balance_history', ['debit_list' => $debit_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);
