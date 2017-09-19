@@ -138,13 +138,12 @@ class FeetOnStreetController extends Controller
         }else{
           $updated_status = 1; 
         }
-        $edit_fos_status = ['status'=>$updated_status];
         $feet_on_street = FeetOnStreet::find($edit_fos_status_data['fos_id']);
         if(!$feet_on_street){
             Session::flash('not_exist_message', "Record not found");
             return Redirect::back();
         }
-        $feet_on_street->setData($edit_fos_status);
+        $feet_on_street->setData(['status'=>$updated_status]);
         $update_fos =$feet_on_street->save();
         if($update_fos === true){
         return $updated_status;
