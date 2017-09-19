@@ -106,6 +106,7 @@ class FeetOnStreetController extends Controller
         $errors = $fos->getErrors();
         return Redirect::back()->withErrors($errors);
     }
+
     public function editFos(Request $request){
         $edit_fos_form_input_data = $request->all();
         $edit_fos_data = [
@@ -131,6 +132,7 @@ class FeetOnStreetController extends Controller
         $errors = $feet_on_street->getErrors();
         return Redirect::back()->withErrors($errors);
     }
+    
     public function changeFosStatus(Request $request){
         $edit_fos_status_data = $request->all();
         if($edit_fos_status_data['status']==1){

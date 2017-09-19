@@ -161,20 +161,18 @@ class CustomerController extends Controller
         $input = $request->all();
         $customer  = Customer::find($id);
         if($id){
-        if($customer){
-            $customer->setData([
-              'balance'=>$input['balance']
-            ]);
-            if($customer->save()){
-            Session::flash('save_message', "Record saved successfully");
-            return Redirect::back();
-            }else{
-                abort(404);
+            if($customer){
+                $customer->setData(['balance'=>$input['balance']]);
+                if($customer->save()){
+                Session::flash('save_message', "Record saved successfully");
+                return Redirect::back();
+                }else{
+                    abort(404);
+                }
             }
-            }
-          }else{
+        }else{
             abort(404);
-            }
+        }
     }
     
 }
