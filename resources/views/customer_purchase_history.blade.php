@@ -31,6 +31,7 @@
                   <th>Mobile No.</th>
                   <th>Product Purchased</th>
                   <th>Quantity</th>
+                  <th>Amount Per Unit</th>
                   <th>Total</th>
                   <th>Grand Total</th>
                 </tr>
@@ -42,13 +43,16 @@
                  @php $item_array = array() @endphp
                  @php $quantity_array = array() @endphp
                  @php $amount_array = array() @endphp
+                 @php $amount_per_unit = array() @endphp
                  @foreach($purchased_items as $purchased_item_value)
                  @php $item_array[] = ucfirst($purchased_item_value['item']); @endphp
                  @php $quantity_array[] = $purchased_item_value['quantity']; @endphp
                  @php $amount_array[] = $purchased_item_value['amount']; @endphp
+                 @php $amount_per_unit[] = $purchased_item_value['amount']/$purchased_item_value['quantity']; @endphp
                  @php $item_result_array = implode(',',$item_array);@endphp
                  @php $quantity_result_array = implode(',',$quantity_array);@endphp
                  @php $amount_result_array = implode(',',$amount_array);@endphp
+                 @php $amount_per_unit_result_array = implode(',',$amount_per_unit);@endphp
                  @endforeach
                 <tr class="odd gradeX">
                   <td>{{$sr}}</td>
@@ -56,6 +60,7 @@
                   <td>{{$mobile_number_of_customer->mobile_no}}</td>
                   <td><span>{{$item_result_array}}</span></td>
                   <td><span>{{$quantity_result_array}}</span></td>
+                  <td><span>{{$amount_per_unit_result_array}}</span></td>
                   <td><span>{{$amount_result_array}}</span></td>
                   <td>{{$customer_purchase_value['total_amount']}}</td>
                 </tr>
