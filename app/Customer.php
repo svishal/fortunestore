@@ -32,7 +32,7 @@ class Customer extends BaseModel
     public static $_rules = [
          'mobile_no' => array('unique:customers', 'required', 'regex:/^(([0]{2}|\+)[0-9]{2,3})?\s?([7-9][0-9]{10}|\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})|([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4}))$/'),
          'current_balance'=>'numeric',
-         'name'=>'max:50|regex:/^[a-zA-Z "-]+$/',
+         'name'=>'nullable|max:50|regex:/^[a-zA-Z "-]+$/',
          'doj'=>'date',
     ];
 
@@ -58,6 +58,7 @@ class Customer extends BaseModel
      if(isset($data['balance'])){
         $data['current_balance'] = $this->current_balance + $data['balance'];
         $this->setTemp('balance',$data['balance']);
+        
         unset($data['balance']);
      }
      parent::setData($data);

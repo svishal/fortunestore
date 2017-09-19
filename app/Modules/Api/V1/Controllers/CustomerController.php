@@ -24,7 +24,7 @@ class CustomerController extends BaseApiController{
         }else{
                   $this->saveCustomer($input['mobile_number']);
                   $customer_result  = Customer::findByMobile($input['mobile_number']);
-                  $data =['id'=>$customer_result->id,'is_new'=>true];
+                  $data =['id'=>$customer_result->id,'is_new'=>true,'current_balance'=>$customer_result->current_balance];
                 return $this->sendSuccessResponse(['data'=>$data,'message'=>Message::getSuccessMessage(03)]);
         }
     }
@@ -38,11 +38,10 @@ class CustomerController extends BaseApiController{
           if($customer){
             if($customer->status ==1){
                 $update_amount = ['current_balance'=>$customer->current_balance+$input['balance']];
-                $customer->setData($update_amount);
+                $customer->setData(['balance'=>$input['balance']]);
                 if($customer->save()){
-                $this->saveBalance($id,$input['balance']);
+                  return $this->sendSuccessResponse(['data'=>$update_amount,'message'=>Message::getSuccessMessage(03)]);
                 }
-              return $this->sendSuccessResponse(['data'=>$update_amount,'message'=>Message::getSuccessMessage(03)]);
               }else{
               return $this->sendFailureResponse(03);
               }
@@ -87,15 +86,6 @@ class CustomerController extends BaseApiController{
       $customer->status = 1;
       $customer->doj = date('Y-m-d');
       $customer->save();
-    }
-    public function saveBalance($customer_id,$balance){
-            $attributes = [
-            'customer_id' => $customer_id,
-            'balance' =>$balance,
-            'date_of_amount_added' => date('Y-m-d'),
-            ];
-            $add_balance = new AddBalance($attributes);
-            $add_balance->save();
     }
     public function saveExpenditures($customer_id,$fos_id,$purchased_items,$total_amount){
             $attributes = ['customer_id' => $customer_id,
