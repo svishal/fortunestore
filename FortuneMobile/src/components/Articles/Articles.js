@@ -17,6 +17,7 @@ class Articles extends Component {
       inputName: '',
       inputQuantity: '',
       inputAmount: '',
+      singleAmount: '',
       name: [],
       mobile: '',
       accessToken: this.props.access_token,
@@ -24,7 +25,8 @@ class Articles extends Component {
       customerId: '',
       balance: '',
       promptVisible: false,
-      visible: false
+      visible: false,
+      customerNumber: ''
     };
     this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
     this.showPopUp = this.showPopUp.bind(this);
@@ -33,8 +35,6 @@ class Articles extends Component {
 
   insertData = (tempItem, tempQuantity, tempAmount) => {
 
-    console.log( 'sdfklsdflksdlfklskdfj' + tempQuantity)
-
     if (tempItem == '' || tempQuantity== '' || tempAmount == '') {
       this.showAlertWithTitleAndMessage('Oops!','Please enter the required information first.')
     }
@@ -42,13 +42,14 @@ class Articles extends Component {
       var data = {
         item: tempItem,
         quantity: tempQuantity,
-        amount: tempAmount,
-        custId: this.state.customerId
+        amount: tempAmount * tempQuantity,
+        singleAmount: tempAmount,
+        custId: this.state.customerId,
+        enteredMobNum: this.state.customerNumber
       }
       this.setState({
         name: [...this.state.name, data]
       })
-      var dd = this.state.name;
       this.clearText();
     }
   }
@@ -61,7 +62,9 @@ class Articles extends Component {
   }
   getCustomerCurrentBalance(text) {
 
+    console.log('********** + ', this.state.accessToken)
     this.setState({ visible: true })
+    this.setState({customerNumber:text})
     fetch('http://fortunestore.herokuapp.com/api/v1/get_customer_balance',
     {
       method: "POST",
@@ -80,12 +83,11 @@ class Articles extends Component {
       if (responseJSON.success == true) {
         console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
         let customId = responseJSON.data.id
-        console.log('this.state.customerId +++++++++++ ' + customId);
         this.setState({ customerId: customId })
         console.log('this.state.customerId +++++++++++ ' + this.state.customerId);
         if (responseJSON.data.is_new == false) {
-          let bal = String(responseJSON.data.current_balance) + " ₹"
-          this.setState({ currentBalance: bal })
+          let serverBal = String(responseJSON.data.current_balance) + " ₹"
+          this.setState({ currentBalance: serverBal })
         }
       }
     })
@@ -99,7 +101,7 @@ class Articles extends Component {
       message: "Success",
       balance: bal,
     })
-
+    console.log('balbalbalbal+++++++++++ ' + bal);
     this.setState({ visible: true })
     fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/money',
     {
@@ -117,11 +119,11 @@ class Articles extends Component {
     .then((responseJSON) => {
       this.setState({ visible: false })
       if (responseJSON.success == true) {
+        let serverAddedMoney = String(responseJSON.data.current_balance) + " ₹"
+        this.setState({ currentBalance: serverAddedMoney })
         console.log('responseJSON.message +++++++++++ ' + responseJSON.message);
       }
     })
-
-
   }
 
   onButtonPressAdd = () => {
@@ -235,7 +237,7 @@ class Articles extends Component {
       <TouchableHighlight
       style={{
         flex: 0.50,
-        height: 42,
+        height: 41,
         marginRight: 20,
         marginLeft: 10,
         paddingLeft: 30,
@@ -244,7 +246,7 @@ class Articles extends Component {
         backgroundColor: '#e52e2b',
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff'
+        borderColor: '#e52e2b'
       }}
       underlayColor='#fff'
       onPress={this.onButtonPressAdd}>

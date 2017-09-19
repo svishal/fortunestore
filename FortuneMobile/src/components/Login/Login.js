@@ -30,7 +30,6 @@ class Login extends Component {
 
   validateFormDataAndProcess() {
 
-
     const { mobile_number } = this.state;
     const { password } = this.state;
     const { platform } = this.state;
@@ -66,6 +65,7 @@ class Login extends Component {
         if (responseJSON.success == true) {
           const {accessToken}  = JSON.stringify(responseJSON.data.access_token);
           this.setState({ access_token: responseJSON.data.access_token })
+          this.setGlobalKey(responseJSON.data.access_token, responseJSON.data.id)
           Actions.articles({access_token : this.state.access_token })
         }
         else {
@@ -75,6 +75,23 @@ class Login extends Component {
       })
     }
   }
+
+
+  async setGlobalKey(value,id) {
+    try {
+      console.log('---------- access_token --------- ', '  ' + value);
+      console.log('---------- access_token --------- ', '  ' + id);
+      await AsyncStorage.setItem('access_token', value);
+      await AsyncStorage.setItem('fos_id', id);
+      var iii = await AsyncStorage.getItem('fos_id');
+      console.log('fos_id Login   ', ' ------------  ' +iii );
+    }
+    catch (e) {
+      console.log('caught error - - - - - - - ', e);
+      // Handle exceptions
+    }
+  }
+
   render() {
     return (
 
