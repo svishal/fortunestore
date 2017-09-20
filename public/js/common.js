@@ -224,6 +224,19 @@ $(function () {
        return false;
       }
     });
+
+     $('#addfieldboy').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+    $(".error-msg").text("");
+     })
+     $('#add_customer').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+    $(".error-msg").text("");
+     })
+     $('#addmoney').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+    $(".error-msg").text("");
+     })
     $(document).on('click','#update_settings',function(){
       var name = $('#name').val();
       var password = $('#password').val();
