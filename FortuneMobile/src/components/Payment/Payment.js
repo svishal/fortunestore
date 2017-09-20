@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Image, View, StyleSheet, ScrollView, ListView, TouchableHighlight, AsyncStorage } from 'react-native';
+import { Text, Image, View, StyleSheet, ScrollView, ListView, TouchableHighlight, AsyncStorage, Alert } from 'react-native';
 import style from './style.js'
 import { Actions } from 'react-native-router-flux';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -45,10 +45,10 @@ class Payment extends Component {
                 this.setState({ visible: false })
                 console.log('---------- Response --------- ', '  ' + responseJSON.message);
                 if (responseJSON.success == true) {
-                    alert('Your Payment is Done')
+    
                     Alert.alert(
-                        title,
-                        message,
+                        'Nice!',
+                        'Your Payment is Done',
                         [
                           { text: 'OK', onPress: () => Actions.pop() },
                         ]
@@ -84,9 +84,21 @@ class Payment extends Component {
        
     }
 
+    deleteNote = () => {
+        console.log('Delete')
+    }
+
     render() {
+
+        let swipeBtns = [{
+            text: 'Delete',
+            backgroundColor: 'red',
+            underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+            onPress: () => { this.deleteNote(rowData) }
+          }];
+
         return (
-            
+           
             <View style={{
                 flex: 1,
                 backgroundColor: '#ffffff',
@@ -125,6 +137,7 @@ class Payment extends Component {
                 
                     dataSource={this.state.dataSource}
                     renderRow={(rowData) =>
+                    
                         <View>
                             <View style={{
                                 flexDirection: 'row',

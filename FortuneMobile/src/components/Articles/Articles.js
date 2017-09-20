@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import {
-  StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight, ToastAndroid, Alert, ScrollView,KeyboardAvoidingView
+  StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight, ToastAndroid, Alert, ScrollView,KeyboardAvoidingView, Keyboard
 } from 'react-native';
 import { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
@@ -81,6 +81,7 @@ class Articles extends Component {
     .then((responseJSON) => {
       this.setState({ visible: false })
       if (responseJSON.success == true) {
+        Keyboard.dismiss
         console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
         let customId = responseJSON.data.id
         this.setState({ customerId: customId })
