@@ -46,6 +46,13 @@ class Payment extends Component {
                 console.log('---------- Response --------- ', '  ' + responseJSON.message);
                 if (responseJSON.success == true) {
                     alert('Your Payment is Done')
+                    Alert.alert(
+                        title,
+                        message,
+                        [
+                          { text: 'OK', onPress: () => Actions.pop() },
+                        ]
+                      )
                 }
                 else {
                     alert(responseJSON.message)
@@ -74,48 +81,48 @@ class Payment extends Component {
 
     onPressBack = () => {
         Actions.pop()
-        this.state.dataSource = []
+       
     }
 
     render() {
         return (
-            <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#e52e2b'}} />
+            
             <View style={{
-                
                 flex: 1,
                 backgroundColor: '#ffffff',
                 marginTop: 0,
                 marginBottom: 0
-            }}>
+                
+            }}
+            
+            >
                 <View style={{ backgroundColor: '#e52e2b', flexDirection: 'row', marginTop: 20 }}>
-               
                 <TouchableHighlight
-                    onPress={() => { this.onPressBack() }}>
-                   
-                    <Text style={{
+                onPress={() => { this.onPressBack() }}>
+               
+                <Text style={{
+                
+                    fontSize: 18,
+                    marginLeft: 8,
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    color: '#ffffff'
+                }}>Back</Text>
+                </TouchableHighlight>
+                <Text style={{
+                    flex: 1,
+                    fontSize: 18,
+                    paddingTop: 10,
+                    padding: 10,
+                    marginLeft: 8,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: '#ffffff',
                     
-                        fontSize: 18,
-                        marginLeft: 8,
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        color: '#ffffff'
-                    }}>Back</Text>
-                    </TouchableHighlight>
-
-
-                    <Text style={{
-                        flex: 1,
-                        fontSize: 18,
-                        paddingTop: 10,
-                        padding: 10,
-                        marginLeft: 8,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: '#ffffff',
-                        
-                    }}>{this.state.customerMob}</Text>
+                }}>{this.state.customerMob}</Text>
                 </View>
                 <ListView
+                
                     dataSource={this.state.dataSource}
                     renderRow={(rowData) =>
                         <View>
@@ -126,23 +133,23 @@ class Payment extends Component {
                                 marginTop: 2, marginLeft: 10,
                                 fontSize: 20, fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center',
                                 color: '#000000'
-                            }}>{rowData.item + ' - '} </Text>
+                            }}>{rowData.item + ' :-'} </Text>
                                 <View style={{ backgroundColor: '#000000' }}></View>
                                 <Text style={{
-                                    marginTop: 5, marginLeft: 5, fontWeight: 'bold',
+                                    marginTop: 6, marginLeft: 5, fontWeight: 'bold',
                                     fontSize: 15, textAlign: 'center', textAlignVertical: 'center',
                                     color: '#000000'
                                 }}>{rowData.quantity + '  *'}</Text>
                                 <Text style={{
-                                    marginTop: 5, marginLeft: 5, fontWeight: 'bold',
+                                    marginTop: 6, marginLeft: 5, fontWeight: 'bold',
                                     fontSize: 15, textAlign: 'center', textAlignVertical: 'center',
                                     color: '#000000'
                                 }}>{rowData.singleAmount + '  = '}</Text>
                                 <Text style={{
-                                    marginTop: 5, marginLeft: 5, fontWeight: 'bold',
+                                    marginTop: 6, marginLeft: 5, fontWeight: 'bold',
                                     fontSize: 15, textAlign: 'center', textAlignVertical: 'center',
                                     color: '#000000'
-                                }}>{rowData.singleAmount * rowData.quantity} ₹</Text>
+                                }}>{rowData.singleAmount * rowData.quantity} ₹ </Text>
                             </View>
                             <View style={{ height: 2, backgroundColor: '#000000', marginTop: 10 }}></View>
                         </View>
@@ -166,7 +173,7 @@ class Payment extends Component {
                         padding: 10,
                         fontWeight: 'bold',
                         color: '#ffffff'
-                    }}>{this.state.total} ₹ </Text>
+                    }}>{this.state.total} ₹</Text>
                     <View style={{
                         flex: 1, justifyContent: "center",
                         alignItems: "center",
