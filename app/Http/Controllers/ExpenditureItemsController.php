@@ -26,9 +26,7 @@ class ExpenditureItemsController extends Controller
             abort(404);
         }
         $mobile_number_of_customer = Customer::findOrFail($id);
-        if(!sizeof($mobile_number_of_customer)) abort(404);
         $expenditure_item_list = ExpenditureItems::expenditureItemsListByCustomerId($id);
-        if(!sizeof($expenditure_item_list)) abort(404);
         
         return view('customer_purchase_history', ['customer_purchase_list' => $expenditure_item_list,'mobile_number_of_customer'=>$mobile_number_of_customer]);
     }
