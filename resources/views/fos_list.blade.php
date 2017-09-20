@@ -111,6 +111,7 @@
 
                   <div class="col-sm-9">
                     <input class="form-control" id="fos_name" name="fos_name" placeholder="Name" type="text">
+                    <span class="error-msg text-left error-block name_error"></span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -171,6 +172,7 @@
 
                   <div class="col-sm-9">
                     <input class="form-control" id="edit_fos_name" name="edit_fos_name" placeholder="Name" type="text">
+                    <span class="error-msg text-left error-block name_error"></span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -178,6 +180,7 @@
 
                   <div class="col-sm-9">
                     <input class="form-control" id="edit_mobile_no" name="edit_mobile_no" placeholder="Number" type="text">
+                    <span class="error-msg text-left error-block mobile_number_error"></span>
                   </div>
                 </div>
                 <div class="form-group">

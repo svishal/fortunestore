@@ -89,7 +89,11 @@ $(function () {
       async: false,
       url: '/get_customer_info?customer_id=' + customer_id,
       success: function (response) {
-        $(".customer-name").text(response['name']);
+        if(response['name']===null){
+           $(".customer-name").text("Edit Customer");
+        }else{
+           $(".customer-name").text(response['name']);
+        }
         $("#customer_edit_id").val(customer_id);
         $("#edit_customer_name").val(response['name']);
         $("#edit_mobile_no").val(response['mobile_no']);
@@ -135,13 +139,21 @@ $(function () {
      });
     $(document).on('click','#save_fos',function(){
       var mobile_number = $('#fos_mobile_no').val();
+      var name = $('#fos_name').val();
       var validate_mobile_number=true;
+      var validate_name=true;
       var validate_all_values = true;
       if(mobile_number.length<1)
         validate_mobile_number = false;
+      if(name.length<1)
+        validate_name = false;
 
       if(!validate_mobile_number){
       $('.mobile_number_error').html('Mobile Number is Required');
+        validate_all_values = false;
+      }
+      if(!validate_name){
+      $('.name_error').html('Name is Required');
         validate_all_values = false;
       }
       if(validate_all_values){
@@ -187,14 +199,23 @@ $(function () {
     });
      $(document).on('click','#edit_fos_button',function(){ 
       var mobile_number = $('#edit_mobile_no').val();
+      var name = $('#edit_fos_name').val();
       var validate_mobile_number=true;
+      var validate_name=true;
       var validate_all_values = true;
       if(mobile_number.length<1){
         validate_mobile_number = false;
       }
+      if(name.length<1){
+        validate_name = false;
+      }
        
       if(!validate_mobile_number){
       $('.mobile_number_error').html('Mobile Number is Required');
+        validate_all_values = false;
+      }
+      if(!validate_name){
+       $('.name_error').html('Name is Required');
         validate_all_values = false;
       }
       if(validate_all_values){
