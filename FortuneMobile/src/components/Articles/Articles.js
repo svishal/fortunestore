@@ -1,14 +1,15 @@
 'use strict';
 import React from 'react';
 import {
-  StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight, ToastAndroid, Alert, ScrollView,KeyboardAvoidingView, Keyboard
+  StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight, ToastAndroid, Alert, ScrollView,KeyboardAvoidingView, Keyboard, ActivityIndicator
 } from 'react-native';
 import { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import styles from './style';
 import Prompt from 'react-native-prompt';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/colors';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
 
 class Articles extends Component {
   constructor(props) {
@@ -25,11 +26,11 @@ class Articles extends Component {
       customerId: '',
       balance: '',
       promptVisible: false,
-      visible: false,
+      isLoading: false,
       customerNumber: ''
     };
     this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
-    this.showPopUp = this.showPopUp.bind(this);
+    this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
 
   }
 
@@ -55,15 +56,16 @@ class Articles extends Component {
   }
 
 
-  handleCustomerPhoneNumber = (text) => {
-    if (text.length == 10) {
-      this.getCustomerCurrentBalance(text)
+  handleCustomerPhoneNumber = (mobNum) => {
+    if (mobNum.length == 10) {
+      this.getCustomerCurrentBalance(mobNum)
     }
   }
+
   getCustomerCurrentBalance(text) {
 
     console.log('********** + ', this.state.accessToken)
-    this.setState({ visible: true })
+    this.setState({ isLoading: true })
     this.setState({customerNumber:text})
     fetch('http://fortunestore.herokuapp.com/api/v1/get_customer_balance',
     {
@@ -79,9 +81,11 @@ class Articles extends Component {
     })
     .then((response) => response.json())
     .then((responseJSON) => {
-      this.setState({ visible: false })
+      this.setState({ isLoading: false })
+      this.setState({customerNumber:text})
       if (responseJSON.success == true) {
-        Keyboard.dismiss
+        dismissKeyboard()
+        console.log('Number ', this.state.customerNumber);
         console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
         let customId = responseJSON.data.id
         this.setState({ customerId: customId })
@@ -94,7 +98,7 @@ class Articles extends Component {
     })
   }
 
-  showPopUp = (bal) => {
+  addMoneyInCustomerAccount = (bal) => {
 
     // console.log('this.state.balance wants to add+++++++++++ ' + bal);
     this.setState({
@@ -103,7 +107,7 @@ class Articles extends Component {
       balance: bal,
     })
     console.log('balbalbalbal+++++++++++ ' + bal);
-    this.setState({ visible: true })
+    this.setState({ isLoading: true })
     fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/money',
     {
       method: "POST",
@@ -118,7 +122,7 @@ class Articles extends Component {
     })
     .then((response) => response.json())
     .then((responseJSON) => {
-      this.setState({ visible: false })
+      this.setState({ isLoading: false })
       if (responseJSON.success == true) {
         let serverAddedMoney = String(responseJSON.data.current_balance) + " ₹"
         this.setState({ currentBalance: serverAddedMoney })
@@ -175,6 +179,15 @@ class Articles extends Component {
   }
 
   render() {
+
+    if (this.state.isLoading) {
+      return (
+
+        <View style={styles.loaderView}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
 
       <KeyboardAwareScrollView
@@ -183,8 +196,6 @@ class Articles extends Component {
       contentContainerStyle={styles.container}
       scrollEnabled={false}>
       <View>
-
-      <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#e52e2b'}} />
       <Prompt
       title="Amount"
       placeholder="Please Enter Amount "
@@ -195,15 +206,10 @@ class Articles extends Component {
         promptVisible: false,
         message: "You cancelled"
       })}
-      onSubmit={this.showPopUp} />
+      onSubmit={this.addMoneyInCustomerAccount} />
 
-      <View style={{
-        height: 30,
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <Text style={{ marginTop: 5, color: '#e52e2b', fontSize: 25, fontWeight: 'bold' }}>Articles</Text>
+      <View style={styles.titleContainer}>
+      <Text style={styles.titleLable}>Articles</Text>
       </View>
       <View style={styles.userDetailContainer}>
       <TextInput style={
@@ -217,18 +223,8 @@ class Articles extends Component {
       maxLength={10}
       onChangeText={this.handleCustomerPhoneNumber}
       />
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 25 }}>
-      <TextInput style={
-        {
-          flex: 1,
-          height: 40,
-          marginLeft: 15,
-          borderColor: 'grey',
-          borderWidth: 1,
-          borderRadius: 10,
-          textAlign: 'center'
-        }
-      }
+      <View style={styles.addButtonContainer}>
+      <TextInput style={styles.currentBalanceText }
       underlineColorAndroid='rgba(0,0,0,0)'
       placeholder="Balance"
       placeholderTextColor='#A7A7A7'
@@ -236,30 +232,15 @@ class Articles extends Component {
       value={this.state.currentBalance}
       />
       <TouchableHighlight
-      style={{
-        flex: 0.50,
-        height: 41,
-        marginRight: 20,
-        marginLeft: 10,
-        paddingLeft: 30,
-        paddingRight: 30,
-        justifyContent: 'center',
-        backgroundColor: '#e52e2b',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#e52e2b'
-      }}
+      style={styles.addButton}
       underlayColor='#fff'
       onPress={this.onButtonPressAdd}>
 
-      <Text style={{
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 15,
+      <Text style={{color: '#fff',textAlign: 'center',fontSize: 15,
       }}>Add</Text>
       </TouchableHighlight>
       </View>
-      <View style={{ height: 1, backgroundColor: '#ffffff', marginTop: 30 }}></View>
+      <View style={{ height: 1, backgroundColor: WHITE, marginTop: 30 }}></View>
       <TextInput style={
         styles.input
       }

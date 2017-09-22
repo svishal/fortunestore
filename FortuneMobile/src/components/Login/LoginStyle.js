@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
 import { TextInput, View, StyleSheet,TouchableOpacity,Text, Image } from 'react-native'
-
+import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/colors';
 
  const styles = StyleSheet.create({
    container: {
       paddingTop: 150,
-      backgroundColor: '#ffffff',
+      backgroundColor: WHITE,
       marginTop: 0,
       flex: 1,
       marginBottom: 0
+   },
+
+   loaderView : {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: WHITE
+   },
+
+   keyboardViewerStyle : {
+    flex: 1,
+    backgroundColor: WHITE,
+    marginTop: 0,
+    marginBottom: 0
    },
 
    headerContent: {
@@ -27,14 +40,8 @@ import { TextInput, View, StyleSheet,TouchableOpacity,Text, Image } from 'react-
       textAlign: 'center'
    },
 
-   forgotPassword: {
-      height: 20,
-      margin: 15,
-      color: 'grey',
-   },
-
    submitButton: {
-      backgroundColor: '#e52e2b',
+      backgroundColor: BRAND_PRIMARY,
       padding: 10,
       margin: 15,
       height: 40,

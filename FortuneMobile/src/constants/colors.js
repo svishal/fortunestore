@@ -1,0 +1,10 @@
+export const WHITE = '#FFFFFF';
+export const BLACK = '#392B34';
+export const GREY = '#9E939C';
+export const GREY_MEDIUM = '#E7E6E6';
+export const LIGHT_GREY = '#EDEDED';
+export const BRAND_PRIMARY = '#E52E2B';
+export const NAVBAR = '#F7F7F7';
+export const NAVBAR_ACTIVE = '#DF0007';
+export const SLIDER_TRACK = '#D1CBCC';
+export const SLIDER_THUMB = '#D0021B';

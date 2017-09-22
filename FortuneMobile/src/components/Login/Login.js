@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import { TextInput, View, StyleSheet, TouchableOpacity, Text, Image, AlertIOS, Platform, AsyncStorage } from 'react-native'
+import { TextInput, View, StyleSheet, TouchableOpacity, Text, Image, AlertIOS, Platform, AsyncStorage, ActivityIndicator } from 'react-native'
 import LoginStyle from './LoginStyle.js'
 import { Actions } from 'react-native-router-flux';
 import DeviceInfo from 'react-native-device-info';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/colors';
 
 class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      mobile_number: '9876543210',
-      password: '12345',
+      mobile_number: '',
+      password: '',
       data: [],
       platform: '',
       accessToken: '',
-      visible: false
+      isLoading: false
     }
     this.validateFormData = this.validateFormDataAndProcess.bind(this);
   }
@@ -28,8 +29,9 @@ class Login extends Component {
     this.setState({ password: text })
   }
 
-  validateFormDataAndProcess() {
+  async validateFormDataAndProcess() {
 
+    try {
     const { mobile_number } = this.state;
     const { password } = this.state;
     const { platform } = this.state;
@@ -43,7 +45,7 @@ class Login extends Component {
       alert("Please Enter the Password");
     }
     else {
-      this.setState({ visible: true })
+      this.setState({ isLoading: true })
       fetch('http://fortunestore.herokuapp.com/api/v1/login',
       {
         method: "POST",
@@ -61,19 +63,26 @@ class Login extends Component {
       .then((response) => response.json())
       .then((responseJSON) => {
 
-          this.setState({ visible: false })
+        this.setState({ isLoading: false })
         if (responseJSON.success == true) {
+          
           const {accessToken}  = JSON.stringify(responseJSON.data.access_token);
           this.setState({ access_token: responseJSON.data.access_token })
           this.setGlobalKey(responseJSON.data.access_token, responseJSON.data.id)
           Actions.articles({access_token : this.state.access_token })
         }
         else {
+          
           alert(responseJSON.message);
         }
 
       })
     }
+  }
+  catch(error) {
+    console.error(error);
+    this.setState({ visible: false })
+  } 
   }
 
 
@@ -93,10 +102,22 @@ class Login extends Component {
   }
 
   render() {
+
+
+    if (this.state.isLoading) {
+      return (
+        <View style={LoginStyle.loaderView}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
+      <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      contentContainerStyle={LoginStyle.keyboardViewerStyle}
+      scrollEnabled={false}>
 
       <View style={LoginStyle.container}>
-      <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#e52e2b'}} />
       <Text style={LoginStyle.headerContent}> Fortune Store </Text>
 
       <TextInput style={LoginStyle.input}
@@ -104,7 +125,7 @@ class Login extends Component {
       placeholder="Phone Number"
       placeholderTextColor="#666564"
       autoCapitalize="none"
-      value = "9876543210"
+      keyboardType='phone-pad'
 
       onChangeText={this.handlePhoneNumber} />
 
@@ -114,7 +135,7 @@ class Login extends Component {
       secureTextEntry={true}
       placeholderTextColor="#666564"
       autoCapitalize="none"
-      value = "12345"
+
       onChangeText={this.handlePassword} />
 
       <TouchableOpacity
@@ -125,6 +146,7 @@ class Login extends Component {
       </TouchableOpacity>
 
       </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
