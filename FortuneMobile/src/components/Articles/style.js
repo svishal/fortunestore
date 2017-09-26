@@ -89,7 +89,7 @@ currentBalanceText : {
         backgroundColor: BRAND_PRIMARY,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff'
+        borderColor: WHITE
     },next: {
         flex:1,
         marginRight:20,
@@ -100,10 +100,10 @@ currentBalanceText : {
         backgroundColor: BRAND_PRIMARY,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff'
+        borderColor: WHITE
     },
     submitText: {
-        color: '#fff',
+        color: WHITE,
         textAlign: 'center',
         fontSize:20,
     },

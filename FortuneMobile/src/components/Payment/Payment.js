@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, Image, View, StyleSheet, ScrollView, ListView, TouchableHighlight, AsyncStorage, Alert, ActivityIndicator } from 'react-native';
 import style from './style.js'
 import { Actions } from 'react-native-router-flux';
-
+import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/colors';
 
 class Payment extends Component {
     constructor(props) {
@@ -106,12 +106,12 @@ class Payment extends Component {
                                 flexDirection: 'row',
                                 padding: 10
                             }}><Text style={style.itemText}>{rowData.item + ' :-'} </Text>
-                                <View style={{ backgroundColor: '#000000' }}></View>
+                                <View style={{ backgroundColor: BLACK }}></View>
                                 <Text style={style.itemQuantity}>{rowData.quantity + '  *'}</Text>
                                 <Text style={style.itemQuantity}>{rowData.singleAmount + '  = '}</Text>
                                 <Text style={style.itemQuantity}>{rowData.singleAmount * rowData.quantity} ₹ </Text>
                             </View>
-                            <View style={{ height: 2, backgroundColor: '#000000', marginTop: 10 }}></View>
+                            <View style={{ height: 2, backgroundColor: BLACK, marginTop: 10 }}></View>
                         </View>
                     }
                 />
