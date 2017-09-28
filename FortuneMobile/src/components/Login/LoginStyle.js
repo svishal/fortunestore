@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-import { TextInput, View, StyleSheet,TouchableOpacity,Text, Image } from 'react-native'
-import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/colors';
+import { StyleSheet } from 'react-native';
+import { WHITE, GREY, BRAND_PRIMARY } from '../../constants/colors';
 
  const styles = StyleSheet.create({
    container: {
@@ -11,13 +10,13 @@ import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/
       marginBottom: 0
    },
 
-   loaderView : {
+   loaderView: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: WHITE
    },
 
-   keyboardViewerStyle : {
+   keyboardViewerStyle: {
     flex: 1,
     backgroundColor: WHITE,
     marginTop: 0,
@@ -34,7 +33,7 @@ import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/
    input: {
       margin: 15,
       height: 40,
-      borderColor: 'grey',
+      borderColor: GREY,
       borderWidth: 1,
       borderRadius: 10,
       textAlign: 'center'
@@ -48,11 +47,11 @@ import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/
       borderRadius: 10,
    },
 
-   submitButtonText:{
-      color: 'white',
+   submitButtonText: {
+      color: WHITE,
       textAlign: 'center'
    }
 
-})
+});
 
-export default styles
+export default styles;

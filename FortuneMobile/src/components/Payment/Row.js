@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,9 +19,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Row = (props) => (
+const Row = () => (
   <View style={styles.container}>
-   
     <Text style={styles.text}>
     Rohit Sharma
     </Text>

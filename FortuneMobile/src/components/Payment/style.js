@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, BLACK, LIGHT_GREY, GREY, BRAND_PRIMARY  } from '../../constants/colors';
+import { WHITE, BLACK, BRAND_PRIMARY } from '../../constants/colors';
 
 const style = StyleSheet.create({
     container: {
@@ -7,7 +7,8 @@ const style = StyleSheet.create({
         backgroundColor: WHITE,
         marginTop: 0,
         marginBottom: 0
-    }, total: {
+    },
+     total: {
         flex: 1,
         fontSize: 22,
         fontWeight: 'bold',
@@ -15,7 +16,8 @@ const style = StyleSheet.create({
         paddingTop: 10,
         padding: 10,
         color: WHITE
-    }, totalAmount: {
+    },
+     totalAmount: {
         flex: 1,
         fontSize: 22,
         marginLeft: 0,
@@ -23,31 +25,48 @@ const style = StyleSheet.create({
         padding: 10,
         fontWeight: 'bold',
         color: WHITE
-    }, payContainer: {
-        flex: 1, justifyContent: "center",
-        alignItems: "center",
+    },
+     payContainer: {
+        flex: 1,
+         justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#f44242'
-    }, payText: {
-        textAlignVertical: "center",
-        textAlign: "center", color: BLACK,
+    },
+     payText: {
+        textAlignVertical: 'center',
+        textAlign: 'center',
+         color: BLACK,
         fontSize: 22
-    }, lowerTab: {
+    },
+     lowerTab: {
         backgroundColor: BRAND_PRIMARY, flexDirection: 'row'
-    }, itemText: {
-        marginTop: 2, marginLeft: 10,
-        fontSize: 20, fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center',
+    },
+     itemText: {
+        marginTop: 2,
+         marginLeft: 10,
+        fontSize: 20,
+         fontWeight: 'bold',
+         textAlign: 'center',
+          textAlignVertical: 'center',
         color: BLACK
-    }, itemQuantity: {
-        marginTop: 6, marginLeft: 5, fontWeight: 'bold',
-        fontSize: 15, textAlign: 'center', textAlignVertical: 'center',
+    },
+     itemQuantity: {
+        marginTop: 6,
+         marginLeft: 5,
+          fontWeight: 'bold',
+        fontSize: 15,
+         textAlign: 'center',
+          textAlignVertical: 'center',
         color: BLACK
-    }, back: {
+    },
+     back: {
         fontSize: 18,
         marginLeft: 8,
         paddingTop: 10,
         paddingBottom: 10,
         color: WHITE
-    }, topMobile: {
+    },
+     topMobile: {
         flex: 1,
         fontSize: 18,
         paddingTop: 10,
@@ -56,11 +75,13 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         color: WHITE,
-    }, topTab: {
-        backgroundColor: WHITE,
+    },
+     topTab: {
+        backgroundColor: BRAND_PRIMARY,
         flexDirection: 'row',
-        marginTop: 0
-    },payBack:{
+        marginTop: 20
+    },
+    payBack: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
