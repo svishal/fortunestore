@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, GREY, BRAND_PRIMARY } from '../../constants/colors';
+import { WHITE, BLACK, GREY, BRAND_PRIMARY } from '../../constants/colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         marginTop: 5,
         color: WHITE
-
     },
     
 addButtonContainer: {
@@ -53,8 +52,8 @@ currentBalanceText: {
     addButton: {
         flex: 0.50,
         height: 41,
-        marginRight: 20,
-        marginLeft: 10,
+        marginRight: 8,
+        marginLeft: 8,
         paddingLeft: 30,
         paddingRight: 30,
         justifyContent: 'center',
@@ -66,45 +65,74 @@ currentBalanceText: {
     
     mobileTextInput: {
         height: 40,
-         backgroundColor: WHITE,
-        marginLeft: 20,
-         marginRight: 20,
-          marginTop: 30,
+        backgroundColor: WHITE,
+        marginLeft: 8,
+        marginRight: 8,
+        marginTop: 30,
         paddingLeft: 10,
-         fontSize: 18
+        fontSize: 18
     },
-    loginButton: {
-        height: 60,
-         backgroundColor: '#93E254',
-        marginLeft: 20,
-         marginRight: 20,
-          marginTop: 30,
-        fontSize: 25,
+    
+    itemImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25, 
+        borderColor: GREY,
+        marginLeft: 8
+    },
+    itemName: {
+        flex: 0.50,
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 10,
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: BLACK
+    },
+    itemPrice: {
+        marginTop: 2,
+        marginBottom: 2,
+        marginLeft: 5,
+        fontSize: 13,
+        color: GREY,
+        fontWeight: 'bold',
+    },
+
+    quantityInput: {
+         flex: 0.20,
+         backgroundColor: WHITE,
+         marginTop: 10,
+         marginBottom: 10,
+         marginLeft: 10,
+         marginRight: 10,
+         borderColor: GREY,
          textAlign: 'center',
-          textAlignVertical: 'center',
-        color: WHITE
+         borderRadius: 5,
+         borderWidth: 1
     },
+
+    checkBox: {
+        marginRight: 20,
+        padding: 10
+    },
+
+    input: {
+        margin: 15,
+        height: 40,
+        borderColor: GREY,
+        borderWidth: 1,
+        borderRadius: 10,
+        textAlign: 'center'
+     }
+     ,
      userDetailContainer: {
         height: 40,
         marginTop: 20
     },
-
-     save: {
-        flex: 1,
-        marginLeft: 20,
-        paddingLeft: 30,
-        marginRight: 10,
-        paddingRight: 30,
-        justifyContent: 'center',
-        backgroundColor: BRAND_PRIMARY,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: WHITE
-    },
     next: {
         flex: 1,
-        marginRight: 20,
-        marginLeft: 10,
+        marginRight: 8,
+        marginLeft: 8,
         paddingLeft: 30,
         paddingRight: 30,
         justifyContent: 'center',
@@ -117,15 +145,9 @@ currentBalanceText: {
         color: WHITE,
         textAlign: 'center',
         fontSize: 20,
+        marginRight: 20,
+        marginLeft: 20,
     },
-      input: {
-      margin: 15,
-      height: 40,
-      borderColor: GREY,
-      borderWidth: 1,
-      borderRadius: 10,
-      textAlign: 'center'
-   }
 });
 
 export default styles;

@@ -13,22 +13,24 @@ class Payment extends Component {
             total: 0,
             purchased_items: [],
             access_token: '',
-            customerMob: this.props.QTY[0].enteredMobNum,
+            customerMob: this.props.userDetails.exportedMobileNumber,
             fosId: '',
-            isLoading: false
+            isLoading: false,
+            customerId: this.props.userDetails.exportedCustomerId
         };
-        
+        var tempTotal = 0;
         for (var i = 0; i < this.props.QTY.length; i++) {
-            this.state.total = parseInt(this.state.total) + (parseInt(this.props.QTY[i].singleAmount) * parseInt(this.props.QTY[i].quantity));
+            tempTotal = parseInt(this.state.total) + (parseInt(this.props.QTY[i].singleAmount) * parseInt(this.props.QTY[i].quantity));
         }
+        this.state.total = tempTotal;
         this.getGlobalKeys();
     }
-
+    // Back button press
     onPressBack = () => {
         Actions.pop();
     }
 
-  // Get the stored values
+    // Get the stored values
   async getGlobalKeys() {
     try {
         const value = await AsyncStorage.getItem('access_token');
@@ -50,7 +52,7 @@ class Payment extends Component {
 
 callPaymentApi = () => {
     this.setState({ isLoading: true })
-    fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.props.QTY[0].custId + '/expenditures',
+    fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/expenditures',
         {
             method: 'POST',
             headers: {
@@ -105,7 +107,7 @@ callPaymentApi = () => {
                                 flexDirection: 'row',
                                 padding: 10
                             }}>
-                            <Text style={style.itemText}>{rowData.item + ' :-'} </Text>
+                            <Text style={style.itemText}>{rowData.productName + ' :-'} </Text>
                                 <View style={{ backgroundColor: BLACK }}></View>
                                 <Text style={style.itemQuantity}>{rowData.quantity + '  *'}</Text>
                                 <Text style={style.itemQuantity}>{rowData.singleAmount + '  = '}</Text>

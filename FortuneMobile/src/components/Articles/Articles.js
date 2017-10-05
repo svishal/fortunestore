@@ -1,35 +1,49 @@
 'use strict';
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableHighlight, Alert, ActivityIndicator
+import { Text, View, TextInput, TouchableHighlight, Alert, ActivityIndicator, ListView, Image
 } from 'react-native';
 import Prompt from 'react-native-prompt';
+// import CheckBox from 'react-native-check-box';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
 import dismissKeyboard from 'react-native-dismiss-keyboard';
 import styles from './style';
-import { WHITE } from '../../constants/colors';
+
+import { WHITE, BLACK } from '../../constants/colors';
 
 
 class Articles extends Component {
   constructor(props) {
     super(props);
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }); 
     this.state = {
+      dataSource: ds.cloneWithRows(['row 1']),
       inputName: '',
       inputQuantity: '',
       inputAmount: '',
       singleAmount: '',
-      name: [],
-      mobile: '',
       accessToken: this.props.access_token,
       currentBalance: '',
       customerId: '',
       balance: '',
       promptVisible: false,
       isLoading: false,
-      customerNumber: ''
+      customerNumber: '',
+
+      // CheckBox Props 
+      checked: false,
+      quantityText: '',
+      productArray: [],
+      productName: '',
+      productPrice: '',
+      productImageUrl: ''
     };
     this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
     this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
+  }
+
+  componentDidMount() {
+    this.getProductList();
   }
 
   onButtonPressAdd = () => {
@@ -40,72 +54,109 @@ class Articles extends Component {
       balance: ''
     });
   } else {
-    this.showAlertWithTitleAndMessage('Message!', 'Please check your account balance first via entering your phone number');
-  }
+    this.showAlertWithTitleAndMessage('Message!',
+   'Please check your account balance first via entering your phone number');
+     }
   }
 
-  getCustomerCurrentBalance(text) {
-    console.log('********** + ', this.state.accessToken);
-    this.setState({ isLoading: true });
+//   onClick(data) {
+//     console.log(data);
+
+//     if (data.checked) {
+//       var element = this.state.dataSource[data.index];
+//       console.log(element);
+//       element.checked = false;
+//     }
+
+//     if (data.checked === false) {
+//       var element1 = this.state.dataSource[data.index];
+//       console.log(element1);
+//       this.setState(element1.checked = true);
+//     }
+
+//     data.checked = !data.checked;
+//     console.log(data.index);
+
+//     this.setState(dataSource[data.index].checked);
+//     console.log(this.state.dataSource[data.index].checked);
+
+//     const msg = data.checked ? 'you checked ' : 'you unchecked ';
+//     console.log(data.productName);
+//     console.log(msg);
+// }
+
+// Get Customer Balance
+getCustomerCurrentBalance(text) {
+  console.log('********** + ', this.state.accessToken);
+  this.setState({ isLoading: true });
+  this.setState({ customerNumber: text });
+  fetch('http://fortunestore.herokuapp.com/api/v1/get_customer_balance',
+  {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.state.accessToken
+    },
+    body: JSON.stringify({
+      mobile_number: text
+    })
+  })
+  .then((response) => response.json())
+  .then((responseJSON) => {
+    this.setState({ isLoading: false });
     this.setState({ customerNumber: text });
-    fetch('http://fortunestore.herokuapp.com/api/v1/get_customer_balance',
-    {
-      method: "POST",
+    if (responseJSON.success === true) {
+      dismissKeyboard();
+      console.log('Number ', this.state.customerNumber);
+      // console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
+      const customId = responseJSON.data.id;
+      this.setState({ customerId: customId });
+      // console.log('this.state.customerId +++++++++++ ' + this.state.customerId);
+      if (responseJSON.data.is_new === false) {
+        const serverBal = responseJSON.data.current_balance + '₹';
+        this.setState({ currentBalance: serverBal });
+      }
+    }
+  });
+}
+
+  // Get the Product List
+  async getProductList() {
+    console.log(this.state.accessToken);
+    fetch('http://fortunestore.herokuapp.com/api/v1/product_list', {
+      method: 'GET',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this.state.accessToken
-      },
-      body: JSON.stringify({
-        mobile_number: text
-      })
+      }
     })
     .then((response) => response.json())
     .then((responseJSON) => {
-      this.setState({ isLoading: false });
-      this.setState({ customerNumber: text });
       if (responseJSON.success === true) {
-        dismissKeyboard();
-        console.log('Number ', this.state.customerNumber);
-        // console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
-        const customId = responseJSON.data.id;
-        this.setState({ customerId: customId });
-        // console.log('this.state.customerId +++++++++++ ' + this.state.customerId);
-        if (responseJSON.data.is_new === false) {
-          const serverBal = String(responseJSON.data.current_balance) + ' ₹';
-          this.setState({ currentBalance: serverBal });
-        }
+        console.log(responseJSON.data.length);
+        this.productDataModel(responseJSON.data);
       }
     });
   }
+
+  // Get customer phone number  
   handleCustomerPhoneNumber = (mobNum) => {
     if (mobNum.length === 10) {
       this.getCustomerCurrentBalance(mobNum);
     }
   }
 
-  insertData = (tempItem, tempQuantity, tempAmount) => {
- let data;
-    
-    if (tempItem === '' || tempQuantity === '' || tempAmount === '') {
-      this.showAlertWithTitleAndMessage('Oops!', 'Please enter the required information first.');
-    } else {
-       data = {
-        item: tempItem,
-        quantity: tempQuantity,
-        amount: tempAmount * tempQuantity,
-        singleAmount: tempAmount,
-        custId: this.state.customerId,
-        enteredMobNum: this.state.customerNumber
-      };
-      this.setState({
-        name: [...this.state.name, data]
-      });
-      this.clearText();
+  handleItemQuantity = (quantity, index) => {
+    if (quantity.length !== '') {
+      console.log(quantity, index);
+      const products = [...this.state.productArray];
+      products[index].quantity = quantity;
+      products[index].singleAmount = products[index].productPrice;
+      this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
     }
   }
 
-  addMoneyInCustomerAccount = (bal) => {
+   addMoneyInCustomerAccount = (bal) => {
     // console.log('this.state.balance wants to add+++++++++++ ' + bal);
     this.setState({
       promptVisible: false,
@@ -113,14 +164,14 @@ class Articles extends Component {
       balance: bal,
     });
     // console.log('balbalbalbal+++++++++++ ' + bal);
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true });
     fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/money',
     {
-      method: "POST",
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.state.accessToken
+        'Authorization': 'Bearer + this.state.accessToken'
       },
       body: JSON.stringify({
         balance: bal
@@ -130,7 +181,7 @@ class Articles extends Component {
     .then((responseJSON) => {
       this.setState({ isLoading: false });
       if (responseJSON.success === true) {
-        const serverAddedMoney = String(responseJSON.data.current_balance) + ' ₹';
+        const serverAddedMoney = responseJSON.data.current_balance + '₹';
         this.setState({ currentBalance: serverAddedMoney });
         // console.log('responseJSON.message +++++++++++ ' + responseJSON.message);
       }
@@ -157,36 +208,79 @@ class Articles extends Component {
     this.setState({ inputAmount: text });
   }
   handleButtonChange = () => {
-    if (this.state.name.length <= 0) {
-      Alert.alert('Please enter item');
+    // console.log(this.state.productArray);
+    if (this.state.customerId.length <= 0) {
+      Alert.alert('Customer not found, Please enter your phone number first.');
     } else {
-      Actions.payment({ QTY: this.state.name });
-      this.setState({ name: [] });
+      const products = [];
+      var totalAmountToPay = 0;
+      for (let i = 0; i < this.state.productArray.length; i++) {
+        const element = this.state.productArray[i];
+        if (element.quantity.length !== 0) {
+            totalAmountToPay = element.quantity * element.singleAmount;
+            products.push(this.state.productArray[i]);
+          }
+      }
+      const userInfo = {
+          exportedMobileNumber: this.state.customerNumber,
+          exportedCustomerId: this.state.customerId
+      };  
+      console.log('Total amount', totalAmountToPay);
+      Actions.payment({ QTY: products, userDetails: userInfo });
     }
   }
+
   clearText = () => {
     this.textInput1.setNativeProps({ text: '' });
     this.textInput2.setNativeProps({ text: '' });
     this.textInput3.setNativeProps({ text: '' });
   }
 
-  render() {
-   if (this.state.isLoading) {
-      return (
-        <View style={styles.loaderView}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-    return (
+  productDataModel = (array) => {
+    const len = array.length;
+    let product; let i; let l;
+    for (i = 0, l = len; i < l; i += 1) {
+      product = {
+        productName: array[i].product_name,
+        productPrice: array[i].price,
+        checked: false,
+        index: i,
+        quantity: '',
+        productImageUrl: array[i].image_url.trim()
+      };
+      this.state.productArray.push(product);
+    } 
+    this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
+}
 
+  // renderCheckBox(data) {
+  //   return (
+  //       <CheckBox
+  //           style={styles.checkBox}
+  //           onClick={() => this.onClick(data)}
+  //           isChecked={data.checked}
+  //           checkedImage={<Image source={require('../../Assets/check.png')} style={{ width: 32, height: 32 }} />}
+  //           unCheckedImage={<Image source={require('../../Assets/uncheck.png')} style={{ width: 32, height: 32 }} />}
+  //       />);
+  // }
+
+  render() {
+  //  if (this.state.isLoading) {
+  //     return (
+  //       <View style={styles.loaderView}>
+  //         <ActivityIndicator />
+  //       </View>
+  //     );
+  //   }
+    return (
       <KeyboardAwareScrollView
-      style= {styles.container}
+      style={styles.container}
       resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={styles.container}
       scrollEnabled={false}
       >
       <View>
+        
       <Prompt
       title="Amount"
       placeholder='Please Enter Amount '
@@ -241,63 +335,68 @@ class Articles extends Component {
       style={{ height: 1, backgroundColor: WHITE, marginTop: 30 }}
       >
       </View>
-      <TextInput 
-      style={
-        styles.input
-      }
-      ref={component => this.textInput1 = component}
-      underlineColorAndroid='rgba(0,0,0,0)'
-      placeholder="Article Name"
-      placeholderTextColor='#A7A7A7'
-      returnKeyType='next'
-      onChangeText={this.handleName}
-      />
-      <TextInput 
-      style={
-        styles.input
-      }
-      ref={component => this.textInput2 = component}
-      underlineColorAndroid='rgba(0,0,0,0)'
-      placeholder="Enter Quantity"
-      returnKeyType='next'
-      keyboardType='phone-pad'
-      placeholderTextColor='#A7A7A7'
-      onChangeText={this.handleQuantity}
-      />
-      <TextInput 
-      style={
-        styles.input
-      }
-      ref={component => this.textInput3 = component}
-      underlineColorAndroid='rgba(0,0,0,0)'
-      placeholder="Enter Amount"
-      returnKeyType='done'
-      keyboardType='phone-pad'
-      placeholderTextColor='#A7A7A7'
-      onChangeText={this.handleAmount}
-      />
-      <View
-       style={{
-        height: 40, flexDirection: 'row', marginTop: 30,
+
+      {/* // List View Wrapper */}
+      <View 
+      style={{ 
+        height: 200,
+        backgroundColor: WHITE,
+        marginTop: 0,
       }}
       >
-      <TouchableHighlight
-      style={styles.save}
-      underlayColor='#fff'
-      onPress={() => { this.insertData(this.state.inputName, this.state.inputQuantity, this.state.inputAmount); }}
-      >
-      <Text style={styles.submitText}>Save</Text>
-      </TouchableHighlight>
-      <TouchableHighlight
-      style={styles.next}
-      underlayColor='#fff'
-      onPress={this.handleButtonChangeRetour}>
-      <Text style={styles.submitText}>Next</Text>
-      </TouchableHighlight>
+      <ListView
+       style={{ 
+        marginTop: 10,
+      }}
+      dataSource={this.state.dataSource}
+      renderRow={
+        (rowData) =>
+        <View 
+        style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: WHITE, alignItems: 'center' }}
+        >
+
+        <Image
+          style={styles.itemImage}
+          source={{ uri: rowData.productImageUrl }}
+        />
+        
+         <Text style={styles.itemName}>{rowData.productName}</Text>
+         <Text style={styles.itemPrice}>{rowData.productPrice + '₹'}</Text>
+         <TextInput 
+         style={styles.quantityInput}
+         keyboardType='phone-pad'
+         maxLength={2}
+         placeholder='Quantity'
+         onChangeText={(text) => this.handleItemQuantity(text, rowData.index)}
+        />
+        <View 
+        style={{ height: 0.5, backgroundColor: BLACK, marginTop: 10 }}
+        >
+         </View>
+      </View>}
+      />
       </View>
-      </View>
-      </View>
-      </KeyboardAwareScrollView>
+
+       {/* Next View Button  */}
+       <View
+        style={{
+         height: 40,
+         flexDirection: 'row',
+          marginTop: 20,
+       }}
+       >
+       <TouchableHighlight
+       style={styles.next}
+       underlayColor='#fff'
+       onPress={this.handleButtonChangeRetour}
+       >
+       <Text style={styles.submitText}>Next</Text>
+       </TouchableHighlight>
+       </View>
+
+       </View>
+       </View>
+       </KeyboardAwareScrollView>
     );
   }
 }

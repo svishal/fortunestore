@@ -10,8 +10,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobile_number: '',
-      password: '',
+      mobile_number: '9876543210',
+      password: '12345',
       data: [],
       platform: '',
       accessToken: '',
@@ -112,8 +112,8 @@ class Login extends Component {
       <TextInput 
       secureTextEntry={true}
       style={LoginStyle.input}
-      underlineColorAndroid="transparent"
-      placeholder="Password"
+      underlineColorAndroid='transparent'
+      placeholder='Password'
       placeholderTextColor="#666564"
       autoCapitalize="none"
       onChangeText={this.handlePassword}
