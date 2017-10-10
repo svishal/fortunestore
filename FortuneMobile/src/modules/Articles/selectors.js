@@ -7,7 +7,7 @@ const getError = state => state[REDUCER_KEY].get('error');
 
 export const getArticlesDataSelector = createSelector(
   getArticlesData,
-  ArticlesData => ArticlesData
+  articlesData => articlesData
 );
 
 export const getLoadingSelector = createSelector(

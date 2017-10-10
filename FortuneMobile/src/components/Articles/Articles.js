@@ -194,22 +194,12 @@ refreshData = (array) => {
   // }
 
   render() {
-  //  if (this.state.isLoading) {
-  //     return (
-  //       <View style={styles.loaderView}>
-  //         <ActivityIndicator />
-  //       </View>
-  //     );
-  //   }
   const { articlesData } = this.props;
+  console.log('Articles data -- ' + articlesData);
   
-  console.log('Here you go bouy' + articlesData.success);
-
-  if (articlesData.length > 0) {
-    
-  }
-
-
+  const obj = articlesData[0];
+   
+   console.log('Product -- ' + JSON.stringify(obj));
     return (
 
       <KeyboardAwareScrollView
@@ -299,8 +289,8 @@ refreshData = (array) => {
           source={{ uri: 'work.data.productImageUrl' }}
         />
         
-         <Text style={styles.itemName}>{'work.data.productName'}</Text>
-         <Text style={styles.itemPrice}>{'work.data.productPrice'}</Text>
+         <Text style={styles.itemName}>{'articlesData.productName'}</Text>
+         <Text style={styles.itemPrice}>{'articlesData.productPrice'}</Text>
          <TextInput 
          style={styles.quantityInput}
          keyboardType='phone-pad'

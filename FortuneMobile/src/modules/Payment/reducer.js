@@ -18,7 +18,7 @@ export default function (state = initialState, action) {
       return state.set('loading', true);
     }
     case FETCH_PAYMENT_SUCCESS: {
-      return state.set('paymentData', Object.assign({}, { tokenDate: new Date() }, action.data))
+      return state.set('paymentData', action.data)
         .set('loading', false).set('error', null);
     }
     case FETCH_PAYMENT_FAIL: {
