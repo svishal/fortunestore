@@ -12,5 +12,4 @@ const store = createStore(
   applyMiddleware(sagaMiddleware)
 );
 sagaMiddleware.run(rootSaga);
-
 module.exports = store;

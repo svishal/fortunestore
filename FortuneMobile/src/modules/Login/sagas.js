@@ -1,21 +1,44 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
-import { loginSuccess, loginFail } from './actions';
-import { LOGIN } from './constant';
-import config from '../../config';
+import { Actions } from 'react-native-router-flux';
+import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import AsyncStorageUtil from '../../utils/asyncStorage';
+import { FETCH_LOGIN_REQUESTED } from './constants';
+import { loginSuccess, loginFailed } from './actions';
+import config from '../../utils/config';
 
-function* login() {
+
+export function* getToken() {
+  const loginData = yield call(AsyncStorageUtil.getItemFromStorage, 'loginData');
+  return `Bearer ${loginData.data.access_token}`;
+}
+
+function* fetchLogin({ username, passwordInput }) {
   const url = `${config.API_URL}/login`;
   try {
-    const composers = yield call(axios.get, url);
-    yield put(loginSuccess(login.data));
-  } catch (e) {
-    yield put(loginFail());
+    const id = DeviceInfo.getUniqueID();
+    let platformType; 
+    if (Platform.OS === 'ios') {
+      platformType = 'iphone';
+    } else {
+      platformType = 'android';
+    }
+    // const loginDataGet = yield call(AsyncStorageUtil.getItemFromStorage, 'loginData');
+    // console.log(`Here is my login data + ${loginDataGet.data.access_token}`);
+    console.log(username, passwordInput, platformType, id);
+    const loginData = yield call(axios.post, url, { mobile_number: username, password: passwordInput, device_type: platformType, device_id: id });
+    yield put(loginSuccess(loginData.data));
+    yield call(AsyncStorageUtil.setItemInStorage, 'loginData', Object.assign({}, loginData.data));
+    Actions.articles();
+  } catch (error) {
+    console.log(`error + ${error}`);
+    yield put(loginFailed(error));
   }
 }
 
 function* sagaLogin() {
-  yield takeEvery(LOGIN, login);
+  yield takeEvery(FETCH_LOGIN_REQUESTED, fetchLogin);
 }
 
 export default sagaLogin;

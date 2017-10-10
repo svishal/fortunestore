@@ -1,8 +1,9 @@
 'use strict';
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableHighlight, Alert, ActivityIndicator, ListView, Image
-} from 'react-native';
+import { Text, View, TextInput, TouchableHighlight, Alert, ListView, Image } from 'react-native';
+import PropTypes from 'prop-types';
 import Prompt from 'react-native-prompt';
+
 // import CheckBox from 'react-native-check-box';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
@@ -36,14 +37,16 @@ class Articles extends Component {
       productArray: [],
       productName: '',
       productPrice: '',
-      productImageUrl: ''
+      productImageUrl: '',
+
     };
-    this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
-    this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
+    // this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
+    // this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
+    this.fetchProductList = this.fetchProductList.bind(this);
   }
 
   componentDidMount() {
-    this.getProductList();
+    this.fetchProductList();
   }
 
   onButtonPressAdd = () => {
@@ -55,105 +58,13 @@ class Articles extends Component {
     });
   } else {
     this.showAlertWithTitleAndMessage('Message!',
-   'Please check your account balance first via entering your phone number');
+    'Please check your account balance first via entering your phone number');
      }
   }
 
-//   onClick(data) {
-//     console.log(data);
-
-//     if (data.checked) {
-//       var element = this.state.dataSource[data.index];
-//       console.log(element);
-//       element.checked = false;
-//     }
-
-//     if (data.checked === false) {
-//       var element1 = this.state.dataSource[data.index];
-//       console.log(element1);
-//       this.setState(element1.checked = true);
-//     }
-
-//     data.checked = !data.checked;
-//     console.log(data.index);
-
-//     this.setState(dataSource[data.index].checked);
-//     console.log(this.state.dataSource[data.index].checked);
-
-//     const msg = data.checked ? 'you checked ' : 'you unchecked ';
-//     console.log(data.productName);
-//     console.log(msg);
-// }
-
-// Get Customer Balance
-getCustomerCurrentBalance(text) {
-  console.log('********** + ', this.state.accessToken);
-  this.setState({ isLoading: true });
-  this.setState({ customerNumber: text });
-  fetch('http://fortunestore.herokuapp.com/api/v1/get_customer_balance',
-  {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.state.accessToken
-    },
-    body: JSON.stringify({
-      mobile_number: text
-    })
-  })
-  .then((response) => response.json())
-  .then((responseJSON) => {
-    this.setState({ isLoading: false });
-    this.setState({ customerNumber: text });
-    if (responseJSON.success === true) {
-      dismissKeyboard();
-      console.log('Number ', this.state.customerNumber);
-      // console.log('responseJSON.message +++++++++++ ' + responseJSON.data.current_balance);
-      const customId = responseJSON.data.id;
-      this.setState({ customerId: customId });
-      // console.log('this.state.customerId +++++++++++ ' + this.state.customerId);
-      if (responseJSON.data.is_new === false) {
-        const serverBal = responseJSON.data.current_balance + '₹';
-        this.setState({ currentBalance: serverBal });
-      }
-    }
-  });
-}
-
-  // Get the Product List
-  async getProductList() {
-    console.log(this.state.accessToken);
-    fetch('http://fortunestore.herokuapp.com/api/v1/product_list', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + this.state.accessToken
-      }
-    })
-    .then((response) => response.json())
-    .then((responseJSON) => {
-      if (responseJSON.success === true) {
-        console.log(responseJSON.data.length);
-        this.productDataModel(responseJSON.data);
-      }
-    });
-  }
-
-  // Get customer phone number  
-  handleCustomerPhoneNumber = (mobNum) => {
-    if (mobNum.length === 10) {
-      this.getCustomerCurrentBalance(mobNum);
-    }
-  }
-
-  handleItemQuantity = (quantity, index) => {
-    if (quantity.length !== '') {
-      console.log(quantity, index);
-      const products = [...this.state.productArray];
-      products[index].quantity = quantity;
-      products[index].singleAmount = products[index].productPrice;
-      this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
-    }
+  fetchProductList() {
+    const { articlesListRequested } = this.props;
+    articlesListRequested();
   }
 
    addMoneyInCustomerAccount = (bal) => {
@@ -198,37 +109,37 @@ getCustomerCurrentBalance(text) {
     );
   }
 
-  handleName = (text) => {
-    this.setState({ inputName: text });
-  }
-  handleQuantity = (text) => {
-    this.setState({ inputQuantity: text });
-  }
-  handleAmount = (text) => {
-    this.setState({ inputAmount: text });
-  }
-  handleButtonChange = () => {
-    // console.log(this.state.productArray);
-    if (this.state.customerId.length <= 0) {
-      Alert.alert('Customer not found, Please enter your phone number first.');
-    } else {
-      const products = [];
-      var totalAmountToPay = 0;
-      for (let i = 0; i < this.state.productArray.length; i++) {
-        const element = this.state.productArray[i];
-        if (element.quantity.length !== 0) {
-            totalAmountToPay = element.quantity * element.singleAmount;
-            products.push(this.state.productArray[i]);
-          }
-      }
-      const userInfo = {
-          exportedMobileNumber: this.state.customerNumber,
-          exportedCustomerId: this.state.customerId
-      };  
-      console.log('Total amount', totalAmountToPay);
-      Actions.payment({ QTY: products, userDetails: userInfo });
-    }
-  }
+//   handleName = (text) => {
+//     this.setState({ inputName: text });
+//   }
+//   handleQuantity = (text) => {
+//     this.setState({ inputQuantity: text });
+//   }
+//   handleAmount = (text) => {
+//     this.setState({ inputAmount: text });
+//   }
+//   handleButtonChange = () => {
+//     // console.log(this.state.productArray);
+//     if (this.state.customerId.length <= 0) {
+//       Alert.alert('Customer not found, Please enter your phone number first.');
+//     } else {
+//       const products = [];
+//       var totalAmountToPay = 0;
+//       for (let i = 0; i < this.state.productArray.length; i++) {
+//         const element = this.state.productArray[i];
+//         if (element.quantity.length !== 0) {
+//             totalAmountToPay = element.quantity * element.singleAmount;
+//             products.push(this.state.productArray[i]);
+//           }
+//       }
+//       const userInfo = {
+//           exportedMobileNumber: this.state.customerNumber,
+//           exportedCustomerId: this.state.customerId
+//       };  
+//       console.log('Total amount', totalAmountToPay);
+//       Actions.payment({ QTY: products, userDetails: userInfo, amountToPaid: this.state.amountToPaid });
+//     }
+//   }
 
   clearText = () => {
     this.textInput1.setNativeProps({ text: '' });
@@ -253,6 +164,24 @@ getCustomerCurrentBalance(text) {
     this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
 }
 
+refreshData = (array) => {
+  const len = array.length;
+  let product; let i; let l;
+  for (i = 0, l = len; i < l; i += 1) {
+    product = {
+      productName: array[i].product_name,
+      productPrice: array[i].price,
+      checked: false,
+      index: i,
+      quantity: '',
+      productImageUrl: array[i].image_url.trim()
+    };
+    this.state.productArray.push(product);
+  } 
+  this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
+  this.setState({ productArray: [] });
+}
+
   // renderCheckBox(data) {
   //   return (
   //       <CheckBox
@@ -272,7 +201,17 @@ getCustomerCurrentBalance(text) {
   //       </View>
   //     );
   //   }
+  const { articlesData } = this.props;
+  
+  console.log('Here you go bouy' + articlesData.success);
+
+  if (articlesData.length > 0) {
+    
+  }
+
+
     return (
+
       <KeyboardAwareScrollView
       style={styles.container}
       resetScrollToCoords={{ x: 0, y: 0 }}
@@ -280,7 +219,7 @@ getCustomerCurrentBalance(text) {
       scrollEnabled={false}
       >
       <View>
-        
+      
       <Prompt
       title="Amount"
       placeholder='Please Enter Amount '
@@ -291,10 +230,10 @@ getCustomerCurrentBalance(text) {
         promptVisible: false,
         message: 'You cancelled'
       })}
-      onSubmit={this.addMoneyInCustomerAccount}
+      onSubmit={this.addMoneyInCustomerAccount} 
       />
-
       <View style={styles.titleContainer}>
+
       <Text style={styles.titleLable}>Articles</Text>
       </View>
       <View style={styles.userDetailContainer}>
@@ -357,11 +296,11 @@ getCustomerCurrentBalance(text) {
 
         <Image
           style={styles.itemImage}
-          source={{ uri: rowData.productImageUrl }}
+          source={{ uri: 'work.data.productImageUrl' }}
         />
         
-         <Text style={styles.itemName}>{rowData.productName}</Text>
-         <Text style={styles.itemPrice}>{rowData.productPrice + '₹'}</Text>
+         <Text style={styles.itemName}>{'work.data.productName'}</Text>
+         <Text style={styles.itemPrice}>{'work.data.productPrice'}</Text>
          <TextInput 
          style={styles.quantityInput}
          keyboardType='phone-pad'
@@ -392,6 +331,7 @@ getCustomerCurrentBalance(text) {
        >
        <Text style={styles.submitText}>Next</Text>
        </TouchableHighlight>
+       
        </View>
 
        </View>
@@ -400,4 +340,14 @@ getCustomerCurrentBalance(text) {
     );
   }
 }
+
+Articles.defaultProps = {
+  error: null,
+};
+
+Articles.propTypes = {
+  articlesListRequested: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
 module.exports = Articles;

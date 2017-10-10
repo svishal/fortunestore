@@ -1,0 +1,5 @@
+export const REDUCER_KEY = 'login';
+export const FETCH_LOGIN_REQUESTED = 'FETCH_LOGIN_REQUESTED';
+export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
+export const FETCH_LOGIN_FAIL = 'FETCH_LOGIN_FAIL';
+export const CLEAR_LOGIN = 'CLEAR_LOGIN';

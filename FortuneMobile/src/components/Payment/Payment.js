@@ -8,6 +8,7 @@ class Payment extends Component {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+        
         this.state = {
             dataSource: ds.cloneWithRows(this.props.QTY),
             total: 0,
@@ -16,18 +17,23 @@ class Payment extends Component {
             customerMob: this.props.userDetails.exportedMobileNumber,
             fosId: '',
             isLoading: false,
-            customerId: this.props.userDetails.exportedCustomerId
+            customerId: this.props.userDetails.exportedCustomerId,
+            data: ''
         };
+        this.goBack = this.goBack.bind(this);
         var tempTotal = 0;
         for (var i = 0; i < this.props.QTY.length; i++) {
             tempTotal = parseInt(this.state.total) + (parseInt(this.props.QTY[i].singleAmount) * parseInt(this.props.QTY[i].quantity));
         }
+        
         this.state.total = tempTotal;
+       // this.updateState = this.updateState.bind(this);
+
         this.getGlobalKeys();
     }
     // Back button press
     onPressBack = () => {
-        Actions.pop();
+       this.goBack();
     }
 
     // Get the stored values
@@ -50,8 +56,40 @@ class Payment extends Component {
     }
 }
 
+
+    async setRemainBalance(value) {
+        try {
+          await AsyncStorage.setItem('remainBal', value);
+          console.log('remainBal set - - - - - - - ', value);
+        } catch (e) {
+          console.log('caught error - - - - - - - ', e);
+          // Handle exceptions
+        }
+      }
+
+      // Go Back 
+    goBack = () => {
+         this.props.updateaction('Aman');
+        // Actions.pop({ refresh: { amountToPaid: 5 } });
+        // Actions.pop();
+        this.updateParentState(data: 'test');
+        this.setRemainBalance('5');
+        // this.props.delivdate(date);
+        Actions.pop({ amountToPaid: 5 });
+    }
+    updateParentState(data) {
+        this.props.updateParentState(data);
+    }
+
+//updateState(date) {
+   // console.log('Payment update');
+   // this.props.action(date);
+//}
+
+
+
 callPaymentApi = () => {
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true });
     fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/expenditures',
         {
             method: 'POST',
@@ -74,7 +112,7 @@ callPaymentApi = () => {
                     'Nice!',
                     'Your Payment is Done',
                     [
-                      { text: 'OK', onPress: () => Actions.pop() },
+                      { text: 'OK', onPress: () => this.goBack() },
                     ]
                   );
             } else {
@@ -82,10 +120,11 @@ callPaymentApi = () => {
             }
         });
 }
-
     deleteNote = () => {
         console.log('Delete');
     }
+
+    
 
     render() {
         return (

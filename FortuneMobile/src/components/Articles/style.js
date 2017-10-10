@@ -122,9 +122,9 @@ currentBalanceText: {
         borderColor: GREY,
         borderWidth: 1,
         borderRadius: 10,
-        textAlign: 'center'
-     }
-     ,
+        textAlign: 'center',
+        marginTop: 10
+     },
      userDetailContainer: {
         height: 40,
         marginTop: 20
@@ -148,6 +148,10 @@ currentBalanceText: {
         marginRight: 20,
         marginLeft: 20,
     },
+    moreInfo: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+      },
 });
 
 export default styles;
