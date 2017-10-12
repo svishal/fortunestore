@@ -1,132 +1,84 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Text, View, ListView, TouchableHighlight, AsyncStorage, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import style from './style.js';
-import { BLACK, } from '../../constants/colors';
+import { GREY, BLACK } from '../../constants/colors';
+
 
 class Payment extends Component {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.QTY),
-            total: 0,
-            purchased_items: [],
-            access_token: '',
-            customerMob: this.props.userDetails.exportedMobileNumber,
+            data: '',
+            amountToBePaid: this.props.amountToPaid,
             fosId: '',
-            isLoading: false,
+            access_token: '',
+            purchased_items: [],
+            dataSource: ds.cloneWithRows(this.props.QTY),
+            customerMob: this.props.userDetails.exportedMobileNumber,
             customerId: this.props.userDetails.exportedCustomerId,
-            data: ''
+            selectedItemsArray: []
         };
         this.goBack = this.goBack.bind(this);
-        var tempTotal = 0;
-        for (var i = 0; i < this.props.QTY.length; i++) {
-            tempTotal = parseInt(this.state.total) + (parseInt(this.props.QTY[i].singleAmount) * parseInt(this.props.QTY[i].quantity));
-        }
-        
-        this.state.total = tempTotal;
-       // this.updateState = this.updateState.bind(this);
-
-        this.getGlobalKeys();
+        this.payment = this.payment.bind(this);
+        this.getFosIdKeys();
     }
+
+    componentDidMount = () => {
+        const tempArray = [];
+        for (let i = 0; i < this.props.QTY.length; i++) {
+            const element = this.props.QTY[i];
+            console.log(`Element is ${element}`);
+            tempArray.push(element);
+          }
+        this.setState({ selectedItemsArray: tempArray });
+        console.log(tempArray);
+    }
+
     // Back button press
     onPressBack = () => {
        this.goBack();
     }
-
     // Get the stored values
-  async getGlobalKeys() {
-    try {
-        const value = await AsyncStorage.getItem('access_token');
-        const storedFosId = await AsyncStorage.getItem('fos_id');
-        // console.log('Access  ', ' ------------  ' + value);
-        // console.log('storedFosId  ', ' ------------  ' + storedFosId);
-        if (value !== null) {
-        this.setState({
-        access_token: value,
-        fosId: storedFosId,
-
-    });
-        }
-    } catch (error) {
-        // Error retrieving data
-        console.log('Error while retrieving data');
-    }
-}
-
-
-    async setRemainBalance(value) {
+    async getFosIdKeys() {
         try {
-          await AsyncStorage.setItem('remainBal', value);
-          console.log('remainBal set - - - - - - - ', value);
-        } catch (e) {
-          console.log('caught error - - - - - - - ', e);
-          // Handle exceptions
+        const value = await AsyncStorage.getItem('fosId');
+        console.log('Fos  ', value);
+        this.setState({ fosId: value });
+        } catch (error) {
+            console.log(`Error while retrieving data ${error}`);
         }
-      }
+    }
 
       // Go Back 
     goBack = () => {
-         this.props.updateaction('Aman');
-        // Actions.pop({ refresh: { amountToPaid: 5 } });
-        // Actions.pop();
-        this.updateParentState(data: 'test');
-        this.setRemainBalance('5');
-        // this.props.delivdate(date);
         Actions.pop({ amountToPaid: 5 });
     }
-    updateParentState(data) {
-        this.props.updateParentState(data);
-    }
+   
+    payment() {
+        // this.setState({ selectedItemsArray: this.props.QTY });
+        if (this.state.selectedItemsArray.length !== 0) {
+        const { fosId, customerId, selectedItemsArray, amountToBePaid } = this.state;
+        const { paymentRequested } = this.props;
+        paymentRequested(fosId, customerId, selectedItemsArray, amountToBePaid);
+        } else {
+            Alert.alert(
+                'Oops!',
+                'Sorry',
+                [
+                    { text: 'OK', onPress: () => console.log('Payment') },
+                ]
+                );
+            } 
+        }
 
-//updateState(date) {
-   // console.log('Payment update');
-   // this.props.action(date);
-//}
-
-
-
-callPaymentApi = () => {
-    this.setState({ isLoading: true });
-    fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/expenditures',
-        {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.state.access_token
-            },
-            body: JSON.stringify({
-                'fos_id': this.state.fosId,
-                'order_date': '2017-09-04',
-                'purchased_items': this.props.QTY,
-                'total_amount': this.state.total
-            })
-        }).then((response) => response.json()).then((responseJSON) => {
-            this.setState({ isLoading: false });
-            // console.log('---------- Response --------- ', '  ' + responseJSON.message);
-            if (responseJSON.success === true) {
-                Alert.alert(
-                    'Nice!',
-                    'Your Payment is Done',
-                    [
-                      { text: 'OK', onPress: () => this.goBack() },
-                    ]
-                  );
-            } else {
-                Alert.alert(responseJSON.message);
-            }
-        });
-}
     deleteNote = () => {
         console.log('Delete');
     }
 
-    
-
-    render() {
+   render() {
         return (
             <View style={style.container}>
                 <View style={style.topTab}>
@@ -146,24 +98,24 @@ callPaymentApi = () => {
                                 flexDirection: 'row',
                                 padding: 10
                             }}>
-                            <Text style={style.itemText}>{rowData.productName + ' :-'} </Text>
+                            <Text style={style.itemText}>{`${rowData.item} :-`} </Text>
                                 <View style={{ backgroundColor: BLACK }}></View>
-                                <Text style={style.itemQuantity}>{rowData.quantity + '  *'}</Text>
-                                <Text style={style.itemQuantity}>{rowData.singleAmount + '  = '}</Text>
-                                <Text style={style.itemQuantity}>{rowData.singleAmount * rowData.quantity} ₹ </Text>
+                                <Text style={style.itemQuantity}>{`${rowData.quantity} *`}</Text>
+                                <Text style={style.itemQuantity}>{`${rowData.amount} =`}</Text>
+                                <Text style={style.itemQuantity}>{`${rowData.amount * rowData.quantity} ₹`} </Text>
                             </View>
-                            <View style={{ height: 2, backgroundColor: BLACK, marginTop: 10 }}></View>
+                            <View style={{ height: 1, backgroundColor: GREY, marginTop: 10 }}></View>
                         </View>
                     }
                 />
                 <View style={style.lowerTab}>
                     <Text style={style.total}>Total  :-</Text>
-                    <Text style={style.totalAmount}>{this.state.total} ₹</Text>
+                    <Text style={style.totalAmount}>{this.state.amountToBePaid} ₹</Text>
                     <View style={style.payContainer}>
                         <TouchableHighlight
                             style={style.payBack}
                             underlayColor='#fff'
-                            onPress={() => { this.callPaymentApi(); }}
+                            onPress={() => { this.payment(); }}
                             >
                             <Text style={style.payText}>Pay</Text>
                         </TouchableHighlight>
@@ -173,4 +125,15 @@ callPaymentApi = () => {
         );
     }
 }
+
+Payment.defaultProps = {
+    error: null,
+  };
+  
+  Payment.propTypes = {
+    paymentRequested: PropTypes.func.isRequired,
+    error: PropTypes.string,
+  };
+
+
 export default Payment;

@@ -29,8 +29,9 @@ export const clearArticles = () => ({
 });
 
 // Customer Balance 
-export const getCustomerBalanceRequested = () => ({
+export const getCustomerBalanceRequested = (customerMobileNumber) => ({
   type: FETCH_GETCUSTOMERBALANCE_REQUESTED,
+  customerMobileNumber
 });
 
 export const getCustomerBalanceSuccess = data => ({

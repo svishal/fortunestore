@@ -1,7 +1,8 @@
 'use strict';
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableHighlight, Alert, ListView, Image } from 'react-native';
+import { Text, View, TextInput, TouchableHighlight, Alert, Image, FlatList, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
+import { getCustomerId } from '../../modules/Articles/sagas';
 import Prompt from 'react-native-prompt';
 
 // import CheckBox from 'react-native-check-box';
@@ -9,199 +10,193 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Actions } from 'react-native-router-flux';
 import dismissKeyboard from 'react-native-dismiss-keyboard';
 import styles from './style';
-
-import { WHITE, BLACK } from '../../constants/colors';
-
+import { WHITE } from '../../constants/colors';
 
 class Articles extends Component {
+
+  static keyExtractor(item) {
+    return item.id;
+  }
+
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }); 
     this.state = {
-      dataSource: ds.cloneWithRows(['row 1']),
-      inputName: '',
-      inputQuantity: '',
-      inputAmount: '',
-      singleAmount: '',
       accessToken: this.props.access_token,
       currentBalance: '',
       customerId: '',
-      balance: '',
       promptVisible: false,
-      isLoading: false,
-      customerNumber: '',
-
-      // CheckBox Props 
-      checked: false,
-      quantityText: '',
+      isAddMoneyEnabled: true,
+      customerMobileNumber: '',
       productArray: [],
-      productName: '',
-      productPrice: '',
-      productImageUrl: '',
-
+      selectedProductsArray: [],
+      addMoneyStatus: '',
+      status: false
     };
-    // this.handleButtonChangeRetour = this.handleButtonChange.bind(this);
     // this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
+    this.getLoginData = this.getLoginData.bind(this);
     this.fetchProductList = this.fetchProductList.bind(this);
+    this.mobileNumberInput = this.mobileNumberInput.bind(this);
+    this.getCustomerCredits = this.getCustomerCredits.bind(this);
+    this.updateQuantityData = this.updateQuantityData.bind(this);
+    this.nextButtonTapped = this.nextButtonTapped.bind(this);
+    this.getCustomerData = this.getCustomerData.bind(this);
   }
 
   componentDidMount() {
+    this.getLoginData();
     this.fetchProductList();
   }
 
   onButtonPressAdd = () => {
     // console.log('this.state.customerId &&&&&&', this.state.customerId)
+    if (this.state.status === false) {
+      this.showAlertWithTitleAndMessage('Sorry!',
+      'You can not add money for this customer');
+      return;
+    } 
     if (this.state.customerId !== '') {
-    this.setState({
-      promptVisible: true,
-      balance: ''
-    });
-  } else {
-    this.showAlertWithTitleAndMessage('Message!',
-    'Please check your account balance first via entering your phone number');
+          this.setState({
+            promptVisible: true,
+            balance: ''
+          });
+    } else {
+       this.showAlertWithTitleAndMessage('Message!',
+          'Please check your account balance first via entering your phone number');
      }
+
   }
 
-  fetchProductList() {
-    const { articlesListRequested } = this.props;
-    articlesListRequested();
-  }
-
-   addMoneyInCustomerAccount = (bal) => {
-    // console.log('this.state.balance wants to add+++++++++++ ' + bal);
-    this.setState({
-      promptVisible: false,
-      message: 'Success',
-      balance: bal,
-    });
-    // console.log('balbalbalbal+++++++++++ ' + bal);
-    this.setState({ isLoading: true });
-    fetch('http://fortunestore.herokuapp.com/api/v1/customers/' + this.state.customerId + '/money',
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer + this.state.accessToken'
-      },
-      body: JSON.stringify({
-        balance: bal
-      })
-    })
-    .then((response) => response.json())
-    .then((responseJSON) => {
-      this.setState({ isLoading: false });
-      if (responseJSON.success === true) {
-        const serverAddedMoney = responseJSON.data.current_balance + '₹';
-        this.setState({ currentBalance: serverAddedMoney });
-        // console.log('responseJSON.message +++++++++++ ' + responseJSON.message);
+  async getCustomerData() {
+    try {
+      if (this.state.customerId.length === 0) {
+        const customerID = await AsyncStorage.getItem('customerId');
+        if (customerID !== null) {
+          this.setState({ customerId: customerID });
+        }
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  showAlertWithTitleAndMessage(title, message) {
+  async getLoginData() {
+    try {
+      if (this.state.addMoneyStatus.length === 0) {
+        const status = await AsyncStorage.getItem('addMoney:');
+        if (status !== null) {
+          if (status === 'inactive') {
+            this.setState({ status: true });
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+getCustomerCredits = (customerNumber) => {
+  this.setState({ customerMobileNumber: customerNumber });
+  const { customerMobileNumber } = this.state;
+  const { getCustomerBalanceRequested } = this.props;
+  getCustomerBalanceRequested(customerMobileNumber);
+}
+
+nextButtonTapped() {
+  try {
+    if (this.state.customerId.length !== 0) {
+      const products = [];
+      var totalAmountToPay = 0;
+      for (let i = 0; i < this.state.productArray.length; i++) {
+        const element = this.state.productArray[i];
+        if (element.quantity.length !== 0) {
+            totalAmountToPay = (element.quantity * element.amount) + totalAmountToPay;
+            products.push(this.state.productArray[i]);
+          }
+      }
+      const userInfo = {
+          exportedMobileNumber: this.state.customerMobileNumber,
+          exportedCustomerId: this.state.customerId
+      };  
+      console.log(userInfo);
+      console.log(products);
+      console.log(totalAmountToPay);
+      Actions.payment({ QTY: products, userDetails: userInfo, amountToPaid: totalAmountToPay });
+    } else {
+      Alert.alert('Customer not found, Please enter your phone number first.');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+mobileNumberInput = (customerMobileNumber) => {
+  if (customerMobileNumber.length === 10) {
+    console.log('10 digits ', customerMobileNumber);
     Alert.alert(
-      title,
-      message,
+      'Confirm!',
+      'Please confirm your mobile number.',
       [
-        { text: 'OK', onPress: () => console.log('OK Pressed!') },
-      ]
+        { text: 'OK', onPress: () => this.getCustomerCredits(customerMobileNumber) },
+        { text: 'NO', onPress: () => console.log('No pressed') },
+      ],
     );
   }
+}
 
-//   handleName = (text) => {
-//     this.setState({ inputName: text });
-//   }
-//   handleQuantity = (text) => {
-//     this.setState({ inputQuantity: text });
-//   }
-//   handleAmount = (text) => {
-//     this.setState({ inputAmount: text });
-//   }
-//   handleButtonChange = () => {
-//     // console.log(this.state.productArray);
-//     if (this.state.customerId.length <= 0) {
-//       Alert.alert('Customer not found, Please enter your phone number first.');
-//     } else {
-//       const products = [];
-//       var totalAmountToPay = 0;
-//       for (let i = 0; i < this.state.productArray.length; i++) {
-//         const element = this.state.productArray[i];
-//         if (element.quantity.length !== 0) {
-//             totalAmountToPay = element.quantity * element.singleAmount;
-//             products.push(this.state.productArray[i]);
-//           }
-//       }
-//       const userInfo = {
-//           exportedMobileNumber: this.state.customerNumber,
-//           exportedCustomerId: this.state.customerId
-//       };  
-//       console.log('Total amount', totalAmountToPay);
-//       Actions.payment({ QTY: products, userDetails: userInfo, amountToPaid: this.state.amountToPaid });
-//     }
-//   }
+showAlertWithTitleAndMessage(title, message) {
+  Alert.alert(
+    title,
+    message,
+    [
+      { text: 'OK', onPress: () => console.log('OK Pressed!') },
+    ]
+  );
+}
 
-  clearText = () => {
-    this.textInput1.setNativeProps({ text: '' });
-    this.textInput2.setNativeProps({ text: '' });
-    this.textInput3.setNativeProps({ text: '' });
-  }
+addMoneyInCustomerAccount = () => {
+}
 
-  productDataModel = (array) => {
-    const len = array.length;
+fetchProductList() {
+  const { articlesListRequested } = this.props;
+  articlesListRequested();
+}
+
+updateQuantityData = (array, enteredQuantity, index) => {
+  const len = array.length;
+  console.log(`Array data is -- ${array[index].product_name}`);
+  this.props.articlesData[index].quantity = enteredQuantity;
+  this.getCustomerData();
+  if (this.state.productArray.length === 0) {
     let product; let i; let l;
     for (i = 0, l = len; i < l; i += 1) {
       product = {
-        productName: array[i].product_name,
-        productPrice: array[i].price,
-        checked: false,
-        index: i,
-        quantity: '',
-        productImageUrl: array[i].image_url.trim()
+        item: array[i].product_name,
+        amount: array[i].price,
+        quantity: ''
       };
       this.state.productArray.push(product);
     } 
-    this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
+    this.state.productArray[index].quantity = enteredQuantity;
+  } else {
+    this.state.productArray[index].quantity = enteredQuantity;
+  }
 }
 
-refreshData = (array) => {
-  const len = array.length;
-  let product; let i; let l;
-  for (i = 0, l = len; i < l; i += 1) {
-    product = {
-      productName: array[i].product_name,
-      productPrice: array[i].price,
-      checked: false,
-      index: i,
-      quantity: '',
-      productImageUrl: array[i].image_url.trim()
-    };
-    this.state.productArray.push(product);
-  } 
-  this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.state.productArray) });
-  this.setState({ productArray: [] });
+handleItemQuantity = (text, index) => {
+  console.log(text, index);
+  this.updateQuantityData(this.props.articlesData, text, index);
 }
 
-  // renderCheckBox(data) {
-  //   return (
-  //       <CheckBox
-  //           style={styles.checkBox}
-  //           onClick={() => this.onClick(data)}
-  //           isChecked={data.checked}
-  //           checkedImage={<Image source={require('../../Assets/check.png')} style={{ width: 32, height: 32 }} />}
-  //           unCheckedImage={<Image source={require('../../Assets/uncheck.png')} style={{ width: 32, height: 32 }} />}
-  //       />);
-  // }
 
   render() {
-  const { articlesData } = this.props;
-  console.log('Articles data -- ' + articlesData);
-  
-  const obj = articlesData[0];
-   
-   console.log('Product -- ' + JSON.stringify(obj));
+    const { articlesData, balanceData } = this.props;
+    let bal = String(balanceData.current_balance);
+    if (bal === 'undefined') {
+      bal = '';
+    } else {
+      bal = `${bal} ₹`;
+    }
     return (
-
       <KeyboardAwareScrollView
       style={styles.container}
       resetScrollToCoords={{ x: 0, y: 0 }}
@@ -237,16 +232,16 @@ refreshData = (array) => {
       keyboardType='phone-pad'
       returnKeyType='next'
       maxLength={10}
-      onChangeText={this.handleCustomerPhoneNumber}
+      onChangeText={this.mobileNumberInput}
       />
       <View style={styles.addButtonContainer}>
       <TextInput
        style={styles.currentBalanceText}
       underlineColorAndroid='rgba(0,0,0,0)'
-      placeholder="Balance"
+      placeholder='Balance'
       placeholderTextColor='#A7A7A7'
       editable={false}
-      value={this.state.currentBalance}
+      value={bal}
       />
       <TouchableHighlight
       style={styles.addButton}
@@ -267,44 +262,36 @@ refreshData = (array) => {
 
       {/* // List View Wrapper */}
       <View 
-      style={{ 
-        height: 200,
-        backgroundColor: WHITE,
-        marginTop: 0,
-      }}
+      style={styles.wrapperView}
       >
-      <ListView
-       style={{ 
-        marginTop: 10,
-      }}
-      dataSource={this.state.dataSource}
-      renderRow={
-        (rowData) =>
-        <View 
-        style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: WHITE, alignItems: 'center' }}
-        >
+      <FlatList
+            style={styles.listView}
+            data={articlesData}
+            keyExtractor={Articles.keyExtractor}
+            enableEmptySections
+            renderItem={({ item, index }) => (
+              <View 
+              style={styles.listContainerView}
+              >
+                <Image
+                style={styles.itemImage}
+                source={{ uri: item.image_url.trim() }}
+                />
+                <Text style={styles.itemName}>{item.product_name}</Text>
+                <Text style={styles.itemPrice}>{`${item.price} ₹`}</Text>
+                <TextInput 
+                style={styles.quantityInput}
+                keyboardType='phone-pad'
+                maxLength={2}
+                ref={component => this.textInput = component}
+                placeholder='Quantity'
+                onChangeText={(text) => this.handleItemQuantity(text, index)}
+                />
+                </View>
+            )}
+          />
 
-        <Image
-          style={styles.itemImage}
-          source={{ uri: 'work.data.productImageUrl' }}
-        />
-        
-         <Text style={styles.itemName}>{'articlesData.productName'}</Text>
-         <Text style={styles.itemPrice}>{'articlesData.productPrice'}</Text>
-         <TextInput 
-         style={styles.quantityInput}
-         keyboardType='phone-pad'
-         maxLength={2}
-         placeholder='Quantity'
-         onChangeText={(text) => this.handleItemQuantity(text, rowData.index)}
-        />
-        <View 
-        style={{ height: 0.5, backgroundColor: BLACK, marginTop: 10 }}
-        >
-         </View>
-      </View>}
-      />
-      </View>
+      </View> 
 
        {/* Next View Button  */}
        <View
@@ -317,7 +304,7 @@ refreshData = (array) => {
        <TouchableHighlight
        style={styles.next}
        underlayColor='#fff'
-       onPress={this.handleButtonChangeRetour}
+       onPress={this.nextButtonTapped}
        >
        <Text style={styles.submitText}>Next</Text>
        </TouchableHighlight>
@@ -337,6 +324,7 @@ Articles.defaultProps = {
 
 Articles.propTypes = {
   articlesListRequested: PropTypes.func.isRequired,
+  getCustomerBalanceRequested: PropTypes.func.isRequired,
   error: PropTypes.string,
 };
 

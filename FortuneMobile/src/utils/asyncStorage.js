@@ -1,12 +1,12 @@
 import { AsyncStorage } from 'react-native';
 
 class AsyncStorageUtil {
-  static async getItemFromStorage(key, defaultValue) {
+  static async getItemFromStorage(key) {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
       return JSON.parse(value);
     }
-    return defaultValue || null;
+    return null;
   }
   static async getMultipleItemsFromStorage(keys, defaultValue) {
     const value = await AsyncStorage.multiGet(keys);

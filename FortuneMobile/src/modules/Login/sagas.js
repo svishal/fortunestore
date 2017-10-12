@@ -14,6 +14,7 @@ export function* getToken() {
   return `Bearer ${loginData.data.access_token}`;
 }
 
+
 function* fetchLogin({ username, passwordInput }) {
   const url = `${config.API_URL}/login`;
   try {
@@ -29,7 +30,13 @@ function* fetchLogin({ username, passwordInput }) {
     console.log(username, passwordInput, platformType, id);
     const loginData = yield call(axios.post, url, { mobile_number: username, password: passwordInput, device_type: platformType, device_id: id });
     yield put(loginSuccess(loginData.data));
-    yield call(AsyncStorageUtil.setItemInStorage, 'loginData', Object.assign({}, loginData.data));
+    console.log(loginData);
+    yield call(AsyncStorageUtil.setItemInStorage, 'loginData', loginData.data);
+    const logData = loginData.data.data;
+    const fosId = logData.id;
+    const addMoney = logData.add_money;
+    yield call(AsyncStorageUtil.setItemInStorage, 'fosId', fosId);
+    yield call(AsyncStorageUtil.setItemInStorage, 'addMoney', addMoney);
     Actions.articles();
   } catch (error) {
     console.log(`error + ${error}`);

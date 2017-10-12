@@ -5,11 +5,12 @@ import {
   CLEAR_PAYMENT,
 } from './constants';
 
-export const paymentRequested = (fosId, orderDate, totalAmount) => ({
+export const paymentRequested = (fosId, customerId, selectedItemsArray, amountToBePaid) => ({
   type: FETCH_PAYMENT_REQUESTED,
   fosId,
-  orderDate,
-  totalAmount,
+  customerId,
+  selectedItemsArray,
+  amountToBePaid
 });
 
 export const paymentSuccess = data => ({

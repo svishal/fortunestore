@@ -30,6 +30,7 @@ class Login extends Component {
   login() {
     const { loginInput, passwordInput } = this.state;
     const { loginRequest } = this.props;
+    console.log(loginInput);
     loginRequest(loginInput, passwordInput);
   }
 
@@ -41,7 +42,7 @@ class Login extends Component {
       contentContainerStyle={LoginStyle.keyboardViewerStyle}
       scrollEnabled={false}
       >
-
+      
       <View style={LoginStyle.container}>
       <Text style={LoginStyle.headerContent}> Fortune Store </Text>
 
@@ -54,7 +55,7 @@ class Login extends Component {
       keyboardType='phone-pad'
       onChangeText={username => this.setState({ loginInput: username })}
       />
-
+  
       <TextInput 
       secureTextEntry={isPassword}
       style={LoginStyle.input}

@@ -97,7 +97,12 @@ currentBalanceText: {
         color: GREY,
         fontWeight: 'bold',
     },
-
+    listContainerView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: WHITE,
+    alignItems: 'center'
+    },
     quantityInput: {
          flex: 0.20,
          backgroundColor: WHITE,
@@ -108,7 +113,8 @@ currentBalanceText: {
          borderColor: GREY,
          textAlign: 'center',
          borderRadius: 5,
-         borderWidth: 1
+         borderWidth: 1,
+         fontSize: 12,
     },
 
     checkBox: {
@@ -148,9 +154,10 @@ currentBalanceText: {
         marginRight: 20,
         marginLeft: 20,
     },
-    moreInfo: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+    wrapperView: {
+        height: 200,
+        backgroundColor: WHITE,
+        marginTop: 0,
       },
 });
 

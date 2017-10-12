@@ -5,13 +5,25 @@ import { Actions } from 'react-native-router-flux';
 import { FETCH_PAYMENT_REQUESTED } from './constants';
 import { paymentSuccess, paymentFailed } from './actions';
 import config from '../../utils/config';
+import { getToken } from '../Login/sagas';
 
-function* fetchPayment({ username, password }) {
-  const url = `${config.API_URL}/customers/a7fa8f36-9159-11e7-9ca1-c8600089c93c/expenditures`;
+function* fetchPayment({ fosId, customerId, selectedItemsArray, amountToBePaid }) {
   try {
-    const paymentData = yield call(axios.post, url, { _username: username, _password: password });
-    yield put(paymentSuccess(paymentData.data));
-    // Actions.articles();
+    const url = `${config.API_URL}/customers/${customerId}/expenditures`;
+    const token = yield call(getToken);
+    const response = yield call(axios, {
+      url,
+      method: 'POST',
+      data: {
+        fos_id: fosId,
+        order_date: '2017-10-12',
+        purchased_items: selectedItemsArray,
+        total_amount: amountToBePaid
+      },
+      headers: { Authorization: token },
+    });
+    yield put(paymentSuccess(response.data));
+
   } catch (error) {
     yield put(paymentFailed(error));
   }

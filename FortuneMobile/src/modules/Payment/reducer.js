@@ -18,10 +18,12 @@ export default function (state = initialState, action) {
       return state.set('loading', true);
     }
     case FETCH_PAYMENT_SUCCESS: {
+      console.log('Payment is done');
       return state.set('paymentData', action.data)
         .set('loading', false).set('error', null);
     }
     case FETCH_PAYMENT_FAIL: {
+      console.log(`Error while paying -- ${action.error}`);
       return state.set('error', action.error.response.data.message);
     }
     case CLEAR_PAYMENT: {
@@ -31,7 +33,4 @@ export default function (state = initialState, action) {
       return state;
   }
 }
-
-
-
 
