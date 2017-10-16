@@ -176,17 +176,14 @@ updateQuantityData = (array, enteredQuantity, index) => {
       };
       this.state.productArray.push(product);
     } 
-    this.state.productArray[index].quantity = enteredQuantity;
-  } else {
-    this.state.productArray[index].quantity = enteredQuantity;
   }
+  this.state.productArray[index].quantity = enteredQuantity;
 }
 
 handleItemQuantity = (text, index) => {
   console.log(text, index);
   this.updateQuantityData(this.props.articlesData, text, index);
 }
-
 
   render() {
     const { articlesData, balanceData } = this.props;
