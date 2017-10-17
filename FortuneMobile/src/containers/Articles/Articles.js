@@ -8,12 +8,14 @@ const mapStateToProps = state => ({
   articlesData: getArticlesDataSelector(state),
   balanceData: getCustomerBalanceSelector(state),
   error: getErrorSelector(state),
+
 });
 
 const mapDispatchToProps = dispatch => ({
   articlesListRequested: () => dispatch(articlesListRequested()),
   getCustomerBalanceRequested: (customerMobileNumber) =>
   dispatch(getCustomerBalanceRequested(customerMobileNumber))
+
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Articles);

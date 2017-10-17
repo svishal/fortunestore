@@ -6,7 +6,9 @@ import {
   CLEAR_ARTICLES,
   FETCH_GETCUSTOMERBALANCE_REQUESTED,
   FETCH_CUSTOMERBALANCE_SUCCESS,
-  FETCH_CUSTOMERBALANCE_FAILED
+  FETCH_CUSTOMERBALANCE_FAILED,
+
+  GET_UPDATEDBALANCE
 } from './constants';
 
 const initialState = Map({
@@ -42,15 +44,18 @@ export default function (state = initialState, action) {
       return state.set('loading', true);
     }
     case FETCH_CUSTOMERBALANCE_SUCCESS: {
-      const bal = action.data.data.current_balance.toString();
-      console.log(`Customer balance is  --- ${bal}`);
-      
+      const bal = action.data.data.current_balance;
       return state.set('balanceData', action.data.data).set('balance', bal)
       .set('loading', false).set('error', null);
     }
     case FETCH_CUSTOMERBALANCE_FAILED: {
       console.log(`Damn you failed  --- ${action.error.response.data.message}`);
       return state.set('error', action.error.response.data.message);
+    }
+
+    case GET_UPDATEDBALANCE: {
+      return state.set('balanceData', action.data.data)
+      .set('loading', false).set('error', null);
     }
 
     default:

@@ -25,3 +25,8 @@ export const getErrorSelector = createSelector(
   getError,
   error => error
 );
+
+export const getUpdatedBalanceSelector = createSelector(
+  getError,
+  balanceData => balanceData
+);

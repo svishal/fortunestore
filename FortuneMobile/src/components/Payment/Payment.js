@@ -54,7 +54,7 @@ class Payment extends Component {
 
       // Go Back 
     goBack = () => {
-        Actions.pop({ amountToPaid: 5 });
+        Actions.pop();
     }
    
     payment() {
@@ -100,11 +100,9 @@ class Payment extends Component {
                             }}>
                             <Text style={style.itemText}>{`${rowData.item} :-`} </Text>
                                 <View style={{ backgroundColor: BLACK }}></View>
-                                <Text style={style.itemQuantity}>{`${rowData.quantity} *`}</Text>
-                                <Text style={style.itemQuantity}>{`${rowData.amount} =`}</Text>
-                                <Text style={style.itemQuantity}>{`${rowData.amount * rowData.quantity} ₹`} </Text>
+                                <Text style={style.itemTotal}>{`${rowData.quantity} * ${rowData.amount} = ${rowData.amount * rowData.quantity} ₹`}</Text>
                             </View>
-                            <View style={{ height: 1, backgroundColor: GREY, marginTop: 10 }}></View>
+                            <View style={{ height: 0.7, backgroundColor: GREY, marginTop: 10 }}></View>
                         </View>
                     }
                 />
@@ -132,6 +130,8 @@ Payment.defaultProps = {
   
   Payment.propTypes = {
     paymentRequested: PropTypes.func.isRequired,
+    // getUpdatedBalance: PropTypes.func.isRequired,
+    addMessage: PropTypes.string.isRequired,
     error: PropTypes.string,
   };
 

@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginRequest: (login, passwordInput) => dispatch(loginRequested(login, passwordInput)),
+  loginRequest: (login, passwordInput) => dispatch(loginRequested(login, passwordInput))
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Login);

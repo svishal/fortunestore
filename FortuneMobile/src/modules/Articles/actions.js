@@ -6,7 +6,9 @@ import {
 
   FETCH_GETCUSTOMERBALANCE_REQUESTED,
   FETCH_CUSTOMERBALANCE_SUCCESS,
-  FETCH_CUSTOMERBALANCE_FAILED
+  FETCH_CUSTOMERBALANCE_FAILED,
+
+  GET_UPDATEDBALANCE
 
 } from './constants';
 
@@ -42,4 +44,9 @@ export const getCustomerBalanceSuccess = data => ({
 export const getCustomerBalanceFailed = error => ({
   type: FETCH_CUSTOMERBALANCE_FAILED,
   error,
+});
+
+export const getUpdatedBalance = (balance) => ({
+  type: GET_UPDATEDBALANCE,
+  balance
 });

@@ -47,6 +47,16 @@ class Articles extends Component {
     this.fetchProductList();
   }
 
+  componentDidUpdate(prevProps) {
+    const { addMessage, clearAddMessage } = this.props;
+    const oldAddMessage = prevProps.addMessage;
+    console.log(`I am gonna succeed ${oldAddMessage}, ${addMessage}`);
+    if (addMessage === 'success' && oldAddMessage === 'init') {
+      clearAddMessage();
+    }
+  }
+
+
   onButtonPressAdd = () => {
     // console.log('this.state.customerId &&&&&&', this.state.customerId)
     if (this.state.status === false) {
@@ -63,7 +73,6 @@ class Articles extends Component {
        this.showAlertWithTitleAndMessage('Message!',
           'Please check your account balance first via entering your phone number');
      }
-
   }
 
   async getCustomerData() {
@@ -80,6 +89,8 @@ class Articles extends Component {
   }
 
   async getLoginData() {
+    this.balance.setNativeProps({ text: '' });
+    console.log('Again calling');
     try {
       if (this.state.addMoneyStatus.length === 0) {
         const status = await AsyncStorage.getItem('addMoney:');
@@ -188,6 +199,7 @@ handleItemQuantity = (text, index) => {
   render() {
     const { articlesData, balanceData } = this.props;
     let bal = String(balanceData.current_balance);
+
     if (bal === 'undefined') {
       bal = '';
     } else {
@@ -234,6 +246,7 @@ handleItemQuantity = (text, index) => {
       <View style={styles.addButtonContainer}>
       <TextInput
        style={styles.currentBalanceText}
+      ref={component => this.balance = component}
       underlineColorAndroid='rgba(0,0,0,0)'
       placeholder='Balance'
       placeholderTextColor='#A7A7A7'

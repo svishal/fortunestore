@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, TouchableOpacity, Text } 
+import { TextInput, View, TouchableOpacity, Text, AsyncStorage } 
 from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
@@ -20,6 +20,29 @@ class Login extends Component {
     };
     this.login = this.login.bind(this);
   }
+
+componentWillMount() {
+  this.getLoginData();
+}
+
+  async getLoginData() {
+    try {
+      if (this.state.addMoneyStatus.length === 0) {
+        const status = await AsyncStorage.getItem('addMoney:');
+        if (status !== null) {
+          if (status === 'inactive') {
+            this.setState({ status: true });
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  rememberMe() {
+    
+   }
 
   showPassword() {
     this.setState({

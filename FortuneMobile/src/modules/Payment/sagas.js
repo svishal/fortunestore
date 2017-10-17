@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
 // import AsyncStorageUtil from '../../utils/asyncStorage';
@@ -23,11 +24,18 @@ function* fetchPayment({ fosId, customerId, selectedItemsArray, amountToBePaid }
       headers: { Authorization: token },
     });
     yield put(paymentSuccess(response.data));
-
+    Alert.alert(
+      'Nice!',
+      'Your payment has been successfully completed. Thanks',
+      [
+        { text: 'OK', onPress: () => Actions.articles() }
+      ],
+    );
   } catch (error) {
     yield put(paymentFailed(error));
   }
 }
+
 
 function* sagaPayment() {
   yield takeEvery(FETCH_PAYMENT_REQUESTED, fetchPayment);

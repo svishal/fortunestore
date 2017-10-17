@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, BLACK, BRAND_PRIMARY } from '../../constants/colors';
+import { WHITE, BLACK, GREY, BRAND_PRIMARY } from '../../constants/colors';
 
 const style = StyleSheet.create({
     container: {
@@ -35,28 +35,31 @@ const style = StyleSheet.create({
      payText: {
         textAlignVertical: 'center',
         textAlign: 'center',
-         color: BLACK,
+        color: BLACK,
         fontSize: 22
     },
      lowerTab: {
         backgroundColor: BRAND_PRIMARY, flexDirection: 'row'
     },
      itemText: {
-        marginTop: 2,
-         marginLeft: 10,
-        fontSize: 20,
-         fontWeight: 'bold',
-         textAlign: 'center',
-          textAlignVertical: 'center',
+        flex: 0.50,
+        marginTop: 5,
+        marginLeft: 10,
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        textAlignVertical: 'center',
         color: BLACK
     },
-     itemQuantity: {
-        marginTop: 6,
-         marginLeft: 5,
-          fontWeight: 'bold',
+
+    itemTotal: {
+        flex: 0.50,
+        marginTop: 5,
+        marginRight: 5,
+        fontWeight: 'bold',
         fontSize: 15,
-         textAlign: 'center',
-          textAlignVertical: 'center',
+        textAlign: 'right',
+        textAlignVertical: 'center',
         color: BLACK
     },
      back: {

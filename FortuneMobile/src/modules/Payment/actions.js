@@ -3,6 +3,7 @@ import {
   FETCH_PAYMENT_SUCCESS,
   FETCH_PAYMENT_FAIL,
   CLEAR_PAYMENT,
+  CLEAR_ADDMESSAGE
 } from './constants';
 
 export const paymentRequested = (fosId, customerId, selectedItemsArray, amountToBePaid) => ({
@@ -25,4 +26,8 @@ export const paymentFailed = error => ({
 
 export const clearPayment = () => ({
   type: CLEAR_PAYMENT,
+});
+
+export const clearAddMessage = () => ({
+  type: CLEAR_ADDMESSAGE,
 });

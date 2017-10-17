@@ -4,12 +4,15 @@ import {
   FETCH_PAYMENT_SUCCESS,
   FETCH_PAYMENT_FAIL,
   CLEAR_PAYMENT,
+  CLEAR_ADDMESSAGE,
+
 } from './constants';
 
 const initialState = Map({
   paymentData: {},
   loading: false,
   error: null,
+  addMessage: 'init',
 });
 
 export default function (state = initialState, action) {
@@ -19,15 +22,18 @@ export default function (state = initialState, action) {
     }
     case FETCH_PAYMENT_SUCCESS: {
       console.log('Payment is done');
-      return state.set('paymentData', action.data)
+      return state.set('paymentData', action.data).set('addMessage', 'success')
         .set('loading', false).set('error', null);
     }
     case FETCH_PAYMENT_FAIL: {
       console.log(`Error while paying -- ${action.error}`);
-      return state.set('error', action.error.response.data.message);
+      return state.set('error', action.error.response.data.message).set('addMessage', 'failure');
     }
     case CLEAR_PAYMENT: {
       return initialState;
+    }
+    case CLEAR_ADDMESSAGE: {
+      return state.set('addMessage', 'init');
     }
     default:
       return state;
