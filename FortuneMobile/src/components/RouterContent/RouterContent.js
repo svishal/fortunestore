@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  StatusBar, StyleSheet, View } from 'react-native';
+  StatusBar, StyleSheet, View, Platform, NetInfo, Alert } from 'react-native';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import PropTypes from 'prop-types';
 import Login from '../../containers/Login';
@@ -28,12 +28,18 @@ const cardStyle = {
   backgroundColor: WHITE,
 };
 
-// const handleFirstConnectivityChange = (isConnected) => {
-//   if (!isConnected) {
-//     Actions.offline();
-//   }
-//   NetInfo.isConnected.removeEventListener('change', handleFirstConnectivityChange);
-// };
+const handleFirstConnectivityChange = (isConnected) => {
+  if (!isConnected) {
+    Alert.alert(
+      'Oops!',
+      'Seems like your internent is not working',
+      [
+        { text: 'OK', onPress: () => console.log('Internet not working') }
+      ],
+    );
+  }
+  NetInfo.isConnected.removeEventListener('change', handleFirstConnectivityChange);
+};
 
 class RouterContent extends Component {
   constructor() {
@@ -43,7 +49,26 @@ class RouterContent extends Component {
 
   onSceneChange() {
     this.props.updateScene(Actions.currentScene);
+    if (Platform.OS === 'ios') {
+      NetInfo.isConnected.addEventListener('change', handleFirstConnectivityChange);
+    } else {
+      NetInfo.isConnected.fetch().then(
+        (isConnected) => {
+          if (!isConnected) {
+            Alert.alert(
+              'Oops!',
+              'Seems like your internent is not working',
+              [
+                { text: 'OK', onPress: () => console.log('Internet not working') }
+              ],
+            );
+          }
+        }
+      );
+    }
   }
+
+  
   render() {
     return (
       <View style={styles.container}>
@@ -52,12 +77,12 @@ class RouterContent extends Component {
         />
         <Router style={styles.content} cardStyle={cardStyle}>
           <Scene key="root">
-            {/* <Scene
+             <Scene
               key="login"
               on={() => { this.onSceneChange(); }}
               component={Login}
               hideNavBar
-            /> */}
+            /> 
             <Scene
               key="articles"
               on={() => { this.onSceneChange(); }}

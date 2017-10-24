@@ -1,9 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorageUtil from '../../utils/asyncStorage';
 import { FETCH_ARTICLESLIST_REQUESTED,
          FETCH_GETCUSTOMERBALANCE_REQUESTED,
-         FETCH_ADDCUSTOMERBALANCE_REQUESTED } from './constants';
+         FETCH_ADDCUSTOMERBALANCE_REQUESTED, CLEAR_ARTICLES } from './constants';
 import { articlesListSuccess, articlesListFailed,
           getCustomerBalanceSuccess, getCustomerBalanceFailed }
             from './actions';
@@ -34,14 +35,19 @@ function* fetchCustomerBalance({ customerMobileNumber }) {
       headers: { Authorization: token },
     });
     yield put(getCustomerBalanceSuccess(response.data));
-    
-    console.log(response.data.data);
     const constant = response.data.data;
     const id = constant.id;
     yield call(AsyncStorageUtil.setItemInStorage, 'customerId', id);
     // const customerData = yield call(AsyncStorageUtil.getItemFromStorage, 'customerId');
   } catch (e) {
     yield put(getCustomerBalanceFailed());
+    Alert.alert(
+      'Oops!',
+      'Unable to fetch your current balance',
+      [
+        { text: 'OK', onPress: () => console.log('Error') }
+      ],
+    );
   }
 }
 

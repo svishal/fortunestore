@@ -79,6 +79,7 @@ class Payment extends Component {
     }
 
    render() {
+
         return (
             <View style={style.container}>
                 <View style={style.topTab}>
@@ -98,11 +99,11 @@ class Payment extends Component {
                                 flexDirection: 'row',
                                 padding: 10
                             }}>
-                            <Text style={style.itemText}>{`${rowData.item} :-`} </Text>
+                            <Text style={style.itemText}>{`${rowData.item}`} </Text>
                                 <View style={{ backgroundColor: BLACK }}></View>
                                 <Text style={style.itemTotal}>{`${rowData.quantity} * ${rowData.amount} = ${rowData.amount * rowData.quantity} ₹`}</Text>
                             </View>
-                            <View style={{ height: 0.7, backgroundColor: GREY, marginTop: 10 }}></View>
+                            {/* <View style={{ height: 0.7, backgroundColor: GREY, marginTop: 10 }}></View> */}
                         </View>
                     }
                 />
@@ -122,6 +123,7 @@ class Payment extends Component {
             </View>
         );
     }
+       
 }
 
 Payment.defaultProps = {

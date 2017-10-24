@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, TouchableOpacity, Text, AsyncStorage } 
+import { TextInput, View, TouchableOpacity, Text, AsyncStorage, Alert, Image } 
 from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Actions } from 'react-native-router-flux';
+import LoadingScreen from '../LoadingScreen';
 import LoginStyle from './LoginStyle.js';
+import logo from '../../Assets/logo.png';
 
 class Login extends Component {
   constructor(props) {
@@ -51,23 +52,60 @@ componentWillMount() {
   }
 
   login() {
-    const { loginInput, passwordInput } = this.state;
-    const { loginRequest } = this.props;
-    console.log(loginInput);
-    loginRequest(loginInput, passwordInput);
-  }
+       const { username, passwordInput } = this.state;
+       if (username.length === 0) {
+        Alert.alert(
+          'Message',
+          'Please provide the your phone Number',
+          [
+            { text: 'OK', onPress: () => console.log('Error') }
+          ],
+        );
+        return;
+       } 
+       if (passwordInput.length === 0) {
+        Alert.alert(
+          'Message',
+          'Please provide the correct password',
+          [
+            { text: 'OK', onPress: () => console.log('Error') }
+          ],
+        );
+        return;
+       } 
+       if (username.length !== 10) {
+        Alert.alert(
+          'Message',
+          'Please provide the correct phone Number',
+          [
+            { text: 'OK', onPress: () => console.log('Error') }
+          ],
+        );
+        return;
+       } 
+       const { loginRequest } = this.props;
+       loginRequest(username, passwordInput);
+     }
 
   render() {
-    const { isPassword } = this.state;
+    const { isPassword, username, passwordInput } = this.state;
+    const { loading } = this.props;
+    if (!loading) {
     return (
       <KeyboardAwareScrollView
       resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={LoginStyle.keyboardViewerStyle}
       scrollEnabled={false}
       >
-      
+
       <View style={LoginStyle.container}>
-      <Text style={LoginStyle.headerContent}> Fortune Store </Text>
+      <View style={LoginStyle.imageWrapper}>
+      <Image
+          style={LoginStyle.logo}
+          source={logo}
+       />
+      </View>
+      {/* <Text style={LoginStyle.headerContent}> Fortune Retail </Text> */}
 
       <TextInput 
       style={LoginStyle.input}
@@ -76,7 +114,8 @@ componentWillMount() {
       placeholderTextColor="#666564"
       autoCapitalize="none"
       keyboardType='phone-pad'
-      onChangeText={username => this.setState({ loginInput: username })}
+      onChangeText={loginInput => this.setState({ username: loginInput })}
+      value={username}
       />
   
       <TextInput 
@@ -87,6 +126,7 @@ componentWillMount() {
       placeholderTextColor="#666564"
       autoCapitalize="none"
       onChangeText={password => this.setState({ passwordInput: password })}
+      value={passwordInput}
       />
 
       <TouchableOpacity
@@ -99,6 +139,10 @@ componentWillMount() {
       </View>
       </KeyboardAwareScrollView>
     );
+  }
+  return (
+    <LoadingScreen />
+  );
   }
 }
 

@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import Login from '../../components/Login';
 import { loginRequested } from '../../modules/Login/actions';
-import { getErrorSelector } from '../../modules/Login/selectors';
+import { getErrorSelector, getLoadingSelector } from '../../modules/Login/selectors';
 
 const mapStateToProps = state => ({
   error: getErrorSelector(state),
+ loading: getLoadingSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -16,9 +16,10 @@ export const articlesListRequested = () => ({
   type: FETCH_ARTICLESLIST_REQUESTED,
 });
 
-export const articlesListSuccess = data => ({
+export const articlesListSuccess = (data, customerMobileNumber) => ({
   type: FETCH_ARTICLESLIST_SUCCESS,
   data,
+  customerMobileNumber
 });
 
 export const articlesListFailed = error => ({
@@ -36,9 +37,10 @@ export const getCustomerBalanceRequested = (customerMobileNumber) => ({
   customerMobileNumber
 });
 
-export const getCustomerBalanceSuccess = data => ({
+export const getCustomerBalanceSuccess = (data, customerMobileNumber)=> ({
   type: FETCH_CUSTOMERBALANCE_SUCCESS,
   data,
+  customerMobileNumber
 });
 
 export const getCustomerBalanceFailed = error => ({

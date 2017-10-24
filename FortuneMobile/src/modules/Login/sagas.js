@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import AsyncStorageUtil from '../../utils/asyncStorage';
 import { FETCH_LOGIN_REQUESTED } from './constants';
@@ -39,8 +39,16 @@ function* fetchLogin({ username, passwordInput }) {
     yield call(AsyncStorageUtil.setItemInStorage, 'addMoney', addMoney);
     Actions.articles();
   } catch (error) {
-    console.log(`error + ${error}`);
+    console.log(`Got error + ${error}`);
     yield put(loginFailed(error));
+
+    Alert.alert(
+      'Oops!',
+      'Something went wrong, Please contact to admin',
+      [
+        { text: 'OK', onPress: () => console.log('Error') }
+      ],
+    );
   }
 }
 

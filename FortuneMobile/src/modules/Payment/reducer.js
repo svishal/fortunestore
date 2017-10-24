@@ -27,7 +27,7 @@ export default function (state = initialState, action) {
     }
     case FETCH_PAYMENT_FAIL: {
       console.log(`Error while paying -- ${action.error}`);
-      return state.set('error', action.error.response.data.message).set('addMessage', 'failure');
+      return state.set('error', 'Oops payment failed').set('addMessage', 'failure').set('loading', false);
     }
     case CLEAR_PAYMENT: {
       return initialState;

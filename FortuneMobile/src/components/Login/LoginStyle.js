@@ -1,15 +1,29 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY, BRAND_PRIMARY } from '../../constants/colors';
 
+
  const styles = StyleSheet.create({
    container: {
-      paddingTop: 150,
+      paddingTop: 50,
       backgroundColor: WHITE,
       marginTop: 0,
       flex: 1,
       marginBottom: 0
    },
 
+   imageWrapper: {
+    alignItems: 'center',
+    width: 375,
+    backgroundColor: WHITE,
+  },
+  logo: {
+    width: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 200,
+    marginTop: 0,
+    marginBottom: 50,
+  },
    loaderView: {
     flex: 1,
     justifyContent: 'center',
@@ -24,6 +38,7 @@ import { WHITE, GREY, BRAND_PRIMARY } from '../../constants/colors';
    },
 
    headerContent: {
+   marginTop: 20,
    margin: 5,
    textAlign: 'center',
    fontSize: 25,

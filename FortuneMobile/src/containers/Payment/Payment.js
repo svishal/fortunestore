@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import Payment from '../../components/Payment';
 import { paymentRequested, clearAddMessage } from '../../modules/Payment/actions';
-import { getErrorSelector, getAddMessageSelector } from '../../modules/Payment/selectors';
+import { getErrorSelector, getAddMessageSelector, getLoadingSelector } from '../../modules/Payment/selectors';
 
 const mapStateToProps = state => ({
   paymentData: paymentRequested(state),
   error: getErrorSelector(state),
   addMessage: getAddMessageSelector(state),
+  loading: getLoadingSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -17,13 +17,15 @@ const initialState = Map({
   balance: '',
   loading: false,
   error: null,
+  customerMobileNumber: ''
 });
 
 export default function (state = initialState, action) {
   let articleArray = [];
+  let balObject = {current_balance : ''};
   switch (action.type) {
     case FETCH_ARTICLESLIST_REQUESTED: {
-      return state.set('loading', true);
+      return state.set('loading', true).set('balanceData', balObject);;
     }
     case FETCH_ARTICLESLIST_SUCCESS: {
       console.log(`Articles data is --- ${action.data.message}`);
@@ -32,11 +34,12 @@ export default function (state = initialState, action) {
       .set('loading', false).set('error', null);
     }
     case FETCH_ARTICLESLIST_FAIL: {
-      console.log(`Damn you failed  --- ${action.error.response.data.message}`);
-      return state.set('error', action.error.response.data.message);
+      // console.log(`Damn you failed  --- ${action.error.response.data.message}`);
+      return state.set('error', 'Error while fetching articles list');
     }
     case CLEAR_ARTICLES: {
-      return initialState;
+      console.log(`Balance data in reducer  --- ${balObject}`);
+      return state.set('balanceData', balObject);
     }
 
     // Balance 
@@ -49,8 +52,8 @@ export default function (state = initialState, action) {
       .set('loading', false).set('error', null);
     }
     case FETCH_CUSTOMERBALANCE_FAILED: {
-      console.log(`Damn you failed  --- ${action.error.response.data.message}`);
-      return state.set('error', action.error.response.data.message);
+      // console.log(`Damn you failed  --- ${action.error.response.data.message}`);
+      return state.set('error', 'Error while fetching customer balance');
     }
 
     case GET_UPDATEDBALANCE: {

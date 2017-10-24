@@ -1,14 +1,14 @@
 'use strict';
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableHighlight, Alert, Image, FlatList, AsyncStorage } from 'react-native';
+import { Text, View, TextInput, TouchableHighlight, Alert,
+   Image, FlatList, AsyncStorage } from 'react-native';
+import LoadingScreen from '../LoadingScreen';
 import PropTypes from 'prop-types';
-import { getCustomerId } from '../../modules/Articles/sagas';
 import Prompt from 'react-native-prompt';
-
-// import CheckBox from 'react-native-check-box';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
 import dismissKeyboard from 'react-native-dismiss-keyboard';
+
 import styles from './style';
 import { WHITE } from '../../constants/colors';
 
@@ -43,6 +43,9 @@ class Articles extends Component {
   }
 
   componentDidMount() {
+    // const { clearArticles } = this.props;
+    // clearArticles();
+    this.balance.setNativeProps({ text: '' });
     this.getLoginData();
     this.fetchProductList();
   }
@@ -50,12 +53,10 @@ class Articles extends Component {
   componentDidUpdate(prevProps) {
     const { addMessage, clearAddMessage } = this.props;
     const oldAddMessage = prevProps.addMessage;
-    console.log(`I am gonna succeed ${oldAddMessage}, ${addMessage}`);
     if (addMessage === 'success' && oldAddMessage === 'init') {
       clearAddMessage();
     }
   }
-
 
   onButtonPressAdd = () => {
     // console.log('this.state.customerId &&&&&&', this.state.customerId)
@@ -90,7 +91,6 @@ class Articles extends Component {
 
   async getLoginData() {
     this.balance.setNativeProps({ text: '' });
-    console.log('Again calling');
     try {
       if (this.state.addMoneyStatus.length === 0) {
         const status = await AsyncStorage.getItem('addMoney:');
@@ -116,7 +116,7 @@ nextButtonTapped() {
   try {
     if (this.state.customerId.length !== 0) {
       const products = [];
-      var totalAmountToPay = 0;
+      let totalAmountToPay = 0;
       for (let i = 0; i < this.state.productArray.length; i++) {
         const element = this.state.productArray[i];
         if (element.quantity.length !== 0) {
@@ -174,7 +174,7 @@ fetchProductList() {
 
 updateQuantityData = (array, enteredQuantity, index) => {
   const len = array.length;
-  console.log(`Array data is -- ${array[index].product_name}`);
+  // console.log(`Array data is -- ${array[index].product_name}`);
   this.props.articlesData[index].quantity = enteredQuantity;
   this.getCustomerData();
   if (this.state.productArray.length === 0) {
@@ -197,14 +197,16 @@ handleItemQuantity = (text, index) => {
 }
 
   render() {
-    const { articlesData, balanceData } = this.props;
+    const { articlesData, balanceData, loading } = this.props;
     let bal = String(balanceData.current_balance);
-
-    if (bal === 'undefined') {
+    if (bal === 'undefined' || bal === '') {
       bal = '';
     } else {
       bal = `${bal} ₹`;
+      this.getCustomerData();
     }
+
+    if (!loading) {
     return (
       <KeyboardAwareScrollView
       style={styles.container}
@@ -213,7 +215,6 @@ handleItemQuantity = (text, index) => {
       scrollEnabled={false}
       >
       <View>
-      
       <Prompt
       title="Amount"
       placeholder='Please Enter Amount '
@@ -227,9 +228,9 @@ handleItemQuantity = (text, index) => {
       onSubmit={this.addMoneyInCustomerAccount} 
       />
       <View style={styles.titleContainer}>
-
       <Text style={styles.titleLable}>Articles</Text>
       </View>
+      
       <View style={styles.userDetailContainer}>
       <TextInput 
       style={
@@ -293,7 +294,6 @@ handleItemQuantity = (text, index) => {
                 style={styles.quantityInput}
                 keyboardType='phone-pad'
                 maxLength={2}
-                ref={component => this.textInput = component}
                 placeholder='Quantity'
                 onChangeText={(text) => this.handleItemQuantity(text, index)}
                 />
@@ -325,7 +325,12 @@ handleItemQuantity = (text, index) => {
        </View>
        </KeyboardAwareScrollView>
     );
+    }
+  return (
+    <LoadingScreen />
+  );
   }
+  
 }
 
 Articles.defaultProps = {

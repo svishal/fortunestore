@@ -13,20 +13,20 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: WHITE
-       },
+    },
 
-       titleContainer: {
+    titleContainer: {
         height: 30,
         marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center',
-       },
-       titleLable: {
+    },
+    titleLable: {
         marginTop: 5,
-         color: BRAND_PRIMARY,
-          fontSize: 25,
-           fontWeight: 'bold'
-       },
+        color: BRAND_PRIMARY,
+        fontSize: 25,
+        fontWeight: 'bold'
+    },
 
     mobileNumber: {
         flex: 1,
@@ -36,19 +36,23 @@ const styles = StyleSheet.create({
         color: WHITE
     },
     
-addButtonContainer: {
-    flex: 1, flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 25
-},
+    addButtonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 20,
+        marginBottom: 25
+    },
 
-currentBalanceText: {
-    flex: 1,
-    height: 40,
-    marginLeft: 15,
-    borderColor: GREY,
-    borderWidth: 1,
-    borderRadius: 10,
-    textAlign: 'center'
-},
+    currentBalanceText: {
+        flex: 1,
+        height: 40,
+        marginLeft: 15,
+        borderColor: GREY,
+        borderWidth: 1,
+        borderRadius: 10,
+        textAlign: 'center'
+    },
     addButton: {
         flex: 0.50,
         height: 41,
