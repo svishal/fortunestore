@@ -30,9 +30,10 @@ class Articles extends Component {
       productArray: [],
       selectedProductsArray: [],
       addMoneyStatus: '',
-      status: false
+      status: false,
+      amount: ''
     };
-    // this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
+    this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
     this.getLoginData = this.getLoginData.bind(this);
     this.fetchProductList = this.fetchProductList.bind(this);
     this.mobileNumberInput = this.mobileNumberInput.bind(this);
@@ -60,7 +61,7 @@ class Articles extends Component {
 
   onButtonPressAdd = () => {
     // console.log('this.state.customerId &&&&&&', this.state.customerId)
-    if (this.state.status === false) {
+    if (this.state.status === true) {
       this.showAlertWithTitleAndMessage('Sorry!',
       'You can not add money for this customer');
       return;
@@ -140,14 +141,15 @@ nextButtonTapped() {
   }
 }
 
-mobileNumberInput = (customerMobileNumber) => {
-  if (customerMobileNumber.length === 10) {
-    console.log('10 digits ', customerMobileNumber);
+mobileNumberInput = (mobile) => {
+  this.setState({ customerMobileNumber: mobile });
+  if (mobile.length === 10) {
+    console.log('10 digits ', mobile);
     Alert.alert(
       'Confirm!',
       'Please confirm your mobile number.',
       [
-        { text: 'OK', onPress: () => this.getCustomerCredits(customerMobileNumber) },
+        { text: 'OK', onPress: () => this.getCustomerCredits(mobile) },
         { text: 'NO', onPress: () => console.log('No pressed') },
       ],
     );
@@ -164,7 +166,13 @@ showAlertWithTitleAndMessage(title, message) {
   );
 }
 
-addMoneyInCustomerAccount = () => {
+addMoneyInCustomerAccount = (amountToBePaid) => {
+  this.setState({ promptVisible: false });
+  this.setState({ amount: amountToBePaid }, function () {
+    const { addBalanceRequested } = this.props;
+    setTimeout(() => addBalanceRequested(this.state.customerId, this.state.amount), 10);
+    // addBalanceRequested(this.state.customerId, this.state.amount);
+});
 }
 
 fetchProductList() {
@@ -225,7 +233,7 @@ handleItemQuantity = (text, index) => {
         promptVisible: false,
         message: 'You cancelled'
       })}
-      onSubmit={this.addMoneyInCustomerAccount} 
+      onSubmit={(amountToBePaid) => this.addMoneyInCustomerAccount(amountToBePaid)} 
       />
       <View style={styles.titleContainer}>
       <Text style={styles.titleLable}>Articles</Text>
@@ -243,6 +251,7 @@ handleItemQuantity = (text, index) => {
       returnKeyType='next'
       maxLength={10}
       onChangeText={this.mobileNumberInput}
+      value={this.state.customerMobileNumber}
       />
       <View style={styles.addButtonContainer}>
       <TextInput
@@ -339,6 +348,7 @@ Articles.defaultProps = {
 
 Articles.propTypes = {
   articlesListRequested: PropTypes.func.isRequired,
+  addBalanceRequested: PropTypes.func.isRequired,
   getCustomerBalanceRequested: PropTypes.func.isRequired,
   error: PropTypes.string,
 };
