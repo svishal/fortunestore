@@ -1,0 +1,8 @@
+*Install npm in root directory of project.
+*Add ART.xcodeproject, RNSVG.xcodeproject and link the header search paths with recursive.
+*config.h not found -- Add a config script in /glog file 
+cd /glog then 
+./configure
+Make
+make install
+Happy coding!!
