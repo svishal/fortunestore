@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: BLACK
     },
-    addButton: {
+    payButton: {
         flex: 0.50,
         height: 41,
         marginRight: 8,
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
         marginTop: 2,
         marginBottom: 2,
         marginLeft: 5,
+        marginRight: 8,
         fontSize: 13,
         color: GREY,
         fontWeight: 'bold',
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     alignItems: 'center'
     },
-    quantityInput: {
+    searchMobileNumber: {
          flex: 0.20,
          backgroundColor: WHITE,
          marginTop: 10,
@@ -170,8 +171,6 @@ const styles = StyleSheet.create({
          marginRight: 10,
          borderColor: GREY,
          textAlign: 'center',
-         borderRadius: 5,
-         borderWidth: 1,
          fontSize: 12,
          color: BLACK
     },
@@ -194,18 +193,6 @@ const styles = StyleSheet.create({
      userDetailContainer: {
         height: 40,
         marginTop: 20
-    },
-    next: {
-        flex: 1,
-        marginRight: 8,
-        marginLeft: 8,
-        paddingLeft: 30,
-        paddingRight: 30,
-        justifyContent: 'center',
-        backgroundColor: BRAND_PRIMARY,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: WHITE
     },
     submitText: {
         color: WHITE,
