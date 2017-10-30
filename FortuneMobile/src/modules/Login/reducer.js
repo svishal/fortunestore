@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
         .set('loading', false).set('error', null);
     }
     case FETCH_LOGIN_FAIL: {
-      console.log(`Reducer error ${action.error}`);
+      console.log(action.error);
       return state.set('error', 'Error while login').set('loading', false).set('error', null);
     }
     case CLEAR_LOGIN: {

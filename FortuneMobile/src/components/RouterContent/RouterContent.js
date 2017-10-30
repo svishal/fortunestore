@@ -77,12 +77,12 @@ class RouterContent extends Component {
         />
         <Router style={styles.content} cardStyle={cardStyle}>
           <Scene key="root">
-             {/* <Scene
+        {/*  {     <Scene
               key="login"
               on={() => { this.onSceneChange(); }}
               component={Login}
               hideNavBar
-            />  */}
+            />  } */}
             <Scene
               key="articles"
               on={() => { this.onSceneChange(); }}

@@ -7,9 +7,7 @@ import {
   FETCH_GETCUSTOMERBALANCE_REQUESTED,
   FETCH_CUSTOMERBALANCE_SUCCESS,
   FETCH_CUSTOMERBALANCE_FAILED,
-  ADDBALANCE_REQUESTED,
-  ADDBALANCE_SUCCESS,
-  ADDBALANCE_FAIL,
+
   GET_UPDATEDBALANCE
 } from './constants';
 
@@ -20,15 +18,14 @@ const initialState = Map({
   loading: false,
   error: null,
   customerMobileNumber: ''
-  
 });
 
 export default function (state = initialState, action) {
   let articleArray = [];
-  const balObject = { current_balance : '' };
+  let balObject = {current_balance : ''};
   switch (action.type) {
     case FETCH_ARTICLESLIST_REQUESTED: {
-      return state.set('loading', true).set('balanceData', balObject);
+      return state.set('loading', true).set('balanceData', balObject);;
     }
     case FETCH_ARTICLESLIST_SUCCESS: {
       console.log(`Articles data is --- ${action.data.message}`);
@@ -56,7 +53,7 @@ export default function (state = initialState, action) {
     }
     case FETCH_CUSTOMERBALANCE_FAILED: {
       // console.log(`Damn you failed  --- ${action.error.response.data.message}`);
-      return state.set('error', 'Error while fetching customer balance').set('loading', false);
+      return state.set('error', 'Error while fetching customer balance');
     }
 
     case GET_UPDATEDBALANCE: {
@@ -64,19 +61,6 @@ export default function (state = initialState, action) {
       .set('loading', false).set('error', null);
     }
 
-    // Add balance 
-    case ADDBALANCE_REQUESTED: {
-      return state.set('loading', true);
-    }
-    case ADDBALANCE_SUCCESS: {
-      const bal = action.data.data.current_balance;
-      return state.set('balanceData', action.data.data).set('balance', bal)
-      .set('loading', false).set('error', null);
-    }
-    case ADDBALANCE_FAIL: {
-      console.log(`Damn you failed  --- ${'Error while fetching customer balance'}`);
-      return state.set('error', 'Error while fetching customer balance').set('loading', false);
-    }
     default:
       return state;
   }

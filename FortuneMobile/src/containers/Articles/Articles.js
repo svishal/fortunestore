@@ -1,10 +1,7 @@
 import { connect } from 'react-redux';
 import Articles from '../../components/Articles';
-import { articlesListRequested,
-   getCustomerBalanceRequested,
-   addBalanceRequested } from '../../modules/Articles/actions';
-import { getErrorSelector, getArticlesDataSelector,
-   getCustomerBalanceSelector, getLoadingSelector } 
+import { articlesListRequested, getCustomerBalanceRequested } from '../../modules/Articles/actions';
+import { getErrorSelector, getArticlesDataSelector, getCustomerBalanceSelector, getLoadingSelector } 
 from '../../modules/Articles/selectors';
 
 const mapStateToProps = state => ({
@@ -15,9 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  articlesListRequested: () => 
-  dispatch(articlesListRequested()),
-  addBalanceRequested: (customerId, amount) => dispatch(addBalanceRequested(customerId, amount)),
+  articlesListRequested: () => dispatch(articlesListRequested()),
   getCustomerBalanceRequested: (customerMobileNumber) =>
   dispatch(getCustomerBalanceRequested(customerMobileNumber))
 

@@ -3,6 +3,8 @@ package com.fortunestore;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 import com.rnprint.RNPrint.RNPrintPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
+            new ReactNativeLocalizationPackage(),
             new RNPrintPackage(),
             new RNDeviceInfo()
       );

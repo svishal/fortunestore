@@ -39,9 +39,8 @@ function* fetchLogin({ username, passwordInput }) {
     yield call(AsyncStorageUtil.setItemInStorage, 'addMoney', addMoney);
     Actions.articles();
   } catch (error) {
-    console.log(`Got error + ${error}`);
+    console.log(`error + ${error}`);
     yield put(loginFailed(error));
-
     Alert.alert(
       'Oops!',
       'Something went wrong, Please contact to admin',

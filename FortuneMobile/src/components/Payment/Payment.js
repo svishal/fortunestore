@@ -45,6 +45,7 @@ class Payment extends Component {
     async getFosIdKeys() {
         try {
         const value = await AsyncStorage.getItem('fosId');
+        console.log('Fos  ', value);
         this.setState({ fosId: value });
         } catch (error) {
             console.log(`Error while retrieving data ${error}`);

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, BLACK, GREY, BRAND_PRIMARY } from '../../constants/colors';
+import { WHITE, BLACK, GREY, BRAND_PRIMARY, NAVBAR, GREY_MEDIUM } from '../../constants/colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -14,6 +14,59 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: WHITE
     },
+
+    barSearch: {
+        backgroundColor: NAVBAR,
+        borderTopWidth: 1,
+        borderColor: GREY_MEDIUM,
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingLeft: 15,
+        paddingRight: 15,
+        flexDirection: 'row',
+      },
+      boxSearch: {
+        flex: 1,
+      },
+      searchInput: {
+        height: 35,
+        fontSize: 14,
+        color: BLACK,
+      },
+      iconSearch: {
+        top: 4,
+      },
+      iconClose: {
+        top: 4,
+      },
+      buttonFilter: {
+        flexDirection: 'row',
+        backgroundColor: GREY,
+        alignSelf: 'center',
+        paddingTop: 4,
+        paddingRight: 15,
+        paddingLeft: 10,
+        height: 35,
+        borderRadius: 4,
+        marginLeft: 10,
+      },
+      buttonFilterActive: {
+        backgroundColor: BLACK,
+      },
+      iconFilter: {
+        width: 24,
+        height: 24,
+      },
+      textButtonFilter: {
+        color: WHITE,
+        
+        fontSize: 14,
+        paddingLeft: 9,
+        paddingTop: 2,
+      },
+      textButtonFilterActive: {
+        color: WHITE,
+      },
 
     titleContainer: {
         height: 30,
@@ -51,7 +104,8 @@ const styles = StyleSheet.create({
         borderColor: GREY,
         borderWidth: 1,
         borderRadius: 10,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: BLACK
     },
     addButton: {
         flex: 0.50,
@@ -119,6 +173,7 @@ const styles = StyleSheet.create({
          borderRadius: 5,
          borderWidth: 1,
          fontSize: 12,
+         color: BLACK
     },
 
     checkBox: {
@@ -133,7 +188,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         textAlign: 'center',
-        marginTop: 10
+        marginTop: 10,
+        color: BLACK
      },
      userDetailContainer: {
         height: 40,
@@ -159,7 +215,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
     wrapperView: {
-        height: 200,
+        height: 100,
         backgroundColor: WHITE,
         marginTop: 0,
       },
