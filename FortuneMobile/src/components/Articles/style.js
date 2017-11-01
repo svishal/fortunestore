@@ -59,10 +59,9 @@ const styles = StyleSheet.create({
       },
       textButtonFilter: {
         color: WHITE,
-        
         fontSize: 14,
         paddingLeft: 9,
-        paddingTop: 2,
+        paddingTop: 4,
       },
       textButtonFilterActive: {
         color: WHITE,
@@ -156,6 +155,15 @@ const styles = StyleSheet.create({
         color: GREY,
         fontWeight: 'bold',
     },
+    viewBalance: {
+        marginTop: 2,
+        marginBottom: 2,
+        marginLeft: 5,
+        marginRight: 8,
+        fontSize: 13,
+        color: BRAND_PRIMARY,
+        fontWeight: 'bold',
+    },
     listContainerView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -205,6 +213,12 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: WHITE,
         marginTop: 0,
+      },
+      error: {
+        color: BRAND_PRIMARY,
+        fontSize: 14,
+        textAlign: 'center',
+        justifyContent: 'center'
       },
 });
 

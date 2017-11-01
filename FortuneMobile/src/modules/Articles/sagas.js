@@ -1,7 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { Alert } from 'react-native';
 import axios from 'axios';
-import AsyncStorageUtil from '../../utils/asyncStorage';
+// import AsyncStorageUtil from '../../utils/asyncStorage';
 import { FETCH_ARTICLESLIST_REQUESTED,
          FETCH_GETCUSTOMERBALANCE_REQUESTED,
          FETCH_ADDCUSTOMERBALANCE_REQUESTED, CLEAR_ARTICLES } from './constants';
@@ -22,7 +21,7 @@ function* fetchArticlesList() {
   }
 }
 
-function* fetchCustomerBalance({ customerMobileNumber }) {
+function* fetchCustomerBalance({ customerMobileNumber }) { 
   const url = `${config.API_URL}/get_customer_balance`;
   const token = yield call(getToken);
   try {
@@ -35,19 +34,8 @@ function* fetchCustomerBalance({ customerMobileNumber }) {
       headers: { Authorization: token },
     });
     yield put(getCustomerBalanceSuccess(response.data));
-    const constant = response.data.data;
-    const id = constant.id;
-    yield call(AsyncStorageUtil.setItemInStorage, 'customerId', id);
-    // const customerData = yield call(AsyncStorageUtil.getItemFromStorage, 'customerId');
   } catch (e) {
-    yield put(getCustomerBalanceFailed());
-    Alert.alert(
-      'Oops!',
-      'Unable to fetch your current balance',
-      [
-        { text: 'OK', onPress: () => console.log('Error') }
-      ],
-    );
+    yield put(getCustomerBalanceFailed(e));
   }
 }
 

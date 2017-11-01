@@ -1,19 +1,15 @@
 'use strict';
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableHighlight, Alert,
-   Image, FlatList, AsyncStorage ,TouchableOpacity } from 'react-native';
-import LoadingScreen from '../LoadingScreen';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types';
 import Prompt from 'react-native-prompt';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Text, View, TextInput, TouchableHighlight, 
+Alert, FlatList, AsyncStorage } from 'react-native';
+import LoadingScreen from '../LoadingScreen';
 import SearchInput from '../SearchInput';
 import styles from './style';
-import { WHITE } from '../../constants/colors';
-import iconFilter from '../../Assets/ic_filters.png';
-import iconFilterActive from '../../Assets/ic_filters_active.png';
 
 class Articles extends Component {
-
   static keyExtractor(item) {
     return item.id;
   }
@@ -21,12 +17,11 @@ class Articles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterText: '',
+      searchText: '',
       accessToken: this.props.access_token,
       currentBalance: '',
       customerId: '',
       promptVisible: false,
-      isAddMoneyEnabled: true,
       customerMobileNumber: '',
       productArray: [],
       selectedProductsArray: [],
@@ -36,15 +31,15 @@ class Articles extends Component {
     };
     // this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
     this.getLoginData = this.getLoginData.bind(this);
-    this.fetchProductList = this.fetchProductList.bind(this);
     this.newAmountInput = this.newAmountInput.bind(this);
-    this.getCustomerCredits = this.getCustomerCredits.bind(this);
-    this.getCustomerData = this.getCustomerData.bind(this);
+    this.getButtonSearch = this.getButtonSearch.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+    this.onButtonPressPay = this.onButtonPressPay.bind(this);
   }
 
   componentDidMount() {
     this.getLoginData();
-    this.fetchProductList();
+    // this.fetchProductList();
   }
 
   componentDidUpdate(prevProps) {
@@ -55,14 +50,15 @@ class Articles extends Component {
     }
   }
 
-  onButtonPressPay = () => {
+  onButtonPressPay() {
     // console.log('this.state.customerId &&&&&&', this.state.customerId)
-    if (this.state.payAmount.length === '') {
+    const { payAmount, customerId } = this.state;
+    if (payAmount === '') {
       this.showAlertWithTitleAndMessage('Message!',
       'Please enter the amount first');
       return;
     } 
-    if (this.state.customerId !== '') {
+    if (customerId !== '') {
           this.setState({
             promptVisible: true,
             balance: ''
@@ -71,19 +67,6 @@ class Articles extends Component {
        this.showAlertWithTitleAndMessage('Message!',
           'Please check your account balance first via entering your phone number');
      }
-  }
-
-  async getCustomerData() {
-    try {
-      if (this.state.customerId.length === 0) {
-        const customerID = await AsyncStorage.getItem('customerId');
-        if (customerID !== null) {
-          this.setState({ customerId: customerID });
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   async getLoginData() {
@@ -101,12 +84,15 @@ class Articles extends Component {
       console.log(error);
     }
   }
-  
-getCustomerCredits = (searchText) => {
-  // const { customerMobileNumber } = this.state;
-  // const { getCustomerBalanceRequested } = this.props;
-  // getCustomerBalanceRequested(customerMobileNumber);
-  console.log('customerMobileNumber--- ' + searchText);
+
+getButtonSearch() {
+  const { searchText } = this.state;
+  if (searchText.length > 3) {
+    const { getCustomerBalanceRequested } = this.props;
+    getCustomerBalanceRequested(searchText);
+  } else {
+    console.log('Type more input for better result');
+  }
 }
 
 showAlertWithTitleAndMessage(title, message) {
@@ -119,65 +105,48 @@ showAlertWithTitleAndMessage(title, message) {
   );
 }
 
-fetchProductList() {
-  const { articlesListRequested } = this.props;
-  articlesListRequested();
-}
-
-getButtonSearch() {
-  const { activeFilter } = this.props;
-  if (!activeFilter) {
-    return (
-      <TouchableOpacity
-        style={styles.buttonFilter}
-        activeOpacity={1}
-      >
-        <Image source={iconFilter} style={styles.iconFilter} />
-        <Text style={styles.textButtonFilter}>Search</Text>
-      </TouchableOpacity>
-    );
-  }
-
-  return (
-    <TouchableOpacity
-      style={[styles.buttonFilter, styles.buttonFilterActive]}
-      activeOpacity={1}
-     >
-      <Image source={iconFilterActive} style={styles.iconFilter} />
-      <Text style={[styles.textButtonFilter, styles.textButtonFilterActive]}>Filters</Text>
-    </TouchableOpacity>
-  );
-}
-
-searchInput(textSearch) {
+viewDetails(item) {
+  const balance = String(item);
   this.setState({
-    filterText: textSearch,
-  }); 
+    currentBalance: balance,
+  });
 }
 
-newAmountInput = (newAmountText) => {
+searchInput(textSearch) { 
+  if (textSearch.length > 3) {
+    this.setState({ searchText: textSearch });
+  }
+  console.log(`Search text -- ${this.state.searchText}`);
+}
+
+newAmountInput(newAmountText) {
   console.log(`New amount entered is -- ${newAmountText}`);
   this.setState({
-    payAmount: newAmountText,
+    payAmount: newAmountText
   });
 }
 
 // Function is required in Prompt package, Either remove the package or defined the method 
-addMoneyInCustomerAccount = () => {
+addMoneyInCustomerAccount() {
 
 } 
-  render() {
-    const { articlesData, balanceData, loading } = this.props;
-    const { filterText } = this.state;
-    let bal = String(balanceData.current_balance);
-    console.log('Value in component ' + this.state.customerMobileNumber);
-  //  this.showAlertWithTitleAndMessage('balance : ', bal);
+clearSearch() {
+  this.setState({
+    currentBalance: '',
+  });
+}
 
-    if (bal === 'undefined' || bal === '') {
+  render() {
+    const { balanceData, loading, error } = this.props;
+    const { searchText, currentBalance } = this.state;
+    console.log(`Error  is -- ${error}`);
+    let bal = '';
+    // let address = String(balanceData.address);
+    // let mob = String(balanceData.mobile_number);
+    if (currentBalance === 'undefined' || currentBalance === '') {
       bal = '';
     } else {
-      bal = `${bal} ₹`;
-      this.getCustomerData();
+      bal = `${currentBalance} ₹`;
     }
 
     if (!loading) {
@@ -194,7 +163,7 @@ addMoneyInCustomerAccount = () => {
       placeholder='Please Enter Amount '
       defaultValue=''
       keyboardType='phone-pad'
-      visible={this.state.promptVisible}
+      visible={this.state.promptVisible}  
       onCancel={() => this.setState({
         promptVisible: false,
         message: 'You cancelled'
@@ -208,9 +177,9 @@ addMoneyInCustomerAccount = () => {
           <View style={styles.boxSearch}>
             <SearchInput
               debounceTime={300}
-              handlerChange={this.searchInput}
-              clearSearchMethod={this.clearFilter}
-              defaultValue={filterText}
+              handlerChange={textSearch => this.searchInput(textSearch)}
+              clearSearchMethod={this.clearSearch}
+              defaultValue={searchText}
               placeholder={'Search Kothi/Mobile number'}
               returnKeyType="done"
               styleInput={styles.searchInput}
@@ -218,25 +187,33 @@ addMoneyInCustomerAccount = () => {
               styleIconClose={styles.iconClose}
             />
           </View>
-          <View style={styles.boxFilters}>
-            {this.getButtonSearch()}
+      <View style={styles.boxFilters}>
+         <TouchableHighlight
+         style={styles.buttonFilter}
+          underlayColor='#fff'
+          onPress={this.getButtonSearch}
+         >
+          <Text style={styles.textButtonFilter}>Search</Text>
+          </TouchableHighlight>
           </View>
-        </View>
+          </View>
+      
       {/* // List View Wrapper */}
       <View 
       style={styles.wrapperView}
       >
       <FlatList
             style={styles.listView}
-            data={articlesData}
+            data={balanceData}
             keyExtractor={Articles.keyExtractor}
             enableEmptySections
             renderItem={({ item }) => (
               <View 
               style={styles.listContainerView}
               >
-                <Text style={styles.itemName}>{item.product_name}</Text>
-                <Text style={styles.itemPrice}>{'9876543210'}</Text>
+                <Text style={styles.itemName}>{item.address}</Text>
+                <Text style={styles.itemPrice}>{item.mobile_number} </Text>
+                <Text style={styles.viewBalance}onPress={this.viewDetails.bind(this, item.current_balance)}>{'View Balance'}</Text>
                 </View>
             )}
       />
@@ -250,10 +227,9 @@ addMoneyInCustomerAccount = () => {
       underlineColorAndroid='rgba(0,0,0,0)'
       placeholder='Balance'
       placeholderTextColor='#A7A7A7'
-      keyboardType='phone-pad'
       returnKeyType='done'
       editable={false}
-      value={this.state.customerMobileNumber}
+      value={`${bal}`}
       />
       <View style={styles.addButtonContainer}>
       <TextInput
@@ -270,14 +246,9 @@ addMoneyInCustomerAccount = () => {
       onPress={this.onButtonPressPay}
       >
     <Text
-       style={{ color: '#fff', textAlign: 'center', fontSize: 15,
-      }}
-      >Pay</Text>
+    style={{ color: '#fff', textAlign: 'center', fontSize: 15 }}
+    >Pay</Text>
       </TouchableHighlight>
-      </View>
-      <View 
-      style={{ height: 1, backgroundColor: WHITE, marginTop: 30 }}
-      >
       </View>
       </View>
       </View>
@@ -288,7 +259,6 @@ addMoneyInCustomerAccount = () => {
     <LoadingScreen />
   );
   }
-  
 }
 
 Articles.defaultProps = {
