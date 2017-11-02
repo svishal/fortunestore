@@ -143,9 +143,15 @@ clearSearch() {
 }
 
   render() {
-    const { balanceData, loading, error } = this.props;
+    const { balanceData, loading, isSuccess } = this.props;
     const { searchText, currentBalance } = this.state;
-    console.log(`Error  is -- ${error}`);
+    let payableAmount = '';
+    if (!isSuccess) {
+      payableAmount = this.state.payAmount;
+    } else {
+      payableAmount = '';
+    }
+
     let bal = '';
     // let address = String(balanceData.address);
     // let mob = String(balanceData.mobile_number);
@@ -244,7 +250,7 @@ clearSearch() {
       placeholder='Amount'
       placeholderTextColor='#A7A7A7'
       onChangeText={(newAmountText) => { this.newAmountInput(newAmountText); }}
-      value={this.state.payAmount}
+      value={payableAmount}
       />
       <TouchableHighlight
       style={styles.payButton}

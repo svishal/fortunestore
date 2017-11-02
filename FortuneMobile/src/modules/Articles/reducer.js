@@ -23,6 +23,7 @@ const initialState = Map({
   error: null,
   customerMobileNumber: '',
   paymentData: {},
+  isSuccess: false
 });
 
 export default function (state = initialState, action) {
@@ -80,16 +81,17 @@ export default function (state = initialState, action) {
       console.log('Payment is done');
       Alert.alert(
         'Nice!',
-        '',
+        'Your payment has been successfully recieved. Thanks! ',
         [
           { text: 'OK', onPress: () => console.log() }
         ],
       );
       return state.set('paymentData', action.data).set('addMessage', 'success')
-        .set('loading', false).set('error', null);
+        .set('loading', false).set('error', null)
+        .set('isSuccess', true);
     }
     case FETCH_PAYMENT_FAIL: {
-      return state.set('error', 'Oops payment failed').set('addMessage', 'failure').set('loading', false);
+      return state.set('error', 'Oops payment failed').set('addMessage', 'failure').set('loading', false).set('isSuccess', false);
     }
 
     default:

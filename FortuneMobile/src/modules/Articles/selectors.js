@@ -6,6 +6,7 @@ const getCustomerBalanceData = state => state[REDUCER_KEY].get('balanceData');
 const getLoading = state => state[REDUCER_KEY].get('loading');
 const getError = state => state[REDUCER_KEY].get('error');
 const getPaymentData = state => state[REDUCER_KEY].get('paymentData');
+const getIsSuccessData = state => state[REDUCER_KEY].get('isSuccess');
 
 export const getArticlesDataSelector = createSelector(
   getArticlesData,
@@ -35,4 +36,9 @@ export const getUpdatedBalanceSelector = createSelector(
 export const getPaymentDataSelector = createSelector(
   getPaymentData,
   paymentData => paymentData
+);
+
+export const getIsSuccessSelector = createSelector(
+  getIsSuccessData,
+  isSuccess => isSuccess
 );
