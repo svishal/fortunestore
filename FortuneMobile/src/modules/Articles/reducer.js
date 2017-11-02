@@ -9,7 +9,10 @@ import {
   FETCH_CUSTOMERBALANCE_SUCCESS,
   FETCH_CUSTOMERBALANCE_FAILED,
 
-  GET_UPDATEDBALANCE
+  GET_UPDATEDBALANCE,
+  FETCH_PAYMENT_REQUESTED,
+  FETCH_PAYMENT_SUCCESS,
+  FETCH_PAYMENT_FAIL,
 } from './constants';
 
 const initialState = Map({
@@ -18,7 +21,8 @@ const initialState = Map({
   balance: '',
   loading: false,
   error: null,
-  customerMobileNumber: ''
+  customerMobileNumber: '',
+  paymentData: {},
 });
 
 export default function (state = initialState, action) {
@@ -67,6 +71,25 @@ export default function (state = initialState, action) {
     case GET_UPDATEDBALANCE: {
       return state.set('balanceData', action.data.data)
       .set('loading', false).set('error', null);
+    }
+
+    case FETCH_PAYMENT_REQUESTED: {
+      return state.set('loading', true);
+    }
+    case FETCH_PAYMENT_SUCCESS: {
+      console.log('Payment is done');
+      Alert.alert(
+        'Nice!',
+        '',
+        [
+          { text: 'OK', onPress: () => console.log() }
+        ],
+      );
+      return state.set('paymentData', action.data).set('addMessage', 'success')
+        .set('loading', false).set('error', null);
+    }
+    case FETCH_PAYMENT_FAIL: {
+      return state.set('error', 'Oops payment failed').set('addMessage', 'failure').set('loading', false);
     }
 
     default:

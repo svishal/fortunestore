@@ -27,7 +27,8 @@ class Articles extends Component {
       selectedProductsArray: [],
       addMoneyStatus: '',
       status: false,
-      payAmount: ''
+      payAmount: '',
+      fosId: ''
     };
     // this.addMoneyInCustomerAccount = this.addMoneyInCustomerAccount.bind(this);
     this.getLoginData = this.getLoginData.bind(this);
@@ -39,7 +40,6 @@ class Articles extends Component {
 
   componentDidMount() {
     this.getLoginData();
-    // this.fetchProductList();
   }
 
   componentDidUpdate(prevProps) {
@@ -52,32 +52,34 @@ class Articles extends Component {
 
   onButtonPressPay() {
     // console.log('this.state.customerId &&&&&&', this.state.customerId)
-    const { payAmount, customerId } = this.state;
+    const { fosId, customerId, payAmount } = this.state;
+    console.log('this.state.fosId &&&&&&', fosId, customerId, payAmount);
     if (payAmount === '') {
       this.showAlertWithTitleAndMessage('Message!',
       'Please enter the amount first');
       return;
     } 
-    if (customerId !== '') {
-          this.setState({
-            promptVisible: true,
-            balance: ''
-          });
+    if (customerId !== '' && payAmount !== '') {
+      const { paymentRequested } = this.props;
+      paymentRequested(fosId, customerId, payAmount);
     } else {
        this.showAlertWithTitleAndMessage('Message!',
-          'Please check your account balance first via entering your phone number');
+          'Please check your account balance first via entering your phone/kothi number');
      }
   }
 
   async getLoginData() {
-    console.log('Again calling');
     try {
       if (this.state.addMoneyStatus.length === 0) {
-        const status = await AsyncStorage.getItem('addMoney:');
+        const status = await AsyncStorage.getItem('addMoney');
+        const fosID = await AsyncStorage.getItem('fosId');
         if (status !== null) {
           if (status === 'inactive') {
-            this.setState({ status: true });
+            this.setState({ status: true, fosId: fosID });
           }
+        }
+        if (fosID !== null) {
+          this.setState({ fosId: fosID });
         }
       }
     } catch (error) {
@@ -106,9 +108,11 @@ showAlertWithTitleAndMessage(title, message) {
 }
 
 viewDetails(item) {
-  const balance = String(item);
+  console.log(`CustomerId - ${item.id}`);
+  const balance = String(item.current_balance);
   this.setState({
     currentBalance: balance,
+    customerId: item.id
   });
 }
 
@@ -124,6 +128,8 @@ newAmountInput(newAmountText) {
   this.setState({
     payAmount: newAmountText
   });
+ 
+  // paymentRequested(fosId, customerId, payAmount);
 }
 
 // Function is required in Prompt package, Either remove the package or defined the method 
@@ -213,7 +219,7 @@ clearSearch() {
               >
                 <Text style={styles.itemName}>{item.address}</Text>
                 <Text style={styles.itemPrice}>{item.mobile_number} </Text>
-                <Text style={styles.viewBalance}onPress={this.viewDetails.bind(this, item.current_balance)}>{'View Balance'}</Text>
+                <Text style={styles.viewBalance}onPress={this.viewDetails.bind(this, item)}>{'View Balance'}</Text>
                 </View>
             )}
       />
@@ -268,6 +274,7 @@ Articles.defaultProps = {
 Articles.propTypes = {
   articlesListRequested: PropTypes.func.isRequired,
   getCustomerBalanceRequested: PropTypes.func.isRequired,
+  paymentRequested: PropTypes.func.isRequired,
   error: PropTypes.string,
 };
 

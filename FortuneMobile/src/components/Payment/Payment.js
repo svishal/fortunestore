@@ -61,8 +61,8 @@ class Payment extends Component {
         // this.setState({ selectedItemsArray: this.props.QTY });
         if (this.state.selectedItemsArray.length !== 0) {
         const { fosId, customerId, selectedItemsArray, amountToBePaid } = this.state;
-        const { paymentRequested } = this.props;
-        paymentRequested(fosId, customerId, selectedItemsArray, amountToBePaid);
+        // const { paymentRequested } = this.props;
+        // paymentRequested(fosId, customerId, selectedItemsArray, amountToBePaid);
         } else {
             Alert.alert(
                 'Oops!',

@@ -8,7 +8,10 @@ import {
   FETCH_CUSTOMERBALANCE_SUCCESS,
   FETCH_CUSTOMERBALANCE_FAILED,
 
-  GET_UPDATEDBALANCE
+  GET_UPDATEDBALANCE,
+  FETCH_PAYMENT_REQUESTED,
+  FETCH_PAYMENT_SUCCESS,
+  FETCH_PAYMENT_FAIL,
 
 } from './constants';
 
@@ -37,7 +40,7 @@ export const getCustomerBalanceRequested = (customerMobileNumber) => ({
   customerMobileNumber
 });
 
-export const getCustomerBalanceSuccess = (data, customerMobileNumber)=> ({
+export const getCustomerBalanceSuccess = (data, customerMobileNumber) => ({
   type: FETCH_CUSTOMERBALANCE_SUCCESS,
   data,
   customerMobileNumber
@@ -51,4 +54,22 @@ export const getCustomerBalanceFailed = error => ({
 export const getUpdatedBalance = (balance) => ({
   type: GET_UPDATEDBALANCE,
   balance
+});
+
+// Expenditure
+export const paymentRequested = (fosId, customerId, payAmount) => ({
+  type: FETCH_PAYMENT_REQUESTED,
+  fosId,
+  customerId,
+  payAmount
+});
+
+export const paymentSuccess = data => ({
+type: FETCH_PAYMENT_SUCCESS,
+  data,
+});
+                                                                 
+export const paymentFailed = error => ({
+  type: FETCH_PAYMENT_FAIL,
+  error,
 });
